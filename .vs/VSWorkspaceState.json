@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\app"
+    "\\app",
+    "\\app\\Driver",
+    "\\app\\Driver\\Driver",
+    "\\app\\Driver\\Driver\\Driver"
   ],
+  "SelectedNode": "\\app\\Driver\\Driver.sln",
   "PreviewInSolutionExplorer": false
 }

@@ -4,8 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Driver.Login.LoginPage"
-             Title="Login Page">
+             x:Class="Driver.Login.SignupPage">
     <StackLayout VerticalOptions="Center">
         <Entry x:Name="usernameEntry"
                Placeholder="Username"
@@ -15,16 +14,18 @@
                IsPassword="true"
                Placeholder="Password"
                VerticalOptions="Center"/>
-        <StackLayout Orientation="Horizontal">
-            <Button x:Name="signinButton"
-                Text="Sign in"
-                HorizontalOptions="CenterAndExpand"
-                Clicked="OnSigninButtonClicked" />
-            <Button x:Name="signunButton"
+        <Entry x:Name="firstNameEntry"
+               Placeholder="First Name"
+               VerticalOptions="Center"/>
+        <Entry x:Name="lastNameEntry"
+               Placeholder="Last Name"
+               VerticalOptions="Center"/>
+        <Entry x:Name="addressEntry"
+               Placeholder="Address"
+               VerticalOptions="Center"/>
+        <Button x:Name="signunButton"
                 Text="Sign up"
                 HorizontalOptions="CenterAndExpand"
                 Clicked="OnSignupButtonClicked" />
-        </StackLayout>
     </StackLayout>
-
 </ContentPage>

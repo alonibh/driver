@@ -1,5 +1,4 @@
-﻿using Driver.DB.DBO;
-using Driver.MainPages;
+﻿using Driver.MainPages;
 using Driver.Models;
 using System;
 using Xamarin.Forms;
@@ -16,7 +15,7 @@ namespace Driver.Login
         {
             if (App.Database.IsUsernameTaken(usernameEntry.Text))
             {
-                await DisplayAlert("Error", "User name already taken, plase choose a different one", "OK");
+                await DisplayAlert("Error", "User name already taken, please choose a different one", "OK");
             }
             else
             {

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
+using Driver.Models;
+using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Driver.MainPages
 {
@@ -14,6 +10,29 @@ namespace Driver.MainPages
         public MainPage()
         {
             InitializeComponent();
+            NavigationPage.SetHasBackButton(this, false);
         }
+
+        async void OnSettingsButtonClicked(object sender, EventArgs args)
+        {
+
+        }
+
+        async void OnFriendsListButtonClicked(object sender, EventArgs args)
+        {
+
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            if (Device.RuntimePlatform == Device.Android)
+                DependencyService.Get<IAndroidMethods>().CloseApp();
+
+            return base.OnBackButtonPressed();
+        }
+    }
+    public interface IAndroidMethods
+    {
+        void CloseApp();
     }
 }

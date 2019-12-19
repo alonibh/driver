@@ -1,5 +1,4 @@
-﻿using Driver.Login;
-using Driver.MainPages;
+﻿using Driver.MainPages;
 using Driver.Models;
 using System;
 using Xamarin.Forms;

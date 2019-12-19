@@ -7,9 +7,24 @@
              x:Class="Driver.MainPages.MainPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="{Binding FirstName}"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
+                <Button x:Name="settingsButton"
+                        Text="Settings"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        Clicked="OnSettingsButtonClicked" />
+                <Label
+                    x:Name="mainLabel"
+                    Text="{Binding FirstName, StringFormat='Hello, {0:N}'}"
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand" />
+                <Button x:Name="friendsListButton"
+                        Text="Friends List"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        Clicked="OnFriendsListButtonClicked" />
+            </StackLayout>
         </StackLayout>
+<!--Add datagrid for the table-->
     </ContentPage.Content>
 </ContentPage>

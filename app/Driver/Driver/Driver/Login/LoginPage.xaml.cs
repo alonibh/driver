@@ -1,6 +1,7 @@
 ﻿using Driver.MainPages;
 using Driver.Models;
 using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace Driver.Login
@@ -27,7 +28,104 @@ namespace Driver.Login
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Address = user.Address,
-                        Image = null
+                        Image = user.Image,
+                        Drives = new List<Drive>
+                        {
+                            new Drive
+                            {
+                                Name="Drive name",
+                                Date= DateTime.Now,
+                                Destination = "DEST",
+                                Driver = new DriveParticipant
+                                {
+                                    FirstName = "First name",
+                                    LastName = "Last name"
+                                },
+                                Participants = new List<DriveParticipant>
+                                {
+                                    new DriveParticipant
+                                {
+                                    FirstName = "First name 1",
+                                    LastName = "Last name"
+                                },
+                                    new DriveParticipant
+                                {
+                                    FirstName = "First name 2",
+                                    LastName = "Last name"
+                                }
+                                }
+                            }, new Drive
+                            {
+                                Name="Drive name",
+                                Date= DateTime.Now,
+                                Destination = "DEST",
+                                Driver = new DriveParticipant
+                                {
+                                    FirstName = "First name",
+                                    LastName = "Last name"
+                                },
+                                Participants = new List<DriveParticipant>
+                                {
+                                    new DriveParticipant
+                                {
+                                    FirstName = "First name 1",
+                                    LastName = "Last name"
+                                },
+                                    new DriveParticipant
+                                {
+                                    FirstName = "First name 2",
+                                    LastName = "Last name"
+                                }
+                                }
+                            }, new Drive
+                            {
+                                Name="Drive name",
+                                Date= DateTime.Now,
+                                Destination = "DEST",
+                                Driver = new DriveParticipant
+                                {
+                                    FirstName = "First name",
+                                    LastName = "Last name"
+                                },
+                                Participants = new List<DriveParticipant>
+                                {
+                                    new DriveParticipant
+                                {
+                                    FirstName = "First name 1",
+                                    LastName = "Last name"
+                                },
+                                    new DriveParticipant
+                                {
+                                    FirstName = "First name 2",
+                                    LastName = "Last name"
+                                }
+                                }
+                            }, new Drive
+                            {
+                                Name="Drive name",
+                                Date= DateTime.Now,
+                                Destination = "DEST",
+                                Driver = new DriveParticipant
+                                {
+                                    FirstName = "First name",
+                                    LastName = "Last name"
+                                },
+                                Participants = new List<DriveParticipant>
+                                {
+                                    new DriveParticipant
+                                {
+                                    FirstName = "First name 1",
+                                    LastName = "Last name"
+                                },
+                                    new DriveParticipant
+                                {
+                                    FirstName = "First name 2",
+                                    LastName = "Last name"
+                                }
+                                }
+                            }
+                        }
+                        //user.Drives.Select(o => (Drive)o).ToList()
                     }
                 });
             }

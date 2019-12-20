@@ -24,7 +24,45 @@
                         VerticalOptions="Start"
                         Clicked="OnFriendsListButtonClicked" />
             </StackLayout>
+            <StackLayout Margin="{StaticResource PageMargin}">
+                <Label Text="Past Drives"/>
+                <ListView x:Name="drivesListView"
+                          HeightRequest="120"
+                      ItemsSource="{Binding Drives}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Row="1"
+                                        Grid.Column="1"
+                                        Text="{Binding Name}"
+                                        FontAttributes="Bold" />
+                                    <Label Grid.Row="2"
+                                        Grid.Column="1"
+                                        Text="{Binding Description}"
+                                        VerticalOptions="End" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            <StackLayout Margin="{StaticResource PageMargin}">
+                <Button x:Name="newDriveButton"
+                        Text="Add New Drive"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Start"
+                        Clicked="OnNewDriveButtonClicked" />
+            </StackLayout>
+
         </StackLayout>
-<!--Add datagrid for the table-->
     </ContentPage.Content>
 </ContentPage>

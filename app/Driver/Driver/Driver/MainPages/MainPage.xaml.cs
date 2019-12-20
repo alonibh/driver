@@ -1,6 +1,4 @@
-﻿
-using Driver.Models;
-using System;
+﻿using System;
 using Xamarin.Forms;
 
 namespace Driver.MainPages
@@ -19,6 +17,11 @@ namespace Driver.MainPages
         }
 
         async void OnFriendsListButtonClicked(object sender, EventArgs args)
+        {
+
+        }
+
+        async void OnNewDriveButtonClicked(object sender, EventArgs args)
         {
 
         }

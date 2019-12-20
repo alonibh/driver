@@ -1,6 +1,7 @@
 ﻿using Driver.MainPages;
 using Driver.Models;
 using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace Driver.Login
@@ -31,7 +32,8 @@ namespace Driver.Login
                             FirstName = firstNameEntry.Text,
                             LastName = lastNameEntry.Text,
                             Address = addressEntry.Text,
-                            Image = null
+                            Image = null,
+                            Drives = new List<Drive>()
                         }
                     });
                 }

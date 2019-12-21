@@ -7,5 +7,6 @@
              x:Class="Driver.App">
     <Application.Resources>
         <Thickness x:Key="PageMargin">20</Thickness>
+        <x:String x:Key="datetimeFormat">{0:dd/MM/yyyy}</x:String>
     </Application.Resources>
 </Application>                                                                                                            

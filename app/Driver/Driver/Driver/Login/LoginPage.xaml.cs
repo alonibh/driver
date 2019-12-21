@@ -25,6 +25,7 @@ namespace Driver.Login
                 {
                     BindingContext = new User
                     {
+                        ID = 0,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Address = user.Address,
@@ -33,94 +34,81 @@ namespace Driver.Login
                         {
                             new Drive
                             {
-                                Name="Drive name",
+                                Name="Drive name1",
                                 Date= DateTime.Now,
-                                Destination = "DEST",
+                                Destination = "DEST1",
                                 Driver = new DriveParticipant
                                 {
-                                    FirstName = "First name",
-                                    LastName = "Last name"
+                                    FirstName = "Alon",
+                                    LastName = "Ben Horin",
+                                    ID = 0
                                 },
                                 Participants = new List<DriveParticipant>
                                 {
                                     new DriveParticipant
                                 {
-                                    FirstName = "First name 1",
-                                    LastName = "Last name"
+                                    FirstName = "Dani",
+                                     LastName = "Mask",
+                                    ID = 1
                                 },
                                     new DriveParticipant
                                 {
-                                    FirstName = "First name 2",
-                                    LastName = "Last name"
+                                    FirstName = "Yossi",
+                                     LastName = "Ba",
+                                    ID = 2
                                 }
                                 }
                             }, new Drive
                             {
-                                Name="Drive name",
+                                Name="Drive name2",
                                 Date= DateTime.Now,
-                                Destination = "DEST",
-                                Driver = new DriveParticipant
+                                Destination = "DEST2",
+                               Driver = new DriveParticipant
                                 {
-                                    FirstName = "First name",
-                                    LastName = "Last name"
+                                    FirstName = "Dani",
+                                    LastName = "Mask",
+                                    ID = 1
                                 },
                                 Participants = new List<DriveParticipant>
                                 {
                                     new DriveParticipant
                                 {
-                                    FirstName = "First name 1",
-                                    LastName = "Last name"
+
+                                    FirstName = "Alon",
+                                    LastName = "Ben Horin",
+                                    ID = 0
                                 },
                                     new DriveParticipant
                                 {
-                                    FirstName = "First name 2",
-                                    LastName = "Last name"
+                                    FirstName = "Yossi",
+                                     LastName = "Ba",
+                                    ID = 2
                                 }
                                 }
                             }, new Drive
                             {
-                                Name="Drive name",
+                                Name="Drive name3",
                                 Date= DateTime.Now,
-                                Destination = "DEST",
-                                Driver = new DriveParticipant
+                                Destination = "DEST3",
+                               Driver = new DriveParticipant
                                 {
-                                    FirstName = "First name",
-                                    LastName = "Last name"
+                                    FirstName = "Dani",
+                                    LastName = "Mask",
+                                    ID = 1
                                 },
                                 Participants = new List<DriveParticipant>
                                 {
                                     new DriveParticipant
                                 {
-                                    FirstName = "First name 1",
-                                    LastName = "Last name"
+                                    FirstName = "Alon",
+                                    LastName = "Ben Horin",
+                                    ID = 0
                                 },
                                     new DriveParticipant
                                 {
-                                    FirstName = "First name 2",
-                                    LastName = "Last name"
-                                }
-                                }
-                            }, new Drive
-                            {
-                                Name="Drive name",
-                                Date= DateTime.Now,
-                                Destination = "DEST",
-                                Driver = new DriveParticipant
-                                {
-                                    FirstName = "First name",
-                                    LastName = "Last name"
-                                },
-                                Participants = new List<DriveParticipant>
-                                {
-                                    new DriveParticipant
-                                {
-                                    FirstName = "First name 1",
-                                    LastName = "Last name"
-                                },
-                                    new DriveParticipant
-                                {
-                                    FirstName = "First name 2",
-                                    LastName = "Last name"
+                                    FirstName = "Yossi",
+                                     LastName = "Ba",
+                                    ID = 2
                                 }
                                 }
                             }

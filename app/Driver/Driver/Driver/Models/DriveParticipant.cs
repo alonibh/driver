@@ -7,6 +7,8 @@ namespace Driver.Models
         public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string FullName => FirstName + " " + LastName;
+
         public static implicit operator DriveParticipant(DriveParticipantDbo dbo)
         {
             return new DriveParticipant

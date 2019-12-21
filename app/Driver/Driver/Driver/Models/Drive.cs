@@ -12,7 +12,7 @@ namespace Driver.Models
         public DateTime Date { get; set; }
         public List<DriveParticipant> Participants { get; set; }
         public DriveParticipant Driver { get; set; }
-        public string Description => Destination + ", " + Date.Date.ToString("dd/MM/yyyy");
+        public string Description => Destination + ", " + Date.ToString("dd/MM/yyyy");
         public static implicit operator Drive(DriveDbo dbo)
         {
             return new Drive

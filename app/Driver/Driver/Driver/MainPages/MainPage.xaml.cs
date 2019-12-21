@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Driver.Models;
+using System;
 using Xamarin.Forms;
+using Xamarin.Forms.DataGrid;
 
 namespace Driver.MainPages
 {
@@ -9,6 +11,16 @@ namespace Driver.MainPages
         {
             InitializeComponent();
             NavigationPage.SetHasBackButton(this, false);
+            DataGridComponent.Init();
+        }
+
+        async void onDriveTapped(object sender, ItemTappedEventArgs e)
+        {
+            var drive = e.Item as Drive;
+            await Navigation.PushAsync(new DriveInfoPage()
+            {
+                BindingContext = drive
+            });
         }
 
         async void OnSettingsButtonClicked(object sender, EventArgs args)

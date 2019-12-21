@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
+             xmlns:conv="clr-namespace:Driver.MainPages"
              mc:Ignorable="d"
              x:Class="Driver.MainPages.MainPage">
     <ContentPage.Content>
@@ -24,9 +26,50 @@
                         VerticalOptions="Start"
                         Clicked="OnFriendsListButtonClicked" />
             </StackLayout>
+
+            <ContentView BackgroundColor="White" >
+                <dg:DataGrid ItemsSource="{Binding DrivesCounter}"
+						 RowHeight="35" HeaderHeight="40" BorderColor="#CCCCCC" HeaderBackground="#E0E6F8" SelectionEnabled="False">
+                    <x:Arguments>
+                        <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
+                    </x:Arguments>
+                    <dg:DataGrid.HeaderFontSize>
+                        <OnIdiom  x:TypeArguments="x:Double">
+                            <OnIdiom.Tablet>15</OnIdiom.Tablet>
+                            <OnIdiom.Phone>12</OnIdiom.Phone>
+                        </OnIdiom>
+                    </dg:DataGrid.HeaderFontSize>
+                    <dg:DataGrid.Columns>
+                        <dg:DataGridColumn Title="Name" PropertyName="FullName" Width="*"/>
+                        <dg:DataGridColumn Title="Drive Counter" PropertyName="Counter" Width="*">
+                            <dg:DataGridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"
+						 BackgroundColor="{Binding Converter={StaticResource DrivesCounterToColorConverter}}">
+                                        <Label Text="{Binding}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black"/>
+                                    </ContentView>
+                                </DataTemplate>
+                            </dg:DataGridColumn.CellTemplate>
+                        </dg:DataGridColumn>
+                    </dg:DataGrid.Columns>
+                    <dg:DataGrid.RowsBackgroundColorPalette>
+                        <dg:PaletteCollection>
+                            <Color>#F2F2F2</Color>
+                            <Color>#FFFFFF</Color>
+                        </dg:PaletteCollection>
+                    </dg:DataGrid.RowsBackgroundColorPalette>
+                    <dg:DataGrid.Resources>
+                        <ResourceDictionary>
+                            <conv:DrivesCounterToColorConverter x:Key="DrivesCounterToColorConverter"/>
+                        </ResourceDictionary>
+                    </dg:DataGrid.Resources>
+                </dg:DataGrid>
+            </ContentView>
+            
             <StackLayout Margin="{StaticResource PageMargin}">
-                <Label Text="Past Drives"/>
+                <Label Text="Past Drives" FontAttributes="Bold"/>
                 <ListView x:Name="drivesListView"
+                          ItemTapped="onDriveTapped"
                           HeightRequest="120"
                       ItemsSource="{Binding Drives}">
                     <ListView.ItemTemplate>
@@ -55,6 +98,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </StackLayout>
+            
             <StackLayout Margin="{StaticResource PageMargin}">
                 <Button x:Name="newDriveButton"
                         Text="Add New Drive"

@@ -1,4 +1,5 @@
 ﻿using Driver.Models;
+using Driver.NewDrivePages;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.DataGrid;
@@ -35,7 +36,20 @@ namespace Driver.MainPages
 
         async void OnNewDriveButtonClicked(object sender, EventArgs args)
         {
-
+            var user = (User)BindingContext;
+            await Navigation.PushAsync(new NewDriveNamePage()
+            {
+                BindingContext = new Drive
+                {
+                    Date = DateTime.Now,
+                    Driver = new DriveParticipant
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        ID = user.ID,
+                    }
+                }
+            });
         }
 
         protected override bool OnBackButtonPressed()

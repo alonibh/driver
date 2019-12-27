@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
-namespace Driver.Login
+namespace Driver.LoginPages
 {
     public partial class SignupPage : ContentPage
     {

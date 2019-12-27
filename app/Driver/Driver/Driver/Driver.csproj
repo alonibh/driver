@@ -20,22 +20,34 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Login\LoginPage.xaml.cs">
+    <Compile Update="LoginPages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Login\SignupPage.xaml.cs">
+    <Compile Update="LoginPages\SignupPage.xaml.cs">
       <DependentUpon>SignupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="NewDrivePages\NewDriveNamePage.xaml.cs">
+      <DependentUpon>NewDriveNamePage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Login\SignupPage.xaml">
+    <EmbeddedResource Update="LoginPages\SignupPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="MainPages\DriveInfoPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="MainPages\MainPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="NewDrivePages\DriveDestinationPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="NewDrivePages\NewDriveNamePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="NewDrivePages\NewDriveParticipantsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

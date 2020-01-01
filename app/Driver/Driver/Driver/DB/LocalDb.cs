@@ -1,6 +1,7 @@
 ﻿using Driver.DB.DBO;
 using SQLite;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Driver.DB
@@ -13,6 +14,7 @@ namespace Driver.DB
         {
             _database = new SQLiteAsyncConnection(dbPath);
             _database.CreateTableAsync<UserDbo>().Wait();
+            _database.CreateTableAsync<DriveDbo>().Wait();
         }
 
         public Task<UserDbo> GetUserProfile(string username, string password)
@@ -37,8 +39,21 @@ namespace Driver.DB
                 FirstName = firstName,
                 LastName = lastName,
                 Address = address,
-                Image = image
+                Image = image,
+                DrivesIds = string.Empty
             });
+        }
+
+        public List<DriveDbo> GetDrives(List<int> ids)
+        {
+            List<DriveDbo> drives = new List<DriveDbo>();
+            foreach (var id in ids)
+            {
+                var drive = _database.Table<DriveDbo>().Where(o => o.ID == id).FirstOrDefaultAsync().Result;
+                if (drive != null)
+                    drives.Add(drive);
+            }
+            return drives;
         }
     }
 }

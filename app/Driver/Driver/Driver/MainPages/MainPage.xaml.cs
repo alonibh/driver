@@ -17,10 +17,17 @@ namespace Driver.MainPages
 
         async void onDriveTapped(object sender, ItemTappedEventArgs e)
         {
+            var user = (User)BindingContext;
             var drive = e.Item as Drive;
+            DriveInfo driveInfo = new DriveInfo();
+            if (user.ID == drive.Driver.ID)
+                driveInfo.IsUserDriver = true;
+            else
+                driveInfo.IsUserDriver = false;
+            driveInfo.Drive = drive;
             await Navigation.PushAsync(new DriveInfoPage()
             {
-                BindingContext = drive
+                BindingContext = driveInfo
             });
         }
 

@@ -1,6 +1,4 @@
-﻿using Driver.DB.DBO;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -60,19 +58,6 @@ namespace Driver.Models
                 }
             }
             return drivesCounter;
-        }
-
-        public static implicit operator User(UserDbo dbo)
-        {
-            return new User
-            {
-                Address = dbo.Address,
-                Drives = JsonConvert.DeserializeObject<List<Drive>>(dbo.Drives),
-                FirstName = dbo.FirstName,
-                ID = dbo.ID,
-                Image = dbo.Image,
-                LastName = dbo.LastName
-            };
         }
     }
 }

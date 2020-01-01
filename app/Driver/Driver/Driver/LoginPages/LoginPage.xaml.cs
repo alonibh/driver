@@ -1,7 +1,9 @@
 ﻿using Driver.MainPages;
 using Driver.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace Driver.LoginPages
@@ -21,99 +23,22 @@ namespace Driver.LoginPages
             }
             else
             {
+                var drivesIds = JsonConvert.DeserializeObject<List<int>>(user.DrivesIds);
+                List<Drive> drives = new List<Drive>();
+                if (drivesIds != null)
+                {
+                    drives = App.Database.GetDrives(drivesIds).Select(o => (Drive)o).ToList();
+                }
+
                 await Navigation.PushAsync(new MainPage()
                 {
                     BindingContext = new User
                     {
-                        ID = 0,
+                        ID = user.ID,
+                        Address = user.Address,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
-                        Address = user.Address,
-                        Image = user.Image,
-                        Drives = new List<Drive>
-                        {
-                            new Drive
-                            {
-                                Name="Drive name1",
-                                Date= DateTime.Now,
-                                Destination = "DEST1",
-                                Driver = new DriveParticipant
-                                {
-                                    FirstName = "Alon",
-                                    LastName = "Ben Horin",
-                                    ID = 0
-                                },
-                                Participants = new List<DriveParticipant>
-                                {
-                                    new DriveParticipant
-                                {
-                                    FirstName = "Dani",
-                                     LastName = "Mask",
-                                    ID = 1
-                                },
-                                    new DriveParticipant
-                                {
-                                    FirstName = "Yossi",
-                                     LastName = "Ba",
-                                    ID = 2
-                                }
-                                }
-                            }, new Drive
-                            {
-                                Name="Drive name2",
-                                Date= DateTime.Now,
-                                Destination = "DEST2",
-                               Driver = new DriveParticipant
-                                {
-                                    FirstName = "Dani",
-                                    LastName = "Mask",
-                                    ID = 1
-                                },
-                                Participants = new List<DriveParticipant>
-                                {
-                                    new DriveParticipant
-                                {
-
-                                    FirstName = "Alon",
-                                    LastName = "Ben Horin",
-                                    ID = 0
-                                },
-                                    new DriveParticipant
-                                {
-                                    FirstName = "Yossi",
-                                     LastName = "Ba",
-                                    ID = 2
-                                }
-                                }
-                            }, new Drive
-                            {
-                                Name="Drive name3",
-                                Date= DateTime.Now,
-                                Destination = "DEST3",
-                               Driver = new DriveParticipant
-                                {
-                                    FirstName = "Dani",
-                                    LastName = "Mask",
-                                    ID = 1
-                                },
-                                Participants = new List<DriveParticipant>
-                                {
-                                    new DriveParticipant
-                                {
-                                    FirstName = "Alon",
-                                    LastName = "Ben Horin",
-                                    ID = 0
-                                },
-                                    new DriveParticipant
-                                {
-                                    FirstName = "Yossi",
-                                     LastName = "Ba",
-                                    ID = 2
-                                }
-                                }
-                            }
-                        }
-                        //user.Drives.Select(o => (Drive)o).ToList()
+                        Drives = drives,
                     }
                 });
             }

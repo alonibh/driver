@@ -19,7 +19,7 @@ namespace Driver.Models
             {
                 Date = dbo.Date,
                 Destination = dbo.Destination,
-                Driver = dbo.Driver,
+                Driver = JsonConvert.DeserializeObject<DriveParticipant>(dbo.Driver),
                 Name = dbo.Name,
                 Participants = JsonConvert.DeserializeObject<List<DriveParticipant>>(dbo.Participants)
             };

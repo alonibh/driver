@@ -13,6 +13,6 @@ namespace Driver.DB.DBO
         public string LastName { get; set; }
         public string Address { get; set; }
         public Uri Image { get; set; }
-        public string Drives { get; set; }
+        public string DrivesIds { get; set; }
     }
 }

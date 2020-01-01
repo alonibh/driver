@@ -7,18 +7,18 @@
              x:Class="Driver.MainPages.DriveInfoPage">
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
-            
-        <StackLayout>
-            <Label Text="{Binding Name}" />
-            <Label Text="{Binding Destination}" />
-            <Label Text="{Binding Date, StringFormat={StaticResource datetimeFormat}}" />
-            <Label Text="{Binding Driver.FullName}" />
-        </StackLayout>
+
+            <StackLayout>
+                <Label Text="{Binding Drive.Name}" />
+                <Label Text="{Binding Drive.Destination}" />
+                <Label Text="{Binding Drive.Date, StringFormat={StaticResource datetimeFormat}}" />
+                <Label Text="{Binding Drive.Driver.FullName}" />
+            </StackLayout>
 
             <StackLayout>
                 <Label Text="Participants" FontAttributes="Bold"/>
                 <ListView HeightRequest="100"
-                      ItemsSource="{Binding Participants}">
+                      ItemsSource="{Binding Drive.Participants}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -31,7 +31,12 @@
                 </ListView>
             </StackLayout>
 
+            <Button x:Name="deleteButton"
+                Text="Delete This Drive"
+                IsVisible="{Binding IsUserDriver}"
+                Clicked="OnDeleteButtonClicked" />
+
         </StackLayout>
     </ContentPage.Content>
-    
+
 </ContentPage>

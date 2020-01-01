@@ -33,7 +33,7 @@ namespace Driver.LoginPages
                             LastName = lastNameEntry.Text,
                             Address = addressEntry.Text,
                             Image = null,
-                            Drives = new List<Drive>()
+                            Drives = new List<Drive>(),
                         }
                     });
                 }

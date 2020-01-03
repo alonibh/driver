@@ -30,7 +30,7 @@ namespace Driver.DB
             return true;
         }
 
-        public Task<int> SignupUser(string username, string password, string firstName, string lastName, string address, Uri image)
+        public Task<int> SignUpUser(string username, string password, string firstName, string lastName, string address, Uri image)
         {
             return _database.InsertAsync(new UserDbo
             {
@@ -40,7 +40,8 @@ namespace Driver.DB
                 LastName = lastName,
                 Address = address,
                 Image = image,
-                DrivesIds = string.Empty
+                DrivesIds = string.Empty,
+                FriendsIds = string.Empty
             });
         }
 
@@ -49,11 +50,29 @@ namespace Driver.DB
             List<DriveDbo> drives = new List<DriveDbo>();
             foreach (var id in ids)
             {
-                var drive = _database.Table<DriveDbo>().Where(o => o.ID == id).FirstOrDefaultAsync().Result;
+                var drive = _database.Table<DriveDbo>().Where(o => o.Id == id).FirstOrDefaultAsync().Result;
                 if (drive != null)
                     drives.Add(drive);
             }
             return drives;
         }
+
+        public Task DeleteDrive(int driveId) =>
+            _database.Table<DriveDbo>().DeleteAsync(o => o.Id == driveId);
+
+        public List<FriendDbo> GetFriends(List<int> ids)
+        {
+            List<FriendDbo> friends = new List<FriendDbo>();
+            foreach (var id in ids)
+            {
+                FriendDbo friend = _database.Table<UserDbo>().Where(o => o.Id == id).FirstOrDefaultAsync().Result;
+                if (friend != null)
+                    friends.Add(friend);
+            }
+            return friends;
+        }
+
+        public string GetUserFriends(int userId)=>
+            _database.Table<UserDbo>().Where(o => o.Id == userId).FirstOrDefaultAsync().Result.FriendsIds;
     }
 }

@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Driver.LoginPages.SignupPage">
+             x:Class="Driver.LoginPages.SignUpPage">
     <StackLayout VerticalOptions="Center">
         <Entry x:Name="usernameEntry"
                Placeholder="Username"
@@ -23,7 +23,7 @@
         <Entry x:Name="addressEntry"
                Placeholder="Address"
                VerticalOptions="Center"/>
-        <Button x:Name="signunButton"
+        <Button x:Name="signUpButton"
                 Text="Sign up"
                 HorizontalOptions="CenterAndExpand"
                 Clicked="OnSignupButtonClicked" />

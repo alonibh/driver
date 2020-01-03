@@ -30,22 +30,45 @@ namespace Driver.LoginPages
                     drives = App.Database.GetDrives(drivesIds).Select(o => (Drive)o).ToList();
                 }
 
+                var friendsIds = JsonConvert.DeserializeObject<List<int>>(user.FriendsIds);
+                List<Friend> friends = new List<Friend>();
+                if (friendsIds != null)
+                {
+                    friends = App.Database.GetFriends(friendsIds).Select(o => (Friend)o).ToList();
+                }
                 await Navigation.PushAsync(new MainPage()
                 {
                     BindingContext = new User
                     {
-                        ID = user.ID,
+                        Id = user.Id,
                         Address = user.Address,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Drives = drives,
+                        Friends = /*friends*/ new List<Friend>
+                        {
+                            new Friend
+                            {
+                                Address = "Usha 15",
+                                FirstName = "Dani",
+                                LastName = "Bar",
+                            },
+                            new Friend
+                            {
+                                Address = "Usha 14",
+                                FirstName = "Roei",
+                                LastName = "Jac",
+                            }
+                        }
+                            
                     }
                 });
             }
         }
+
         async void OnSignupButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new SignupPage());
+            await Navigation.PushAsync(new SignUpPage());
         }
     }
 }

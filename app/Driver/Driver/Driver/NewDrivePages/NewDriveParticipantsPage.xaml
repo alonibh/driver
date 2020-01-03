@@ -6,10 +6,26 @@
              mc:Ignorable="d"
              x:Class="Driver.NewDrivePages.NewDriveParticipantsPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Margin="{StaticResource PageMargin}">
+            <Label Text="Select friends" />
+            <StackLayout>
+                <Label FontAttributes="Bold"/>
+                <CollectionView x:Name="friendsCollectionView"
+                                HeightRequest="100"
+                                SelectionMode="Multiple"
+                                ItemsSource="{Binding}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HeightRequest="30">
+                                <Label Text="{Binding FullName}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+            <Button x:Name="nextButton"
+                Text="Next"
+                Clicked="OnNextButtonClicked" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

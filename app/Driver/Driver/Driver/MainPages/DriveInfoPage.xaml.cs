@@ -1,4 +1,5 @@
 ﻿using System;
+using Driver.Models;
 using Xamarin.Forms;
 
 namespace Driver.MainPages
@@ -14,8 +15,8 @@ namespace Driver.MainPages
             bool answer = await DisplayAlert("Delete Drive", "Are you sure you want to delete this drive?", "Yes", "No");
             if(answer)
             {
-                //await App.Database.DeleteDrive();
-
+                var driveInfo = (DriveInfo) BindingContext;
+                await App.Database.DeleteDrive(driveInfo.Drive.Id);
             }
         }
 

@@ -2,11 +2,13 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Driver.Models
 {
     public class Drive
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Destination { get; set; }
         public DateTime Date { get; set; }
@@ -17,11 +19,12 @@ namespace Driver.Models
         {
             return new Drive
             {
+                Id = dbo.Id,
                 Date = dbo.Date,
                 Destination = dbo.Destination,
-                Driver = JsonConvert.DeserializeObject<DriveParticipant>(dbo.Driver),
+                Driver = JsonConvert.DeserializeObject<DriveParticipantDbo>(dbo.Driver),
                 Name = dbo.Name,
-                Participants = JsonConvert.DeserializeObject<List<DriveParticipant>>(dbo.Participants)
+                Participants = JsonConvert.DeserializeObject<List<DriveParticipantDbo>>(dbo.Participants).Select(o => (DriveParticipant)o).ToList()
             };
         }
     }

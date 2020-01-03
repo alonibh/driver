@@ -15,7 +15,7 @@ namespace Driver.NewDrivePages
         {
             var drive = (Drive)BindingContext;
             drive.Destination = driveDestEntry.Text;
-            await Navigation.PushAsync(new NewDriveParticipantsPage()
+            await Navigation.PushAsync(new NewDriveParticipantsPage(drive.Driver.Id)
             {
                 BindingContext = drive
             });

@@ -6,12 +6,13 @@ namespace Driver.Models
 {
     public class User
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
         public Uri Image { get; set; }
         public List<Drive> Drives { get; set; }
+        public List<Friend> Friends { get; set; }
         public List<DrivesCounter> DrivesCounter => GetDrivesCounter();
 
         private List<DrivesCounter> GetDrivesCounter()
@@ -21,13 +22,13 @@ namespace Driver.Models
             var drivesCounter = new List<DrivesCounter>();
             foreach (var drive in Drives)
             {
-                if (drive.Driver.ID == ID) // If you are the driver
+                if (drive.Driver.Id == Id) // If you are the driver
                 {
                     foreach (var participant in drive.Participants)
                     {
-                        if (drivesCounter.Any(o => o.ID == participant.ID))
+                        if (drivesCounter.Any(o => o.ID == participant.Id))
                         {
-                            drivesCounter.Single(o => o.ID == participant.ID).Counter++;
+                            drivesCounter.Single(o => o.ID == participant.Id).Counter++;
                         }
                         else
                         {
@@ -35,16 +36,16 @@ namespace Driver.Models
                             {
                                 Counter = 1,
                                 FullName = participant.FirstName + " " + participant.LastName,
-                                ID = participant.ID
+                                ID = participant.Id
                             });
                         }
                     }
                 }
                 else // If you are one of the participants
                 {
-                    if (drivesCounter.Any(o => o.ID == drive.Driver.ID))
+                    if (drivesCounter.Any(o => o.ID == drive.Driver.Id))
                     {
-                        drivesCounter.Single(o => o.ID == drive.Driver.ID).Counter--;
+                        drivesCounter.Single(o => o.ID == drive.Driver.Id).Counter--;
                     }
                     else
                     {
@@ -52,7 +53,7 @@ namespace Driver.Models
                         {
                             Counter = -1,
                             FullName = drive.Driver.FirstName + " " + drive.Driver.LastName,
-                            ID = drive.Driver.ID
+                            ID = drive.Driver.Id
                         });
                     }
                 }

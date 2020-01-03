@@ -20,7 +20,7 @@ namespace Driver.MainPages
             var user = (User)BindingContext;
             var drive = e.Item as Drive;
             DriveInfo driveInfo = new DriveInfo();
-            if (user.ID == drive.Driver.ID)
+            if (user.Id == drive.Driver.Id)
                 driveInfo.IsUserDriver = true;
             else
                 driveInfo.IsUserDriver = false;
@@ -38,7 +38,10 @@ namespace Driver.MainPages
 
         async void OnFriendsListButtonClicked(object sender, EventArgs args)
         {
-
+            await Navigation.PushAsync(new FriendsPage()
+            {
+                BindingContext = BindingContext
+            });
         }
 
         async void OnNewDriveButtonClicked(object sender, EventArgs args)
@@ -53,7 +56,7 @@ namespace Driver.MainPages
                     {
                         FirstName = user.FirstName,
                         LastName = user.LastName,
-                        ID = user.ID,
+                        Id = user.Id,
                     }
                 }
             });

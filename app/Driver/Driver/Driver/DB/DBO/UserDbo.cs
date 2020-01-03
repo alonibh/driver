@@ -6,7 +6,7 @@ namespace Driver.DB.DBO
     public class UserDbo
     {
         [PrimaryKey, AutoIncrement]
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string FirstName { get; set; }
@@ -14,5 +14,6 @@ namespace Driver.DB.DBO
         public string Address { get; set; }
         public Uri Image { get; set; }
         public string DrivesIds { get; set; }
+        public string FriendsIds { get; set; }
     }
 }

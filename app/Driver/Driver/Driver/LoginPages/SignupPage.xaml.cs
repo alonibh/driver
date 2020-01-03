@@ -6,9 +6,9 @@ using Xamarin.Forms;
 
 namespace Driver.LoginPages
 {
-    public partial class SignupPage : ContentPage
+    public partial class SignUpPage : ContentPage
     {
-        public SignupPage()
+        public SignUpPage()
         {
             InitializeComponent();
         }
@@ -20,7 +20,7 @@ namespace Driver.LoginPages
             }
             else
             {
-                int rowsAdded = await App.Database.SignupUser(usernameEntry.Text, passwordEntry.Text, firstNameEntry.Text, lastNameEntry.Text, addressEntry.Text, null);
+                int rowsAdded = await App.Database.SignUpUser(usernameEntry.Text, passwordEntry.Text, firstNameEntry.Text, lastNameEntry.Text, addressEntry.Text, null);
                 if (rowsAdded == 0)
                     await DisplayAlert("Error", "Unable to add user", "OK");
                 else

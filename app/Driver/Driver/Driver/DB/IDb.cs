@@ -1,4 +1,5 @@
 ﻿using Driver.DB.DBO;
+using Driver.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,5 +15,6 @@ namespace Driver.DB
         List<DriveDbo> GetDrives(List<int> ids);
         Task DeleteDrive(int driveId);
         List<FriendDbo> GetFriends(List<int> ids);
+        Task<int> AddDrive(string name, string destination, DateTime date, string participants, string driver);
     }
 }

@@ -6,10 +6,34 @@
              mc:Ignorable="d"
              x:Class="Driver.NewDrivePages.NewDriveSummaryPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Margin="{StaticResource PageMargin}">
+
+            <StackLayout>
+                <Label Text="{Binding Name, StringFormat='Name: {0:N}'}" />
+                <Label Text="{Binding Destination, StringFormat='Destination: {0:N}'}" />
+                <Label Text="{Binding Driver.FullName, StringFormat='Driver: {0:N}'}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Participants" FontAttributes="Bold"/>
+                <ListView HeightRequest="100"
+                      ItemsSource="{Binding Participants}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell IsEnabled="False">
+                                <Grid>
+                                    <Label Text="{Binding FullName}"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+
+            <Button x:Name="addDriveButton"
+                Text="Add Drive"
+                Clicked="OnAddDriveButtonClicked" />
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -74,5 +74,17 @@ namespace Driver.DB
 
         public string GetUserFriends(int userId)=>
             _database.Table<UserDbo>().Where(o => o.Id == userId).FirstOrDefaultAsync().Result.FriendsIds;
+
+        public Task<int> AddDrive(string name, string destination, DateTime date, string participants, string driver)
+        {
+            return _database.InsertAsync(new DriveDbo
+            {
+                Name = name,
+                Date = date,
+                Destination = destination,
+                Driver = driver,
+                Participants = participants
+            });
+        }
     }
 }

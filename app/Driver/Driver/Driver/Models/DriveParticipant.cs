@@ -15,7 +15,16 @@ namespace Driver.Models
             {
                 Id = dbo.Id,
                 FirstName = dbo.FirstName,
-                LastName = dbo.LastName,
+                LastName = dbo.LastName
+            };
+        }
+        public static implicit operator DriveParticipantDbo(DriveParticipant participant)
+        {
+            return new DriveParticipantDbo
+            {
+                Id = participant.Id,
+                FirstName = participant.FirstName,
+                LastName = participant.LastName
             };
         }
     }

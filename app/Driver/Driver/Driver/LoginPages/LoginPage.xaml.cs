@@ -36,6 +36,8 @@ namespace Driver.LoginPages
                 {
                     friends = App.Database.GetFriends(friendsIds).Select(o => (Friend)o).ToList();
                 }
+                var currPage = Navigation.NavigationStack[0];
+
                 await Navigation.PushAsync(new MainPage()
                 {
                     BindingContext = new User
@@ -60,9 +62,11 @@ namespace Driver.LoginPages
                                 LastName = "Jac",
                             }
                         }
-                            
+
                     }
                 });
+
+                Navigation.RemovePage(currPage);
             }
         }
 

@@ -13,6 +13,7 @@ namespace Driver.MainPages
             InitializeComponent();
             NavigationPage.SetHasBackButton(this, false);
             DataGridComponent.Init();
+
         }
 
         async void onDriveTapped(object sender, ItemTappedEventArgs e)

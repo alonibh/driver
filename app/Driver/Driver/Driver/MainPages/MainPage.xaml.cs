@@ -21,10 +21,12 @@ namespace Driver.MainPages
             var user = (User)BindingContext;
             var drive = e.Item as Drive;
             DriveInfo driveInfo = new DriveInfo();
+
             if (user.Id == drive.Driver.Id)
                 driveInfo.IsUserDriver = true;
             else
                 driveInfo.IsUserDriver = false;
+
             driveInfo.Drive = drive;
             await Navigation.PushAsync(new DriveInfoPage()
             {

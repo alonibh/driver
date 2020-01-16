@@ -47,16 +47,18 @@ namespace Driver.LoginPages
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Drives = drives,
-                        Friends = /*friends*/ new List<Friend>
+                        Friends = /*friends*/ new List<Friend> // TODO remove template
                         {
                             new Friend
                             {
+                                Id = 200,
                                 Address = "Usha 15",
                                 FirstName = "Dani",
                                 LastName = "Bar",
                             },
                             new Friend
                             {
+                                Id = 201,
                                 Address = "Usha 14",
                                 FirstName = "Roei",
                                 LastName = "Jac",

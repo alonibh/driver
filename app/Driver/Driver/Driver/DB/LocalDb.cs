@@ -1,4 +1,5 @@
 ﻿using Driver.DB.DBO;
+using Newtonsoft.Json;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -72,19 +73,44 @@ namespace Driver.DB
             return friends;
         }
 
-        public string GetUserFriends(int userId)=>
+        public string GetUserFriends(int userId) =>
             _database.Table<UserDbo>().Where(o => o.Id == userId).FirstOrDefaultAsync().Result.FriendsIds;
 
-        public Task<int> AddDrive(string name, string destination, DateTime date, string participants, string driver)
+        private async Task AddDriveIdToUser(int userId, int driveId)
         {
-            return _database.InsertAsync(new DriveDbo
+            var user = await _database.Table<UserDbo>().Where(o => o.Id == userId).FirstOrDefaultAsync();
+            if (user == null)
+                return; // TODO handle correctly
+            var drivesIds = JsonConvert.DeserializeObject<List<int>>(user.DrivesIds);
+            if (drivesIds == null)
+                drivesIds = new List<int>();
+            drivesIds.Add(driveId);
+            user.DrivesIds = JsonConvert.SerializeObject(drivesIds);
+            await _database.UpdateAsync(user);
+        }
+
+        public async Task AddDrive(string name, string destination, DateTime date, string participantsStr, string driverStr)
+        {
+            // TODO full rollback if faild somewhere
+            var drive = new DriveDbo
             {
                 Name = name,
                 Date = date,
                 Destination = destination,
-                Driver = driver,
-                Participants = participants
-            });
+                Driver = driverStr,
+                Participants = participantsStr
+            };
+            await _database.InsertAsync(drive);
+
+            var participants = JsonConvert.DeserializeObject<List<DriveParticipantDbo>>(participantsStr);
+            foreach (var participant in participants)
+            {
+                await AddDriveIdToUser(participant.Id, drive.Id);
+            }
+
+            var driver = JsonConvert.DeserializeObject<DriveParticipantDbo>(driverStr);
+            await AddDriveIdToUser(driver.Id, drive.Id);
+
         }
     }
 }

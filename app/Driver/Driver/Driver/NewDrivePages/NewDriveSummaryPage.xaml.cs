@@ -15,7 +15,6 @@ namespace Driver.NewDrivePages
         public NewDriveSummaryPage()
         {
             InitializeComponent();
-            Title = "Summery";
 
         }
         async void OnAddDriveButtonClicked(object sender, EventArgs args)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Driver.Models;
 using Xamarin.Forms;
 
@@ -17,6 +18,22 @@ namespace Driver.MainPages
             {
                 var driveInfo = (DriveInfo)BindingContext;
                 await App.Database.DeleteDrive(driveInfo.Drive.Id);
+
+                var mainPage = Navigation.NavigationStack[0];
+                var bindingContext = (User)mainPage.BindingContext;
+                bindingContext.Drives.RemoveAll(o => o.Id == driveInfo.Drive.Id);
+
+                var existingPages = Navigation.NavigationStack.ToList();
+
+                await Navigation.PushAsync(new MainPage
+                {
+                    BindingContext = bindingContext
+                });
+
+                foreach (var page in existingPages)
+                {
+                    Navigation.RemovePage(page);
+                }
             }
         }
 

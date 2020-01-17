@@ -4,7 +4,9 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Driver.NewDrivePages.NewDriveDestinationPage">
+             x:Class="Driver.NewDrivePages.NewDriveDestinationPage"
+             Title="New Drive">
+
     <ContentPage.Content>
         <StackLayout>
             <Entry x:Name="driveDestEntry"

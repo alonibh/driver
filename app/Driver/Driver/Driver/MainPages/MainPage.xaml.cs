@@ -1,6 +1,7 @@
 ﻿using Driver.Models;
 using Driver.NewDrivePages;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.DataGrid;
 
@@ -18,6 +19,9 @@ namespace Driver.MainPages
 
         async void onDriveTapped(object sender, ItemTappedEventArgs e)
         {
+            ListView lv = (ListView)sender;
+            lv.SelectedItem = null;
+
             var user = (User)BindingContext;
             var drive = e.Item as Drive;
             DriveInfo driveInfo = new DriveInfo();
@@ -67,12 +71,17 @@ namespace Driver.MainPages
 
         protected override bool OnBackButtonPressed()
         {
-            if (Device.RuntimePlatform == Device.Android)
-                DependencyService.Get<IAndroidMethods>().CloseApp();
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                var result = await this.DisplayAlert("Alert!", "Do you really want to exit?", "Yes", "No");
+                if (result)
+                    DependencyService.Get<IAndroidMethods>().CloseApp();
+            });
 
-            return base.OnBackButtonPressed();
+            return true;
         }
     }
+
     public interface IAndroidMethods
     {
         void CloseApp();

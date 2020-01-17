@@ -4,7 +4,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Driver.MainPages.DriveInfoPage">
+             x:Class="Driver.MainPages.DriveInfoPage"
+             Title="Drive">
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
 
@@ -21,7 +22,7 @@
                       ItemsSource="{Binding Drive.Participants}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
+                            <ViewCell IsEnabled="False">
                                 <Grid>
                                     <Label Text="{Binding FullName}"/>
                                 </Grid>

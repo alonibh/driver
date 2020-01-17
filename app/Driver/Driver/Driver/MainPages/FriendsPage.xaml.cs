@@ -8,7 +8,6 @@ namespace Driver.MainPages
         public FriendsPage()
         {
             InitializeComponent();
-            Title = "Friends";
         }
     }
 }

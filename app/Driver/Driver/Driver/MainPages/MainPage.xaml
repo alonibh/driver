@@ -71,7 +71,7 @@
                 <ListView x:Name="drivesListView"
                           ItemTapped="onDriveTapped"
                           HeightRequest="120"
-                      ItemsSource="{Binding Drives}">
+                          ItemsSource="{Binding Drives}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

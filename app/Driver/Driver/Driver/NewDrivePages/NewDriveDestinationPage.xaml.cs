@@ -9,7 +9,6 @@ namespace Driver.NewDrivePages
         public NewDriveDestinationPage()
         {
             InitializeComponent();
-            Title = "New Drive";
         }
 
         async void OnNextButtonClicked(object sender, EventArgs e)

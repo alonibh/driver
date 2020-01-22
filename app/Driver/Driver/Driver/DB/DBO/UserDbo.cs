@@ -14,6 +14,6 @@ namespace Driver.DB.DBO
         public string Address { get; set; }
         public Uri Image { get; set; }
         public string DrivesIds { get; set; }
-        public string FriendsIds { get; set; }
+        //public string FriendsIds { get; set; } TODO - When supporting specific friends for each user
     }
 }

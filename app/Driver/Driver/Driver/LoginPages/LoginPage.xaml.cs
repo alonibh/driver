@@ -1,4 +1,5 @@
-﻿using Driver.MainPages;
+﻿using Driver.DB.DBO;
+using Driver.MainPages;
 using Driver.Models;
 using Newtonsoft.Json;
 using System;
@@ -29,13 +30,20 @@ namespace Driver.LoginPages
                 {
                     drives = App.Database.GetDrives(drivesIds).Select(o => (Drive)o).ToList();
                 }
+                // TODO - When supporting specific friends for each user
+                //var friendsIds = JsonConvert.DeserializeObject<List<int>>(user.FriendsIds);
+                //List<Friend> friends = new List<Friend>();
+                //if (friendsIds != null)
+                //{
+                //    friends = App.Database.GetFriends(friendsIds).Select(o => (Friend)o).ToList();
+                //}
 
-                var friendsIds = JsonConvert.DeserializeObject<List<int>>(user.FriendsIds);
+                //TODO - Remove when supporting specific friends for each user
+                string friendsStr = App.Database.GetUserFriends(user.Id);
                 List<Friend> friends = new List<Friend>();
-                if (friendsIds != null)
-                {
-                    friends = App.Database.GetFriends(friendsIds).Select(o => (Friend)o).ToList();
-                }
+                if (friendsStr != string.Empty)
+                    friends = JsonConvert.DeserializeObject<List<FriendDbo>>(friendsStr).Select(o => (Friend)o).ToList();
+
                 var currPage = Navigation.NavigationStack[0];
 
                 await Navigation.PushAsync(new MainPage()
@@ -47,24 +55,7 @@ namespace Driver.LoginPages
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Drives = drives,
-                        Friends = /*friends*/ new List<Friend> // TODO remove template
-                        {
-                            new Friend
-                            {
-                                Id = 200,
-                                Address = "Usha 15",
-                                FirstName = "Dani",
-                                LastName = "Bar",
-                            },
-                            new Friend
-                            {
-                                Id = 201,
-                                Address = "Usha 14",
-                                FirstName = "Roei",
-                                LastName = "Jac",
-                            }
-                        }
-
+                        Friends = friends
                     }
                 });
 

@@ -1,7 +1,10 @@
-﻿using Driver.MainPages;
+﻿using Driver.DB.DBO;
+using Driver.MainPages;
 using Driver.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace Driver.LoginPages
@@ -20,21 +23,33 @@ namespace Driver.LoginPages
             }
             else
             {
-                int rowsAdded = await App.Database.SignUpUser(usernameEntry.Text, passwordEntry.Text, firstNameEntry.Text, lastNameEntry.Text, addressEntry.Text, null);
-                if (rowsAdded == 0)
+                int userId = App.Database.SignUpUser(usernameEntry.Text, passwordEntry.Text, firstNameEntry.Text, lastNameEntry.Text, addressEntry.Text, null);
+                if (userId == -1)
                     await DisplayAlert("Error", "Unable to add user", "OK");
                 else
                 {
+                    var user = new User
+                    {
+                        Id = userId,
+                        FirstName = firstNameEntry.Text,
+                        LastName = lastNameEntry.Text,
+                        Address = addressEntry.Text,
+                        Image = null,
+                        Drives = new List<Drive>(),
+                        //Friends = new List<Friend>() // TODO - When supporting specific friends for each user
+                    };
+
+                    //TODO - Remove when supporting specific friends for each user
+                    string friendsStr = App.Database.GetUserFriends(user.Id);
+                    List<Friend> friends = new List<Friend>();
+                    if (friendsStr != string.Empty)
+                        friends = JsonConvert.DeserializeObject<List<FriendDbo>>(friendsStr).Select(o => (Friend)o).ToList();
+                    user.Friends = friends;
+
+
                     await Navigation.PushAsync(new MainPage()
                     {
-                        BindingContext = new User
-                        {
-                            FirstName = firstNameEntry.Text,
-                            LastName = lastNameEntry.Text,
-                            Address = addressEntry.Text,
-                            Image = null,
-                            Drives = new List<Drive>(),
-                        }
+                        BindingContext = user
                     });
                 }
             }

@@ -31,9 +31,9 @@ namespace Driver.DB
             return true;
         }
 
-        public Task<int> SignUpUser(string username, string password, string firstName, string lastName, string address, Uri image)
+        public int SignUpUser(string username, string password, string firstName, string lastName, string address, Uri image)
         {
-            return _database.InsertAsync(new UserDbo
+            var user = new UserDbo
             {
                 Username = username,
                 Password = password,
@@ -42,8 +42,12 @@ namespace Driver.DB
                 Address = address,
                 Image = image,
                 DrivesIds = string.Empty,
-                FriendsIds = string.Empty
-            });
+                //FriendsIds = string.Empty TODO - When supporting specific friends for each user
+            };
+            int rowsAdded = _database.InsertAsync(user).Result;
+            if (rowsAdded == 0)
+                return -1;
+            return user.Id;
         }
 
         public List<DriveDbo> GetDrives(List<int> ids)
@@ -73,8 +77,14 @@ namespace Driver.DB
             return friends;
         }
 
-        public string GetUserFriends(int userId) =>
-            _database.Table<UserDbo>().Where(o => o.Id == userId).FirstOrDefaultAsync().Result.FriendsIds;
+        public string GetUserFriends(int userId)
+        {
+            // _database.Table<UserDbo>().Where(o => o.Id == userId).FirstOrDefaultAsync().Result.FriendsIds; TODO - This logic represent a list of friends (user ids) for each user,
+            // for now, we will return a list of all of the users ids, meaning that everyone is a friend of everyone
+            var allOtherUsers = _database.Table<UserDbo>().Where(o => o.Id != userId).ToListAsync().Result;
+            var allOtherUsersStr = JsonConvert.SerializeObject(allOtherUsers);
+            return allOtherUsersStr;
+        }
 
         private async Task AddDriveIdToUser(int userId, int driveId)
         {

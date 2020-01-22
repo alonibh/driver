@@ -15,24 +15,7 @@ namespace Driver.NewDrivePages
         {
             InitializeComponent();
             string friendsStr = App.Database.GetUserFriends(userId);
-            List<Friend> friends = new List<Friend>() // TODO remove template
-            {
-                new Friend
-                {
-                    Id = 200,
-                    Address = "Usha 15",
-                    FirstName = "Dani",
-                    LastName = "Bar",
-                },
-                new Friend
-                {
-                    Id = 201,
-                    Address = "Usha 14",
-                    FirstName = "Roei",
-                    LastName = "Jac",
-
-                }
-            };
+            List<Friend> friends = new List<Friend>();
             if (friendsStr != string.Empty)
                 friends = JsonConvert.DeserializeObject<List<FriendDbo>>(friendsStr).Select(o => (Friend)o).ToList();
             ObservableCollection<Friend> observableFriends = new ObservableCollection<Friend>(friends);

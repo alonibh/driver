@@ -10,10 +10,9 @@
         <StackLayout Margin="{StaticResource PageMargin}">
 
             <StackLayout>
-                <Label Text="{Binding Drive.Name}" />
-                <Label Text="{Binding Drive.Destination}" />
-                <Label Text="{Binding Drive.Date, StringFormat={StaticResource datetimeFormat}}" />
-                <Label Text="{Binding Drive.Driver.FullName}" />
+                <Label Text="{Binding Drive.Destination, StringFormat='Destination: {0:N}'}" />
+                <Label Text="{Binding Drive.Date, StringFormat='Date: {0:dd/MM/yyyy}'}" />
+                <Label Text="{Binding Drive.Driver.FullName, StringFormat='Driver name: {0:N}'}" />
             </StackLayout>
 
             <StackLayout>

@@ -7,7 +7,6 @@ namespace Driver.DB.DBO
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-        public string Name { get; set; }
         public string Destination { get; set; }
         public DateTime Date { get; set; }
         public string Participants { get; set; }

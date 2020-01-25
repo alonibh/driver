@@ -99,12 +99,11 @@ namespace Driver.DB
             await _database.UpdateAsync(user);
         }
 
-        public async Task AddDrive(string name, string destination, DateTime date, string participantsStr, string driverStr)
+        public async Task AddDrive(string destination, DateTime date, string participantsStr, string driverStr)
         {
             // TODO full rollback if faild somewhere
             var drive = new DriveDbo
             {
-                Name = name,
                 Date = date,
                 Destination = destination,
                 Driver = driverStr,

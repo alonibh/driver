@@ -41,12 +41,12 @@
                     </dg:DataGrid.HeaderFontSize>
                     <dg:DataGrid.Columns>
                         <dg:DataGridColumn Title="Name" PropertyName="FullName" Width="*"/>
-                        <dg:DataGridColumn Title="Drive Counter" PropertyName="Counter" Width="*">
+                        <dg:DataGridColumn Title="Drive Counter" Width="*">
                             <dg:DataGridColumn.CellTemplate>
                                 <DataTemplate>
                                     <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"
-						 BackgroundColor="{Binding Converter={StaticResource DrivesCounterToColorConverter}}">
-                                        <Label Text="{Binding}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black"/>
+						 BackgroundColor="{Binding Counter, Converter={StaticResource DrivesCounterToColorConverter}}">
+                                        <Label Text="{Binding CounterStr}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black"/>
                                     </ContentView>
                                 </DataTemplate>
                             </dg:DataGridColumn.CellTemplate>

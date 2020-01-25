@@ -9,7 +9,6 @@ namespace Driver.Models
     public class Drive
     {
         public int Id { get; set; }
-        public string Name { get; set; }
         public string Destination { get; set; }
         public DateTime Date { get; set; }
         public List<DriveParticipant> Participants { get; set; }
@@ -23,7 +22,6 @@ namespace Driver.Models
                 Date = dbo.Date,
                 Destination = dbo.Destination,
                 Driver = JsonConvert.DeserializeObject<DriveParticipantDbo>(dbo.Driver),
-                Name = dbo.Name,
                 Participants = JsonConvert.DeserializeObject<List<DriveParticipantDbo>>(dbo.Participants).Select(o => (DriveParticipant)o).ToList()
             };
         }

@@ -11,7 +11,6 @@
         <StackLayout Margin="{StaticResource PageMargin}">
 
             <StackLayout>
-                <Label Text="{Binding Name, StringFormat='Name: {0:N}'}" />
                 <Label Text="{Binding Destination, StringFormat='Destination: {0:N}'}" />
                 <Label Text="{Binding Driver.FullName, StringFormat='Driver: {0:N}'}" />
             </StackLayout>

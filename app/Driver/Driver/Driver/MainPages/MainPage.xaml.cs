@@ -63,7 +63,7 @@ namespace Driver.MainPages
                     Id = user.Id,
                 }
             };
-            await Navigation.PushAsync(new NewDriveNamePage()
+            await Navigation.PushAsync(new NewDriveDestinationPage()
             {
                 BindingContext = drive
             });

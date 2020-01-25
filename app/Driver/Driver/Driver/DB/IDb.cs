@@ -14,6 +14,6 @@ namespace Driver.DB
         List<DriveDbo> GetDrives(List<int> ids);
         Task DeleteDrive(int driveId);
         List<FriendDbo> GetFriends(List<int> ids);
-        Task AddDrive(string name, string destination, DateTime date, string participantsStr, string driverStr);
+        Task AddDrive(string destination, DateTime date, string participantsStr, string driverStr);
     }
 }

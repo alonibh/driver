@@ -46,11 +46,15 @@ namespace Driver.LoginPages
                         friends = JsonConvert.DeserializeObject<List<FriendDbo>>(friendsStr).Select(o => (Friend)o).ToList();
                     user.Friends = friends;
 
+                    var prevPages = new List<Page>(Navigation.NavigationStack);
 
                     await Navigation.PushAsync(new MainPage()
                     {
                         BindingContext = user
                     });
+
+                    foreach(Page page in prevPages)
+                        Navigation.RemovePage(page);
                 }
             }
         }

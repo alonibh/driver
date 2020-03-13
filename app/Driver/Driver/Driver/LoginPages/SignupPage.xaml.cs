@@ -53,7 +53,7 @@ namespace Driver.LoginPages
                         BindingContext = user
                     });
 
-                    foreach(Page page in prevPages)
+                    foreach (Page page in prevPages)
                         Navigation.RemovePage(page);
                 }
             }

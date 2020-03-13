@@ -119,7 +119,6 @@ namespace Driver.DB
 
             var driver = JsonConvert.DeserializeObject<DriveParticipantDbo>(driverStr);
             await AddDriveIdToUser(driver.Id, drive.Id);
-
         }
     }
 }

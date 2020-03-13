@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Driver.Models;
+using System;
 using System.Linq;
-using Driver.Models;
 using Xamarin.Forms;
 
 namespace Driver.MainPages

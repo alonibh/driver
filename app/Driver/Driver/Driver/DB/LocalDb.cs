@@ -18,21 +18,16 @@ namespace Driver.DB
             _database.CreateTableAsync<DriveDbo>().Wait();
         }
 
-        public Task<UserDbo> GetUserProfile(string username, string password)
+        public Task<UserDbo> Login(string username, string password)
         {
             return _database.Table<UserDbo>().Where(o => o.Username == username && o.Password == password).FirstOrDefaultAsync();
         }
 
-        public bool IsUsernameTaken(string username)
+        public int SignUp(string username, string password, string firstName, string lastName, string address, Uri image)
         {
-            var user = _database.Table<UserDbo>().Where(o => o.Username == username).FirstOrDefaultAsync().Result;
-            if (user == null)
-                return false;
-            return true;
-        }
+            if (_database.Table<UserDbo>().Where(o => o.Username == username).CountAsync().Result != 0)
+                return -1;
 
-        public int SignUpUser(string username, string password, string firstName, string lastName, string address, Uri image)
-        {
             var user = new UserDbo
             {
                 Username = username,

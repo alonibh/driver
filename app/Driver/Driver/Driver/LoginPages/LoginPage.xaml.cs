@@ -17,7 +17,7 @@ namespace Driver.LoginPages
         }
         async void OnSigninButtonClicked(object sender, EventArgs args)
         {
-            var user = await App.Database.GetUserProfile(usernameEntry.Text, passwordEntry.Text);
+            var user = await App.Database.Login(usernameEntry.Text, passwordEntry.Text);
             if (user == null)
             {
                 await DisplayAlert("Error", "Wrong user name or password", "OK");

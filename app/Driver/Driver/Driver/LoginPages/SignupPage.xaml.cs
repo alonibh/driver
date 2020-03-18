@@ -15,7 +15,7 @@ namespace Driver.LoginPages
 
         async void OnSignupButtonClicked(object sender, EventArgs args)
         {
-            bool isSuccessful = await App.Database.SignUp(new SignupRequest
+            bool isSuccessful = (await App.Database.SignUp(new SignupRequest
             {
                 Username = usernameEntry.Text,
                 Password = passwordEntry.Text,
@@ -23,7 +23,8 @@ namespace Driver.LoginPages
                 LastName = lastNameEntry.Text,
                 Address = addressEntry.Text,
                 Email = emailEntry.Text
-            });
+            })).Success;
+
             if (!isSuccessful)
                 await DisplayAlert("Error", "Unable to add user", "OK");
             else

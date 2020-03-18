@@ -20,10 +20,10 @@ namespace Driver.NewDrivePages
             var drive = (Drive)BindingContext;
             drive.Destination = driveDestEntry.Text;
 
-            var person = await App.Database.GetPerson(new GetPersonRequest
+            var person = (await App.Database.GetPerson(new GetPersonRequest
             {
                 Username = drive.Driver.Username
-            });
+            })).Person;
 
             List<Person> friends = new List<Person>();
             if (person.FriendsUsernames != null)
@@ -32,10 +32,11 @@ namespace Driver.NewDrivePages
 
                 foreach (var frientUsername in friendsUsernames)
                 {
-                    var friend = await App.Database.GetPerson(new GetPersonRequest
+                    var friend = (await App.Database.GetPerson(new GetPersonRequest
                     {
                         Username = frientUsername
-                    });
+                    })).Person;
+
                     friends.Add(friend);
                 }
             }

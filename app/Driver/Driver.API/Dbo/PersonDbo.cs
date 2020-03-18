@@ -1,4 +1,4 @@
-﻿namespace Driver.Dbo
+﻿namespace Driver.API.Dbo
 {
     public class PersonDbo
     {

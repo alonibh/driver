@@ -1,5 +1,5 @@
 ﻿using Driver.API;
-using Driver.Dbo;
+using Driver.API.Dbo;
 using Driver.Models;
 using Newtonsoft.Json;
 using SQLite;
@@ -21,17 +21,17 @@ namespace Driver.DB
             _database.CreateTableAsync<DriveDbo>().Wait();
         }
 
-        public async Task<bool> Login(LoginRequest request)
+        public async Task<LoginResponse> Login(LoginRequest request)
         {
             var user = await _database.Table<UserDbo>().Where(o => o.Username == request.Username && o.Password == request.Password).FirstOrDefaultAsync();
-            return user == null ? false : true;
+            return user == null ? new LoginResponse { Success = false } : new LoginResponse { Success = true };
         }
 
-        public async Task<bool> SignUp(SignupRequest request)
+        public async Task<SignupResponse> SignUp(SignupRequest request)
         {
             var user = await _database.Table<UserDbo>().Where(o => o.Username == request.Username).FirstOrDefaultAsync();
             if (user != null)
-                return false;
+                return new SignupResponse { Success = false };
 
             var person = new PersonWithDrivesDbo
             {
@@ -46,7 +46,7 @@ namespace Driver.DB
 
             int rowsAdded = await _database.InsertAsync(person);
             if (rowsAdded == 0)
-                return false;
+                return new SignupResponse { Success = false };
 
             user = new UserDbo
             {
@@ -56,12 +56,12 @@ namespace Driver.DB
 
             rowsAdded = await _database.InsertAsync(user);
             if (rowsAdded == 0)
-                return false;
+                return new SignupResponse { Success = false };
 
-            return true;
+            return new SignupResponse { Success = true };
         }
 
-        public async Task<bool> AddDrive(AddDriveRequest request)
+        public async Task<AddDriveResponse> AddDrive(AddDriveRequest request)
         {
             var drive = new DriveDbo
             {
@@ -80,47 +80,49 @@ namespace Driver.DB
 
             var driver = JsonConvert.DeserializeObject<Person>(request.Driver);
             await AddDriveIdToUser(driver.Username, drive.Id);
-            return true;
+            return new AddDriveResponse { Success = true };
         }
 
-        public async Task<DriveDbo> GetDrive(GetDriveRequest request)
+        public async Task<GetDriveResponse> GetDrive(GetDriveRequest request)
         {
             var drive = await _database.Table<DriveDbo>().Where(o => o.Id == request.DriveId).FirstOrDefaultAsync();
-            return drive;
+            return new GetDriveResponse { Drive = drive };
         }
 
-        public async Task<bool> DeleteDrive(DeleteDriveRequest request)
+        public async Task<DeleteDriveResponse> DeleteDrive(DeleteDriveRequest request)
         {
             int deletedRows = await _database.Table<DriveDbo>().DeleteAsync(o => o.Id == request.DriveId);
             if (deletedRows == 0)
-                return false;
-            return true;
+                return new DeleteDriveResponse { Success = false };
+            return new DeleteDriveResponse { Success = true };
         }
 
-        public async Task<PersonDbo> GetPerson(GetPersonRequest request)
+        public async Task<GetPersonResponse> GetPerson(GetPersonRequest request)
         {
             var persons = await _database.Table<PersonWithDrivesDbo>().ToListAsync();
             var person = persons.Where(o => o.Username == request.Username).FirstOrDefault();
             persons.Remove(person);
+
             List<string> friendsUsernames = new List<string>();
             foreach (var otherPerson in persons)
             {
                 friendsUsernames.Add(otherPerson.Username);
             }
+
             person.FriendsUsernames = JsonConvert.SerializeObject(friendsUsernames);
-            return person;
+            return new GetPersonResponse { Person = person };
         }
 
-        public async Task<List<DriveDbo>> GetPersonDrives(GetPersonDrivesRequest request)
+        public async Task<GetPersonDrivesResponse> GetPersonDrives(GetPersonDrivesRequest request)
         {
             var person = await _database.Table<PersonWithDrivesDbo>().Where(o => o.Username == request.Username).FirstOrDefaultAsync();
             var drivesIds = JsonConvert.DeserializeObject<List<int>>(person.DrivesIds);
             List<DriveDbo> drives = new List<DriveDbo>();
             if (drivesIds == null)
-                return drives;
+                return new GetPersonDrivesResponse { Drives = drives };
             foreach (int driveId in drivesIds)
             {
-                var drive = await GetDrive(new GetDriveRequest { DriveId = driveId });
+                var drive = (await GetDrive(new GetDriveRequest { DriveId = driveId })).Drive;
                 if (drive != null)
                     drives.Add(drive);
             }
@@ -129,7 +131,7 @@ namespace Driver.DB
             person.DrivesIds = drivesIdsSerialized;
             await _database.UpdateAsync(person);
 
-            return drives;
+            return new GetPersonDrivesResponse { Drives = drives };
         }
 
         private async Task AddDriveIdToUser(string username, int driveId)

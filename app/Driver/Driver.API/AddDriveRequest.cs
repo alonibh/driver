@@ -9,4 +9,9 @@ namespace Driver.API
         public string Participants { get; set; }
         public string Driver { get; set; }
     }
+
+    public class AddDriveResponse
+    {
+        public bool Success { get; set; }
+    }
 }

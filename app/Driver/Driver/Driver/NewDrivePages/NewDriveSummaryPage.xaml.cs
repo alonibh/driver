@@ -32,10 +32,10 @@ namespace Driver.NewDrivePages
                 Participants = participants
             });
 
-            var person = await App.Database.GetPerson(new GetPersonRequest
+            var person = (await App.Database.GetPerson(new GetPersonRequest
             {
                 Username = drive.Driver.Username
-            });
+            })).Person;
 
             var drives = await App.Database.GetPersonDrives(new GetPersonDrivesRequest
             {
@@ -47,10 +47,10 @@ namespace Driver.NewDrivePages
 
             foreach (var frientUsername in friendsUsernames)
             {
-                var friend = await App.Database.GetPerson(new GetPersonRequest
+                var friend = (await App.Database.GetPerson(new GetPersonRequest
                 {
                     Username = frientUsername
-                });
+                })).Person;
                 friends.Add(friend);
             }
 
@@ -61,7 +61,7 @@ namespace Driver.NewDrivePages
                 FirstName = person.FirstName,
                 LastName = person.LastName,
                 Email = person.Email,
-                Drives = drives.Select(o => (Drive)o).ToList(),
+                Drives = drives.Drives.Select(o => (Drive)o).ToList(),
                 Friends = friends
             };
 

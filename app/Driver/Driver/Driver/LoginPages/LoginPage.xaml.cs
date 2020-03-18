@@ -18,26 +18,27 @@ namespace Driver.LoginPages
 
         async void OnSigninButtonClicked(object sender, EventArgs args)
         {
-            bool isSuccessful = await App.Database.Login(new LoginRequest
+            bool isSuccessful = (await App.Database.Login(new LoginRequest
             {
                 Username = usernameEntry.Text,
                 Password = passwordEntry.Text
-            });
+            })).Success;
+
             if (!isSuccessful)
             {
                 await DisplayAlert("Error", "Wrong user name or password", "OK");
             }
             else
             {
-                var person = await App.Database.GetPerson(new GetPersonRequest
+                var person = (await App.Database.GetPerson(new GetPersonRequest
                 {
                     Username = usernameEntry.Text
-                });
+                })).Person;
 
-                var drives = await App.Database.GetPersonDrives(new GetPersonDrivesRequest
+                var drives = (await App.Database.GetPersonDrives(new GetPersonDrivesRequest
                 {
                     Username = usernameEntry.Text
-                });
+                })).Drives;
                 // TODO - When supporting specific friends for each user
                 //var friendsIds = JsonConvert.DeserializeObject<List<int>>(user.FriendsIds);
                 //List<Friend> friends = new List<Friend>();
@@ -55,10 +56,10 @@ namespace Driver.LoginPages
 
                     foreach (var frientUsername in friendsUsernames)
                     {
-                        var friend = await App.Database.GetPerson(new GetPersonRequest
+                        var friend = (await App.Database.GetPerson(new GetPersonRequest
                         {
                             Username = frientUsername
-                        });
+                        })).Person;
                         friends.Add(friend);
                     }
                 }

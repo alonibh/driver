@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Driver.Dbo
+namespace Driver.API.Dbo
 {
     public class DriveDbo
     {

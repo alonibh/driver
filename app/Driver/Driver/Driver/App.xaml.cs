@@ -1,7 +1,5 @@
 ﻿using Driver.DB;
 using Driver.LoginPages;
-using System;
-using System.IO;
 using Xamarin.Forms;
 
 namespace Driver
@@ -16,7 +14,8 @@ namespace Driver
             {
                 if (database == null)
                 {
-                    database = new LocalDb(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Users.db3"));
+                    //database = new LocalDb(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Users.db3"));
+                    database = new RemoteDb("http://roeij.com:3000/api/");
                 }
                 return database;
             }

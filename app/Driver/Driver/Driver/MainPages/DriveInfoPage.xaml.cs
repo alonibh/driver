@@ -21,10 +21,10 @@ namespace Driver.MainPages
             if (answer)
             {
                 var driveInfo = (DriveInfo)BindingContext;
-                bool isSeccessful = await App.Database.DeleteDrive(new DeleteDriveRequest
+                bool isSeccessful = (await App.Database.DeleteDrive(new DeleteDriveRequest
                 {
                     DriveId = driveInfo.Drive.Id
-                });
+                })).Success;
 
                 if (!isSeccessful)
                     await DisplayAlert("Error", "Failed to delete drive", "OK");
@@ -32,25 +32,25 @@ namespace Driver.MainPages
                 {
                     var mainPage = Navigation.NavigationStack[0];
 
-                    var person = await App.Database.GetPerson(new GetPersonRequest
+                    var person = (await App.Database.GetPerson(new GetPersonRequest
                     {
                         Username = driveInfo.Username
-                    });
+                    })).Person;
 
-                    var drives = await App.Database.GetPersonDrives(new GetPersonDrivesRequest
+                    var drives = (await App.Database.GetPersonDrives(new GetPersonDrivesRequest
                     {
                         Username = driveInfo.Username
-                    });
+                    })).Drives;
 
                     List<string> friendsUsernames = JsonConvert.DeserializeObject<List<string>>(person.FriendsUsernames);
                     List<Person> friends = new List<Person>();
 
                     foreach (var frientUsername in friendsUsernames)
                     {
-                        var friend = await App.Database.GetPerson(new GetPersonRequest
+                        var friend = (await App.Database.GetPerson(new GetPersonRequest
                         {
                             Username = frientUsername
-                        });
+                        })).Person;
                         friends.Add(friend);
                     }
 

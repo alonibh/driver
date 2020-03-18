@@ -12,6 +12,7 @@ namespace Driver.LoginPages
         {
             InitializeComponent();
         }
+
         async void OnSignupButtonClicked(object sender, EventArgs args)
         {
             bool isSuccessful = await App.Database.SignUp(new SignupRequest

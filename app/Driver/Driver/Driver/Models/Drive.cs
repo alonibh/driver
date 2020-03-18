@@ -14,6 +14,7 @@ namespace Driver.Models
         public List<Person> Participants { get; set; }
         public Person Driver { get; set; }
         public string Description => Destination + ", " + Date.ToString("dd/MM/yyyy");
+
         public static implicit operator Drive(DriveDbo dbo)
         {
             return new Drive

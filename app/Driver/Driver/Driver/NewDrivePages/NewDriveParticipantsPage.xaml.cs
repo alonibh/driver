@@ -13,6 +13,7 @@ namespace Driver.NewDrivePages
             InitializeComponent();
             friendsCollectionView.BindingContext = observableFriends;
         }
+
         async void OnNextButtonClicked(object sender, EventArgs e)
         {
             var drive = (Drive)BindingContext;

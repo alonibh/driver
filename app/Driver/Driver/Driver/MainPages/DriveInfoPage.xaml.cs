@@ -14,6 +14,7 @@ namespace Driver.MainPages
         {
             InitializeComponent();
         }
+
         async void OnDeleteButtonClicked(object sender, EventArgs args)
         {
             bool answer = await DisplayAlert("Delete Drive", "Are you sure you want to delete this drive?", "Yes", "No");
@@ -76,6 +77,5 @@ namespace Driver.MainPages
                 }
             }
         }
-
     }
 }

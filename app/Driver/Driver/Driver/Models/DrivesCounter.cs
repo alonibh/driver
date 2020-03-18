@@ -6,6 +6,7 @@
         public string FullName { get; set; }
         public int Counter { get; set; }
         public string CounterStr => GetCounterStr();
+
         private string GetCounterStr()
         {
             if (Counter == 0)

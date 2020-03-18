@@ -145,13 +145,13 @@ namespace Driver.DB
             await _database.UpdateAsync(person);
         }
 
-
         private class UserDbo
         {
             public string Username { get; set; }
             public string Password { get; set; }
         }
-        public class PersonWithDrivesDbo
+
+        private class PersonWithDrivesDbo
         {
             [PrimaryKey]
             public string Username { get; set; }
@@ -174,6 +174,5 @@ namespace Driver.DB
                 };
             }
         }
-
     }
 }

@@ -27,6 +27,7 @@ namespace Driver.LoginPages
 
             if (!isSuccessful)
                 await DisplayAlert("Error", "Unable to add user", "OK");
+
             else
             {
                 CrossToastPopUp.Current.ShowToastMessage("Success!");

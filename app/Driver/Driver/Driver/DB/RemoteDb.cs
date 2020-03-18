@@ -89,17 +89,18 @@ namespace Driver.DB
             var content = await res.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<GetPersonDrivesResponse>(content);
         }
-    }
 
-    public class CamelCaseExceptDictionaryKeysResolver : CamelCasePropertyNamesContractResolver
-    {
-        protected override JsonDictionaryContract CreateDictionaryContract(Type objectType)
+        private class CamelCaseExceptDictionaryKeysResolver : CamelCasePropertyNamesContractResolver
         {
-            JsonDictionaryContract contract = base.CreateDictionaryContract(objectType);
+            protected override JsonDictionaryContract CreateDictionaryContract(Type objectType)
+            {
+                JsonDictionaryContract contract = base.CreateDictionaryContract(objectType);
 
-            contract.DictionaryKeyResolver = propertyName => propertyName;
+                contract.DictionaryKeyResolver = propertyName => propertyName;
 
-            return contract;
+                return contract;
+            }
         }
     }
+
 }

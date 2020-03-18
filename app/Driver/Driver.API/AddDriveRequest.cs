@@ -1,12 +1,9 @@
-﻿using SQLite;
-using System;
+﻿using System;
 
-namespace Driver.DB.DBO
+namespace Driver.API
 {
-    public class DriveDbo
+    public class AddDriveRequest
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
         public string Destination { get; set; }
         public DateTime Date { get; set; }
         public string Participants { get; set; }

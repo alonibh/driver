@@ -1,8 +1,10 @@
-﻿using Driver.DB.DBO;
+﻿using Driver.API;
+using Driver.Dbo;
+using Driver.Models;
 using Newtonsoft.Json;
 using SQLite;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Driver.DB
@@ -15,105 +17,163 @@ namespace Driver.DB
         {
             _database = new SQLiteAsyncConnection(dbPath);
             _database.CreateTableAsync<UserDbo>().Wait();
+            _database.CreateTableAsync<PersonWithDrivesDbo>().Wait();
             _database.CreateTableAsync<DriveDbo>().Wait();
         }
 
-        public Task<UserDbo> Login(string username, string password)
+        public async Task<bool> Login(LoginRequest request)
         {
-            return _database.Table<UserDbo>().Where(o => o.Username == username && o.Password == password).FirstOrDefaultAsync();
+            var user = await _database.Table<UserDbo>().Where(o => o.Username == request.Username && o.Password == request.Password).FirstOrDefaultAsync();
+            return user == null ? false : true;
         }
 
-        public int SignUp(string username, string password, string firstName, string lastName, string address, Uri image)
+        public async Task<bool> SignUp(SignupRequest request)
         {
-            if (_database.Table<UserDbo>().Where(o => o.Username == username).CountAsync().Result != 0)
-                return -1;
+            var user = await _database.Table<UserDbo>().Where(o => o.Username == request.Username).FirstOrDefaultAsync();
+            if (user != null)
+                return false;
 
-            var user = new UserDbo
+            var person = new PersonWithDrivesDbo
             {
-                Username = username,
-                Password = password,
-                FirstName = firstName,
-                LastName = lastName,
-                Address = address,
-                Image = image,
-                DrivesIds = string.Empty,
-                //FriendsIds = string.Empty TODO - When supporting specific friends for each user
+                Username = request.Username,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Address = request.Address,
+                Email = request.Email,
+                FriendsUsernames = string.Empty,
+                DrivesIds = string.Empty
             };
-            int rowsAdded = _database.InsertAsync(user).Result;
+
+            int rowsAdded = await _database.InsertAsync(person);
             if (rowsAdded == 0)
-                return -1;
-            return user.Id;
-        }
+                return false;
 
-        public List<DriveDbo> GetDrives(List<int> ids)
-        {
-            List<DriveDbo> drives = new List<DriveDbo>();
-            foreach (var id in ids)
+            user = new UserDbo
             {
-                var drive = _database.Table<DriveDbo>().Where(o => o.Id == id).FirstOrDefaultAsync().Result;
-                if (drive != null)
-                    drives.Add(drive);
-            }
-            return drives;
+                Username = request.Username,
+                Password = request.Password
+            };
+
+            rowsAdded = await _database.InsertAsync(user);
+            if (rowsAdded == 0)
+                return false;
+
+            return true;
         }
 
-        public Task DeleteDrive(int driveId) =>
-            _database.Table<DriveDbo>().DeleteAsync(o => o.Id == driveId);
-
-        public List<FriendDbo> GetFriends(List<int> ids)
+        public async Task<bool> AddDrive(AddDriveRequest request)
         {
-            List<FriendDbo> friends = new List<FriendDbo>();
-            foreach (var id in ids)
-            {
-                FriendDbo friend = _database.Table<UserDbo>().Where(o => o.Id == id).FirstOrDefaultAsync().Result;
-                if (friend != null)
-                    friends.Add(friend);
-            }
-            return friends;
-        }
-
-        public string GetUserFriends(int userId)
-        {
-            // _database.Table<UserDbo>().Where(o => o.Id == userId).FirstOrDefaultAsync().Result.FriendsIds; TODO - This logic represent a list of friends (user ids) for each user,
-            // for now, we will return a list of all of the users ids, meaning that everyone is a friend of everyone
-            var allOtherUsers = _database.Table<UserDbo>().Where(o => o.Id != userId).ToListAsync().Result;
-            var allOtherUsersStr = JsonConvert.SerializeObject(allOtherUsers);
-            return allOtherUsersStr;
-        }
-
-        private async Task AddDriveIdToUser(int userId, int driveId)
-        {
-            var user = await _database.Table<UserDbo>().Where(o => o.Id == userId).FirstOrDefaultAsync();
-            if (user == null)
-                return; // TODO handle correctly
-            var drivesIds = JsonConvert.DeserializeObject<List<int>>(user.DrivesIds);
-            if (drivesIds == null)
-                drivesIds = new List<int>();
-            drivesIds.Add(driveId);
-            user.DrivesIds = JsonConvert.SerializeObject(drivesIds);
-            await _database.UpdateAsync(user);
-        }
-
-        public async Task AddDrive(string destination, DateTime date, string participantsStr, string driverStr)
-        {
-            // TODO full rollback if faild somewhere
             var drive = new DriveDbo
             {
-                Date = date,
-                Destination = destination,
-                Driver = driverStr,
-                Participants = participantsStr
+                Date = request.Date,
+                Destination = request.Destination,
+                Driver = request.Driver,
+                Participants = request.Participants
             };
             await _database.InsertAsync(drive);
 
-            var participants = JsonConvert.DeserializeObject<List<DriveParticipantDbo>>(participantsStr);
+            var participants = JsonConvert.DeserializeObject<List<Person>>(request.Participants);
             foreach (var participant in participants)
             {
-                await AddDriveIdToUser(participant.Id, drive.Id);
+                await AddDriveIdToUser(participant.Username, drive.Id);
             }
 
-            var driver = JsonConvert.DeserializeObject<DriveParticipantDbo>(driverStr);
-            await AddDriveIdToUser(driver.Id, drive.Id);
+            var driver = JsonConvert.DeserializeObject<Person>(request.Driver);
+            await AddDriveIdToUser(driver.Username, drive.Id);
+            return true;
         }
+
+        public async Task<DriveDbo> GetDrive(GetDriveRequest request)
+        {
+            var drive = await _database.Table<DriveDbo>().Where(o => o.Id == request.DriveId).FirstOrDefaultAsync();
+            return drive;
+        }
+
+        public async Task<bool> DeleteDrive(DeleteDriveRequest request)
+        {
+            int deletedRows = await _database.Table<DriveDbo>().DeleteAsync(o => o.Id == request.DriveId);
+            if (deletedRows == 0)
+                return false;
+            return true;
+        }
+
+        public async Task<PersonDbo> GetPerson(GetPersonRequest request)
+        {
+            var persons = await _database.Table<PersonWithDrivesDbo>().ToListAsync();
+            var person = persons.Where(o => o.Username == request.Username).FirstOrDefault();
+            persons.Remove(person);
+            List<string> friendsUsernames = new List<string>();
+            foreach (var otherPerson in persons)
+            {
+                friendsUsernames.Add(otherPerson.Username);
+            }
+            person.FriendsUsernames = JsonConvert.SerializeObject(friendsUsernames);
+            return person;
+        }
+
+        public async Task<List<DriveDbo>> GetPersonDrives(GetPersonDrivesRequest request)
+        {
+            var person = await _database.Table<PersonWithDrivesDbo>().Where(o => o.Username == request.Username).FirstOrDefaultAsync();
+            var drivesIds = JsonConvert.DeserializeObject<List<int>>(person.DrivesIds);
+            List<DriveDbo> drives = new List<DriveDbo>();
+            if (drivesIds == null)
+                return drives;
+            foreach (int driveId in drivesIds)
+            {
+                var drive = await GetDrive(new GetDriveRequest { DriveId = driveId });
+                if (drive != null)
+                    drives.Add(drive);
+            }
+
+            string drivesIdsSerialized = JsonConvert.SerializeObject(drives);
+            person.DrivesIds = drivesIdsSerialized;
+            await _database.UpdateAsync(person);
+
+            return drives;
+        }
+
+        private async Task AddDriveIdToUser(string username, int driveId)
+        {
+            var person = await _database.Table<PersonWithDrivesDbo>().Where(o => o.Username == username).FirstOrDefaultAsync();
+            if (person == null)
+                return; // TODO handle correctly
+            var drivesIds = JsonConvert.DeserializeObject<List<int>>(person.DrivesIds);
+            if (drivesIds == null)
+                drivesIds = new List<int>();
+            drivesIds.Add(driveId);
+            person.DrivesIds = JsonConvert.SerializeObject(drivesIds);
+            await _database.UpdateAsync(person);
+        }
+
+
+        private class UserDbo
+        {
+            public string Username { get; set; }
+            public string Password { get; set; }
+        }
+        public class PersonWithDrivesDbo
+        {
+            [PrimaryKey]
+            public string Username { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Address { get; set; }
+            public string Email { get; set; }
+            public string FriendsUsernames { get; set; }
+            public string DrivesIds { get; set; }
+            public static implicit operator PersonDbo(PersonWithDrivesDbo dbo)
+            {
+                return new PersonDbo
+                {
+                    Username = dbo.Username,
+                    FirstName = dbo.FirstName,
+                    LastName = dbo.LastName,
+                    Address = dbo.LastName,
+                    Email = dbo.Email,
+                    FriendsUsernames = dbo.FriendsUsernames
+                };
+            }
+        }
+
     }
 }

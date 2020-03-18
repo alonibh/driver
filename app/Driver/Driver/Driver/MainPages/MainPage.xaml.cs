@@ -13,24 +13,22 @@ namespace Driver.MainPages
             InitializeComponent();
             NavigationPage.SetHasBackButton(this, false);
             DataGridComponent.Init();
-
         }
 
         async void onDriveTapped(object sender, ItemTappedEventArgs e)
         {
+            var person = (Person)BindingContext;
+
             ListView lv = (ListView)sender;
             lv.SelectedItem = null;
 
-            var user = (User)BindingContext;
             var drive = e.Item as Drive;
-            DriveInfo driveInfo = new DriveInfo();
+            DriveInfo driveInfo = new DriveInfo
+            {
+                Drive = drive,
+                Username = person.Username
+            };
 
-            if (user.Id == drive.Driver.Id)
-                driveInfo.IsUserDriver = true;
-            else
-                driveInfo.IsUserDriver = false;
-
-            driveInfo.Drive = drive;
             await Navigation.PushAsync(new DriveInfoPage()
             {
                 BindingContext = driveInfo
@@ -52,17 +50,13 @@ namespace Driver.MainPages
 
         async void OnNewDriveButtonClicked(object sender, EventArgs args)
         {
-            var user = (User)BindingContext;
+            var person = (Person)BindingContext;
             var drive = new Drive
             {
                 Date = DateTime.Now,
-                Driver = new DriveParticipant
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Id = user.Id,
-                }
+                Driver = person
             };
+
             await Navigation.PushAsync(new NewDriveDestinationPage()
             {
                 BindingContext = drive

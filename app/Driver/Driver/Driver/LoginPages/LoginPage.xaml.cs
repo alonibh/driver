@@ -1,4 +1,4 @@
-﻿using Driver.DB.DBO;
+﻿using Driver.API;
 using Driver.MainPages;
 using Driver.Models;
 using Newtonsoft.Json;
@@ -17,19 +17,26 @@ namespace Driver.LoginPages
         }
         async void OnSigninButtonClicked(object sender, EventArgs args)
         {
-            var user = await App.Database.Login(usernameEntry.Text, passwordEntry.Text);
-            if (user == null)
+            bool isSuccessful = await App.Database.Login(new LoginRequest
+            {
+                Username = usernameEntry.Text,
+                Password = passwordEntry.Text
+            });
+            if (!isSuccessful)
             {
                 await DisplayAlert("Error", "Wrong user name or password", "OK");
             }
             else
             {
-                var drivesIds = JsonConvert.DeserializeObject<List<int>>(user.DrivesIds);
-                List<Drive> drives = new List<Drive>();
-                if (drivesIds != null)
+                var person = await App.Database.GetPerson(new GetPersonRequest
                 {
-                    drives = App.Database.GetDrives(drivesIds).Select(o => (Drive)o).ToList();
-                }
+                    Username = usernameEntry.Text
+                });
+
+                var drives = await App.Database.GetPersonDrives(new GetPersonDrivesRequest
+                {
+                    Username = usernameEntry.Text
+                });
                 // TODO - When supporting specific friends for each user
                 //var friendsIds = JsonConvert.DeserializeObject<List<int>>(user.FriendsIds);
                 //List<Friend> friends = new List<Friend>();
@@ -39,22 +46,34 @@ namespace Driver.LoginPages
                 //}
 
                 //TODO - Remove when supporting specific friends for each user
-                string friendsStr = App.Database.GetUserFriends(user.Id);
-                List<Friend> friends = new List<Friend>();
-                if (friendsStr != string.Empty)
-                    friends = JsonConvert.DeserializeObject<List<FriendDbo>>(friendsStr).Select(o => (Friend)o).ToList();
+
+                List<string> friendsUsernames = JsonConvert.DeserializeObject<List<string>>(person.FriendsUsernames);
+                List<Person> friends = new List<Person>();
+                if (friendsUsernames != null)
+                {
+
+                    foreach (var frientUsername in friendsUsernames)
+                    {
+                        var friend = await App.Database.GetPerson(new GetPersonRequest
+                        {
+                            Username = frientUsername
+                        });
+                        friends.Add(friend);
+                    }
+                }
 
                 var currPage = Navigation.NavigationStack[0];
 
                 await Navigation.PushAsync(new MainPage()
                 {
-                    BindingContext = new User
+                    BindingContext = new Person
                     {
-                        Id = user.Id,
-                        Address = user.Address,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        Drives = drives,
+                        Username = person.Username,
+                        Address = person.Address,
+                        FirstName = person.FirstName,
+                        LastName = person.LastName,
+                        Email = person.Email,
+                        Drives = drives.Select(o => (Drive)o).ToList(),
                         Friends = friends
                     }
                 });

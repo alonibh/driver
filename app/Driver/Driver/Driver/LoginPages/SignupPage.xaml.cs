@@ -1,10 +1,7 @@
-﻿using Driver.DB.DBO;
-using Driver.MainPages;
-using Driver.Models;
-using Newtonsoft.Json;
+﻿using Driver.API;
+using Plugin.Toast;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xamarin.Forms;
 
 namespace Driver.LoginPages
@@ -17,35 +14,24 @@ namespace Driver.LoginPages
         }
         async void OnSignupButtonClicked(object sender, EventArgs args)
         {
-            int userId = App.Database.SignUp(usernameEntry.Text, passwordEntry.Text, firstNameEntry.Text, lastNameEntry.Text, addressEntry.Text, null);
-            if (userId == -1)
+            bool isSuccessful = await App.Database.SignUp(new SignupRequest
+            {
+                Username = usernameEntry.Text,
+                Password = passwordEntry.Text,
+                FirstName = firstNameEntry.Text,
+                LastName = lastNameEntry.Text,
+                Address = addressEntry.Text,
+                Email = emailEntry.Text
+            });
+            if (!isSuccessful)
                 await DisplayAlert("Error", "Unable to add user", "OK");
             else
             {
-                var user = new User
-                {
-                    Id = userId,
-                    FirstName = firstNameEntry.Text,
-                    LastName = lastNameEntry.Text,
-                    Address = addressEntry.Text,
-                    Image = null,
-                    Drives = new List<Drive>(),
-                    //Friends = new List<Friend>() // TODO - When supporting specific friends for each user
-                };
-
-                //TODO - Remove when supporting specific friends for each user
-                string friendsStr = App.Database.GetUserFriends(user.Id);
-                List<Friend> friends = new List<Friend>();
-                if (friendsStr != string.Empty)
-                    friends = JsonConvert.DeserializeObject<List<FriendDbo>>(friendsStr).Select(o => (Friend)o).ToList();
-                user.Friends = friends;
+                CrossToastPopUp.Current.ShowToastMessage("Success!");
 
                 var prevPages = new List<Page>(Navigation.NavigationStack);
 
-                await Navigation.PushAsync(new MainPage()
-                {
-                    BindingContext = user
-                });
+                await Navigation.PushAsync(new LoginPage());
 
                 foreach (Page page in prevPages)
                     Navigation.RemovePage(page);

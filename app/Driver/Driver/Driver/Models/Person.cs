@@ -1,19 +1,20 @@
-﻿using System;
+﻿using Driver.Dbo;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Driver.Models
 {
-    public class User
+    public class Person
     {
-        public int Id { get; set; }
+        public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
-        public Uri Image { get; set; }
+        public string Email { get; set; }
         public List<Drive> Drives { get; set; }
-        public List<Friend> Friends { get; set; }
+        public List<Person> Friends { get; set; }
         public List<DrivesCounter> DrivesCounter => GetDrivesCounter();
+        public string FullName => FirstName + " " + LastName;
 
         private List<DrivesCounter> GetDrivesCounter()
         {
@@ -22,13 +23,13 @@ namespace Driver.Models
             var drivesCounter = new List<DrivesCounter>();
             foreach (var drive in Drives)
             {
-                if (drive.Driver.Id == Id) // If you are the driver
+                if (drive.Driver.Username == Username) // If you are the driver
                 {
                     foreach (var participant in drive.Participants)
                     {
-                        if (drivesCounter.Any(o => o.ID == participant.Id))
+                        if (drivesCounter.Any(o => o.Username == participant.Username))
                         {
-                            drivesCounter.Single(o => o.ID == participant.Id).Counter++;
+                            drivesCounter.Single(o => o.Username == participant.Username).Counter++;
                         }
                         else
                         {
@@ -36,16 +37,16 @@ namespace Driver.Models
                             {
                                 Counter = 1,
                                 FullName = participant.FirstName + " " + participant.LastName,
-                                ID = participant.Id
+                                Username = participant.Username
                             });
                         }
                     }
                 }
                 else // If you are one of the participants
                 {
-                    if (drivesCounter.Any(o => o.ID == drive.Driver.Id))
+                    if (drivesCounter.Any(o => o.Username == drive.Driver.Username))
                     {
-                        drivesCounter.Single(o => o.ID == drive.Driver.Id).Counter--;
+                        drivesCounter.Single(o => o.Username == drive.Driver.Username).Counter--;
                     }
                     else
                     {
@@ -53,12 +54,24 @@ namespace Driver.Models
                         {
                             Counter = -1,
                             FullName = drive.Driver.FirstName + " " + drive.Driver.LastName,
-                            ID = drive.Driver.Id
+                            Username = drive.Driver.Username
                         });
                     }
                 }
             }
             return drivesCounter;
+        }
+
+        public static implicit operator Person(PersonDbo dbo)
+        {
+            return new Person
+            {
+                Username = dbo.Username,
+                FirstName = dbo.FirstName,
+                LastName = dbo.LastName,
+                Address = dbo.LastName,
+                Email = dbo.Email
+            };
         }
     }
 }

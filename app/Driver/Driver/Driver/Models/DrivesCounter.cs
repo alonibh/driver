@@ -2,8 +2,8 @@
 {
     public class DrivesCounter
     {
+        public string Username { get; set; }
         public string FullName { get; set; }
-        public int ID { get; set; }
         public int Counter { get; set; }
         public string CounterStr => GetCounterStr();
         private string GetCounterStr()

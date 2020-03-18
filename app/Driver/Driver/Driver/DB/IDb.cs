@@ -1,5 +1,5 @@
-﻿using Driver.DB.DBO;
-using System;
+﻿using Driver.API;
+using Driver.Dbo;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,13 +7,12 @@ namespace Driver.DB
 {
     public interface IDb
     {
-        Task<UserDbo> Login(string username, string password);
-        int SignUp(string username, string password, string firstName, string lastName, string address, Uri image);
-        Task AddDrive(string destination, DateTime date, string participantsStr, string driverStr);
-        List<DriveDbo> GetDrives(List<int> ids);
-        Task DeleteDrive(int driveId);
-        //UpdateDrive(int driveId, ...)
-        string GetUserFriends(int userId);
-        List<FriendDbo> GetFriends(List<int> ids);
+        Task<bool> Login(LoginRequest request);
+        Task<bool> SignUp(SignupRequest request);
+        Task<bool> AddDrive(AddDriveRequest request);
+        Task<DriveDbo> GetDrive(GetDriveRequest request);
+        Task<bool> DeleteDrive(DeleteDriveRequest request);
+        Task<PersonDbo> GetPerson(GetPersonRequest request);
+        Task<List<DriveDbo>> GetPersonDrives(GetPersonDrivesRequest request);
     }
 }

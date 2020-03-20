@@ -11,7 +11,7 @@
             <StackLayout>
                 <Label FontAttributes="Bold"/>
                 <ListView HeightRequest="100"
-                      ItemsSource="{Binding Friends}">
+                      ItemsSource="{Binding}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell IsEnabled="False">

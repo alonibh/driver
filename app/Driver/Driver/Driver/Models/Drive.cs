@@ -11,7 +11,7 @@ namespace Driver.Models
         public int Id { get; set; }
         public string Destination { get; set; }
         public DateTime Date { get; set; }
-        public List<Person> Participants { get; set; }
+        public List<Friend> Participants { get; set; }
         public Person Driver { get; set; }
         public string Description => Destination + ", " + Date.ToString("dd/MM/yyyy");
 
@@ -23,7 +23,7 @@ namespace Driver.Models
                 Date = dbo.Date,
                 Destination = dbo.Destination,
                 Driver = JsonConvert.DeserializeObject<PersonDbo>(dbo.Driver),
-                Participants = JsonConvert.DeserializeObject<List<PersonDbo>>(dbo.Participants).Select(o => (Person)o).ToList()
+                Participants = JsonConvert.DeserializeObject<List<FriendDbo>>(dbo.Participants).Select(o => (Friend)o).ToList()
             };
         }
     }

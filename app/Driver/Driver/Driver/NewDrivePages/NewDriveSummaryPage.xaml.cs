@@ -28,8 +28,8 @@ namespace Driver.NewDrivePages
             {
                 Destination = drive.Destination,
                 Date = drive.Date,
-                Driver = driver,
-                Participants = participants
+                Driver = drive.Driver.Username,
+                Participants = drive.Participants.Select(o => o.Username).ToList()
             });
 
             var person = (await App.Database.GetPerson(new GetPersonRequest
@@ -42,18 +42,6 @@ namespace Driver.NewDrivePages
                 Username = drive.Driver.Username
             });
 
-            List<string> friendsUsernames = JsonConvert.DeserializeObject<List<string>>(person.FriendsUsernames);
-            List<Person> friends = new List<Person>();
-
-            foreach (var frientUsername in friendsUsernames)
-            {
-                var friend = (await App.Database.GetPerson(new GetPersonRequest
-                {
-                    Username = frientUsername
-                })).Person;
-                friends.Add(friend);
-            }
-
             var bindingContext = new Person
             {
                 Username = person.Username,
@@ -62,7 +50,7 @@ namespace Driver.NewDrivePages
                 LastName = person.LastName,
                 Email = person.Email,
                 Drives = drives.Drives.Select(o => (Drive)o).ToList(),
-                Friends = friends
+                Friends = new List<Friend>()
             };
 
             var existingPages = Navigation.NavigationStack.ToList();

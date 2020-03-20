@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Driver.API
 {
@@ -6,7 +7,7 @@ namespace Driver.API
     {
         public string Destination { get; set; }
         public DateTime Date { get; set; }
-        public string Participants { get; set; }
+        public List<string> Participants { get; set; }
         public string Driver { get; set; }
     }
 

@@ -1,9 +1,8 @@
 ﻿using Driver.API;
 using Driver.Models;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace Driver.NewDrivePages
@@ -20,28 +19,12 @@ namespace Driver.NewDrivePages
             var drive = (Drive)BindingContext;
             drive.Destination = driveDestEntry.Text;
 
-            var person = (await App.Database.GetPerson(new GetPersonRequest
+            var friends = (await App.Database.GetPersonFriends(new GetPersonFriendsRequest
             {
                 Username = drive.Driver.Username
-            })).Person;
+            })).Friends.Select(o => (Friend)o);
 
-            List<Person> friends = new List<Person>();
-            if (person.FriendsUsernames != null)
-            {
-                List<string> friendsUsernames = JsonConvert.DeserializeObject<List<string>>(person.FriendsUsernames);
-
-                foreach (var frientUsername in friendsUsernames)
-                {
-                    var friend = (await App.Database.GetPerson(new GetPersonRequest
-                    {
-                        Username = frientUsername
-                    })).Person;
-
-                    friends.Add(friend);
-                }
-            }
-
-            ObservableCollection<Person> observableFriends = new ObservableCollection<Person>(friends);
+            var observableFriends = new ObservableCollection<Friend>(friends);
 
             await Navigation.PushAsync(new NewDriveParticipantsPage(observableFriends)
             {

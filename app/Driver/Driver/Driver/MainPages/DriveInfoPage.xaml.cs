@@ -1,6 +1,5 @@
 ﻿using Driver.API;
 using Driver.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,18 +41,6 @@ namespace Driver.MainPages
                         Username = driveInfo.Username
                     })).Drives;
 
-                    List<string> friendsUsernames = JsonConvert.DeserializeObject<List<string>>(person.FriendsUsernames);
-                    List<Person> friends = new List<Person>();
-
-                    foreach (var frientUsername in friendsUsernames)
-                    {
-                        var friend = (await App.Database.GetPerson(new GetPersonRequest
-                        {
-                            Username = frientUsername
-                        })).Person;
-                        friends.Add(friend);
-                    }
-
                     var existingPages = Navigation.NavigationStack.ToList();
 
                     await Navigation.PushAsync(new MainPage()
@@ -66,7 +53,7 @@ namespace Driver.MainPages
                             LastName = person.LastName,
                             Email = person.Email,
                             Drives = drives.Select(o => (Drive)o).ToList(),
-                            Friends = friends
+                            Friends = new List<Friend>()
                         }
                     });
 

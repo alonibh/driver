@@ -1,7 +1,6 @@
 ﻿using Driver.API;
 using Driver.MainPages;
 using Driver.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +17,13 @@ namespace Driver.LoginPages
 
         async void OnSigninButtonClicked(object sender, EventArgs args)
         {
-            bool isSuccessful = (await App.Database.Login(new LoginRequest
+            var loginResponse = await App.Database.Login(new LoginRequest
             {
                 Username = usernameEntry.Text,
                 Password = passwordEntry.Text
-            })).Success;
+            });
 
-            if (!isSuccessful)
+            if (!loginResponse.Success)
             {
                 await DisplayAlert("Error", "Wrong user name or password", "OK");
             }
@@ -39,30 +38,6 @@ namespace Driver.LoginPages
                 {
                     Username = usernameEntry.Text
                 })).Drives;
-                // TODO - When supporting specific friends for each user
-                //var friendsIds = JsonConvert.DeserializeObject<List<int>>(user.FriendsIds);
-                //List<Friend> friends = new List<Friend>();
-                //if (friendsIds != null)
-                //{
-                //    friends = App.Database.GetFriends(friendsIds).Select(o => (Friend)o).ToList();
-                //}
-
-                //TODO - Remove when supporting specific friends for each user
-
-                List<string> friendsUsernames = JsonConvert.DeserializeObject<List<string>>(person.FriendsUsernames);
-                List<Person> friends = new List<Person>();
-                if (friendsUsernames != null)
-                {
-
-                    foreach (var frientUsername in friendsUsernames)
-                    {
-                        var friend = (await App.Database.GetPerson(new GetPersonRequest
-                        {
-                            Username = frientUsername
-                        })).Person;
-                        friends.Add(friend);
-                    }
-                }
 
                 var currPage = Navigation.NavigationStack[0];
 
@@ -76,7 +51,7 @@ namespace Driver.LoginPages
                         LastName = person.LastName,
                         Email = person.Email,
                         Drives = drives.Select(o => (Drive)o).ToList(),
-                        Friends = friends
+                        Friends = new List<Friend>()
                     }
                 });
 

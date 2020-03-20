@@ -12,5 +12,6 @@ namespace Driver.DB
         Task<DeleteDriveResponse> DeleteDrive(DeleteDriveRequest request);
         Task<GetPersonResponse> GetPerson(GetPersonRequest request);
         Task<GetPersonDrivesResponse> GetPersonDrives(GetPersonDrivesRequest request);
+        Task<GetPersonFriendsResponse> GetPersonFriends(GetPersonFriendsRequest request);
     }
 }

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,67 +28,106 @@ namespace Driver.DB
         public async Task<LoginResponse> Login(LoginRequest request)
         {
             string json = JsonConvert.SerializeObject(request, _settings);
-            var res = await _client.PostAsync("/auth/login", new StringContent(json, Encoding.UTF8, "application/json"));
+            var res = await _client.PostAsync("auth/login", new StringContent(json, Encoding.UTF8, "application/json"));
+            var content = await res.Content.ReadAsStringAsync();
             res.EnsureSuccessStatusCode();
 
-            var content = await res.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<LoginResponse>(content);
+            string token = GetFirstInstance<string>("token", content);
+            _client.DefaultRequestHeaders.Add("Authorization", token);
+            var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(content);
+            return loginResponse;
         }
 
         public async Task<SignupResponse> SignUp(SignupRequest request)
         {
             string json = JsonConvert.SerializeObject(request, _settings);
             var res = await _client.PostAsync("auth/signup", new StringContent(json, Encoding.UTF8, "application/json"));
+            var content = await res.Content.ReadAsStringAsync();
             res.EnsureSuccessStatusCode();
 
-            var content = await res.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<SignupResponse>(content);
+            var signupResponse = JsonConvert.DeserializeObject<SignupResponse>(content);
+            return signupResponse;
         }
 
         public async Task<AddDriveResponse> AddDrive(AddDriveRequest request)
         {
             string json = JsonConvert.SerializeObject(request, _settings);
-            var res = await _client.PutAsync("/drive", new StringContent(json, Encoding.UTF8, "application/json"));
+            var res = await _client.PutAsync("drive", new StringContent(json, Encoding.UTF8, "application/json"));
+            var content = await res.Content.ReadAsStringAsync();
             res.EnsureSuccessStatusCode();
 
-            var content = await res.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<AddDriveResponse>(content);
+            var addDriveReponse = JsonConvert.DeserializeObject<AddDriveResponse>(content);
+            return addDriveReponse;
         }
 
         public async Task<GetDriveResponse> GetDrive(GetDriveRequest request)
         {
-            var res = await _client.GetAsync($"/drive/{request.DriveId}");
+            var res = await _client.GetAsync($"drive/{request.DriveId}");
+            var content = await res.Content.ReadAsStringAsync();
             res.EnsureSuccessStatusCode();
 
-            var content = await res.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<GetDriveResponse>(content);
+            var getDriveResponse = JsonConvert.DeserializeObject<GetDriveResponse>(content);
+            return getDriveResponse;
         }
 
         public async Task<DeleteDriveResponse> DeleteDrive(DeleteDriveRequest request)
         {
-            var res = await _client.DeleteAsync($"/drive/{request.DriveId}");
+            var res = await _client.DeleteAsync($"drive/{request.DriveId}");
+            var content = await res.Content.ReadAsStringAsync();
             res.EnsureSuccessStatusCode();
 
-            var content = await res.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<DeleteDriveResponse>(content);
+            var deleteDriveReponse = JsonConvert.DeserializeObject<DeleteDriveResponse>(content);
+            return deleteDriveReponse;
         }
 
         public async Task<GetPersonResponse> GetPerson(GetPersonRequest request)
         {
-            var res = await _client.GetAsync($"/person/{request.Username}");
+            var res = await _client.GetAsync($"person/{request.Username}");
+            var content = await res.Content.ReadAsStringAsync();
             res.EnsureSuccessStatusCode();
 
-            var content = await res.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<GetPersonResponse>(content);
+            var getPersonResponse = JsonConvert.DeserializeObject<GetPersonResponse>(content);
+            return getPersonResponse;
         }
 
         public async Task<GetPersonDrivesResponse> GetPersonDrives(GetPersonDrivesRequest request)
         {
-            var res = await _client.GetAsync($"/person/{request.Username}/drives");
+            var res = await _client.GetAsync($"person/{request.Username}/drives");
+            var content = await res.Content.ReadAsStringAsync();
             res.EnsureSuccessStatusCode();
 
+            var getPersonDrivesReponse = JsonConvert.DeserializeObject<GetPersonDrivesResponse>(content);
+            return getPersonDrivesReponse;
+        }
+
+        public async Task<GetPersonFriendsResponse> GetPersonFriends(GetPersonFriendsRequest request)
+        {
+            var res = await _client.GetAsync($"person/{request.Username}/friends");
             var content = await res.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<GetPersonDrivesResponse>(content);
+            res.EnsureSuccessStatusCode();
+
+            var getPersonFriendsReponse = JsonConvert.DeserializeObject<GetPersonFriendsResponse>(content);
+            return getPersonFriendsReponse;
+        }
+
+        private T GetFirstInstance<T>(string propertyName, string json)
+        {
+            using (var stringReader = new StringReader(json))
+            using (var jsonReader = new JsonTextReader(stringReader))
+            {
+                while (jsonReader.Read())
+                {
+                    if (jsonReader.TokenType == JsonToken.PropertyName
+                        && (string)jsonReader.Value == propertyName)
+                    {
+                        jsonReader.Read();
+
+                        var serializer = new JsonSerializer();
+                        return serializer.Deserialize<T>(jsonReader);
+                    }
+                }
+                throw new Exception("No token received from server");
+            }
         }
 
         private class CamelCaseExceptDictionaryKeysResolver : CamelCasePropertyNamesContractResolver
@@ -102,5 +142,4 @@ namespace Driver.DB
             }
         }
     }
-
 }

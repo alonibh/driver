@@ -12,7 +12,7 @@ namespace Driver.Models
         public string Address { get; set; }
         public string Email { get; set; }
         public List<Drive> Drives { get; set; }
-        public List<Person> Friends { get; set; }
+        public List<Friend> Friends { get; set; }
         public List<DrivesCounter> DrivesCounter => GetDrivesCounter();
         public string FullName => FirstName + " " + LastName;
 

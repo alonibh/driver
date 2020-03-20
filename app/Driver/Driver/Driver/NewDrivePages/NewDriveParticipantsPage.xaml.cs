@@ -8,7 +8,7 @@ namespace Driver.NewDrivePages
 {
     public partial class NewDriveParticipantsPage : ContentPage
     {
-        public NewDriveParticipantsPage(ObservableCollection<Person> observableFriends)
+        public NewDriveParticipantsPage(ObservableCollection<Friend> observableFriends)
         {
             InitializeComponent();
             friendsCollectionView.BindingContext = observableFriends;
@@ -18,16 +18,19 @@ namespace Driver.NewDrivePages
         {
             var drive = (Drive)BindingContext;
             var friends = friendsCollectionView.SelectedItems;
-            List<Person> participants = new List<Person>();
-            foreach (Person friend in friends)
+            List<Friend> participants = new List<Friend>();
+            foreach (Friend friend in friends)
             {
-                participants.Add(new Person
+                participants.Add(new Friend
                 {
                     Username = friend.Username,
                     FirstName = friend.FirstName,
-                    LastName = friend.LastName
+                    LastName = friend.LastName,
+                    Address = friend.Address,
+                    Status = friend.Status
                 });
             }
+
             drive.Participants = participants;
             await Navigation.PushAsync(new NewDriveSummaryPage()
             {

@@ -14,18 +14,27 @@ namespace Driver.LoginPages
 
         async void OnSignupButtonClicked(object sender, EventArgs args)
         {
-            bool isSuccessful = (await App.Database.SignUp(new SignupRequest
+            SignupResponse signupResponse;
+            try
             {
-                Username = usernameEntry.Text,
-                Password = passwordEntry.Text,
-                FirstName = firstNameEntry.Text,
-                LastName = lastNameEntry.Text,
-                Address = addressEntry.Text,
-                Email = emailEntry.Text
-            })).Success;
+                signupResponse = await App.Database.SignUp(new SignupRequest
+                {
+                    Username = usernameEntry.Text,
+                    Password = passwordEntry.Text,
+                    FirstName = firstNameEntry.Text,
+                    LastName = lastNameEntry.Text,
+                    Address = addressEntry.Text,
+                    Email = emailEntry.Text
+                });
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                return;
+            }
 
-            if (!isSuccessful)
-                await DisplayAlert("Error", "Unable to add user", "OK");
+            if (!signupResponse.Success)
+                await DisplayAlert("Error", "Unable to sign user", "OK");
 
             else
             {

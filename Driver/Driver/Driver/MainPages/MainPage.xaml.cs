@@ -17,22 +17,31 @@ namespace Driver.MainPages
             DataGridComponent.Init();
         }
 
-        async void OnDriveTapped(object sender, ItemTappedEventArgs e)
+        async void OnDriveTapped(object sender, ItemTappedEventArgs itemTapped)
         {
             var person = (Person)BindingContext;
 
             ListView lv = (ListView)sender;
             lv.SelectedItem = null;
 
-            string driveId = (e.Item as Drive).Id;
-            var drive = (await App.Database.GetDrive(new GetDriveRequest
+            string driveId = (itemTapped.Item as Drive).Id;
+            GetDriveResponse getDriveResponse;
+            try
             {
-                DriveId = driveId
-            })).Drive;
+                getDriveResponse = await App.Database.GetDrive(new GetDriveRequest
+                {
+                    DriveId = driveId
+                });
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                return;
+            }
 
             DriveInfo driveInfo = new DriveInfo
             {
-                Drive = drive,
+                Drive = getDriveResponse.Drive,
                 Username = person.Username
             };
 
@@ -50,14 +59,24 @@ namespace Driver.MainPages
         async void OnFriendsListButtonClicked(object sender, EventArgs args)
         {
             var person = (Person)BindingContext;
-            var friends = (await App.Database.GetPersonFriends(new GetPersonFriendsRequest
+
+            GetPersonFriendsResponse getPersonFriendsResponse;
+            try
             {
-                Username = person.Username
-            })).Friends.Select(o => (Friend)o);
+                getPersonFriendsResponse = (await App.Database.GetPersonFriends(new GetPersonFriendsRequest
+                {
+                    Username = person.Username
+                }));
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                return;
+            }
 
             await Navigation.PushAsync(new FriendsPage()
             {
-                BindingContext = friends
+                BindingContext = getPersonFriendsResponse.Friends.Select(o => (Friend)o)
             });
         }
 

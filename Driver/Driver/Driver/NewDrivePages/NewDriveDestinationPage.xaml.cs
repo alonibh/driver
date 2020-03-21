@@ -14,16 +14,26 @@ namespace Driver.NewDrivePages
             InitializeComponent();
         }
 
-        async void OnNextButtonClicked(object sender, EventArgs e)
+        async void OnNextButtonClicked(object sender, EventArgs args)
         {
             var drive = (Drive)BindingContext;
             drive.Destination = driveDestEntry.Text;
 
-            var friends = (await App.Database.GetPersonFriends(new GetPersonFriendsRequest
+            GetPersonFriendsResponse getPersonFriendsResponse;
+            try
             {
-                Username = drive.Driver.Username
-            })).Friends.Select(o => (Friend)o);
+                getPersonFriendsResponse = (await App.Database.GetPersonFriends(new GetPersonFriendsRequest
+                {
+                    Username = drive.Driver.Username
+                }));
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                return;
+            }
 
+            var friends = getPersonFriendsResponse.Friends.Select(o => (Friend)o);
             var observableFriends = new ObservableCollection<Friend>(friends);
 
             await Navigation.PushAsync(new NewDriveParticipantsPage(observableFriends)

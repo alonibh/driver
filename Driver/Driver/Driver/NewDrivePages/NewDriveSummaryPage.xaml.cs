@@ -24,33 +24,65 @@ namespace Driver.NewDrivePages
             string driver = JsonConvert.SerializeObject(drive.Driver);
             var participants = drive.Participants;
             participants.Add(drive.Driver);
-
-            await App.Database.AddDrive(new AddDriveRequest
+            AddDriveResponse addDriveResponse = null;
+            try
             {
-                Dest = drive.Destination,
-                Date = drive.Date,
-                Driver = drive.Driver.Username,
-                Participants = participants.Select(o => o.Username).ToList()
-            });
-
-            var person = (await App.Database.GetPerson(new GetPersonRequest
+                addDriveResponse = await App.Database.AddDrive(new AddDriveRequest
+                {
+                    Dest = drive.Destination,
+                    Date = drive.Date,
+                    Driver = drive.Driver.Username,
+                    Participants = participants.Select(o => o.Username).ToList()
+                });
+            }
+            catch (Exception e)
             {
-                Username = drive.Driver.Username
-            })).Person;
+                await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                return;
+            }
 
-            var drives = await App.Database.GetPersonDrives(new GetPersonDrivesRequest
+            if (!addDriveResponse.Success)
             {
-                Username = drive.Driver.Username
-            });
+                await DisplayAlert("Error", "Unable to add drive", "OK");
+                return;
+            }
+
+            GetPersonResponse getPersonResponse;
+            try
+            {
+                getPersonResponse = (await App.Database.GetPerson(new GetPersonRequest
+                {
+                    Username = drive.Driver.Username
+                }));
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                return;
+            }
+
+            GetPersonDrivesResponse getPersonDrivesResponse;
+            try
+            {
+                getPersonDrivesResponse = (await App.Database.GetPersonDrives(new GetPersonDrivesRequest
+                {
+                    Username = drive.Driver.Username
+                }));
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                return;
+            }
 
             var bindingContext = new Person
             {
-                Username = person.Username,
-                Address = person.Address,
-                FirstName = person.FirstName,
-                LastName = person.LastName,
-                Email = person.Email,
-                Drives = drives.Drives.Select(o => (Drive)o).ToList(),
+                Username = getPersonResponse.Person.Username,
+                Address = getPersonResponse.Person.Address,
+                FirstName = getPersonResponse.Person.FirstName,
+                LastName = getPersonResponse.Person.LastName,
+                Email = getPersonResponse.Person.Email,
+                Drives = getPersonDrivesResponse.Drives.Select(o => (Drive)o).ToList(),
                 Friends = new List<Friend>()
             };
 

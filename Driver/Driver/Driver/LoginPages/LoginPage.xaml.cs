@@ -17,11 +17,20 @@ namespace Driver.LoginPages
 
         async void OnSigninButtonClicked(object sender, EventArgs args)
         {
-            var loginResponse = await App.Database.Login(new LoginRequest
+            LoginResponse loginResponse = null;
+            try
             {
-                Username = usernameEntry.Text,
-                Password = passwordEntry.Text
-            });
+                loginResponse = await App.Database.Login(new LoginRequest
+                {
+                    Username = usernameEntry.Text,
+                    Password = passwordEntry.Text
+                });
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                return;
+            }
 
             if (!loginResponse.Success)
             {
@@ -29,26 +38,48 @@ namespace Driver.LoginPages
             }
             else
             {
-                var person = (await App.Database.GetPerson(new GetPersonRequest
-                {
-                    Username = usernameEntry.Text
-                })).Person;
+                Application.Current.Properties["username"] = usernameEntry.Text;
+                Application.Current.Properties["token"] = loginResponse.Token;
+                App.Database.SetToken(loginResponse.Token);
 
-                var drives = (await App.Database.GetPersonDrives(new GetPersonDrivesRequest
+                GetPersonResponse getPersonResponse;
+                try
                 {
-                    Username = usernameEntry.Text
-                })).Drives;
+                    getPersonResponse = (await App.Database.GetPerson(new GetPersonRequest
+                    {
+                        Username = usernameEntry.Text
+                    }));
+                }
+                catch (Exception e)
+                {
+                    await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                    return;
+                }
+
+                GetPersonDrivesResponse getPersonDrivesResponse;
+                try
+                {
+                    getPersonDrivesResponse = (await App.Database.GetPersonDrives(new GetPersonDrivesRequest
+                    {
+                        Username = usernameEntry.Text
+                    }));
+                }
+                catch (Exception e)
+                {
+                    await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                    return;
+                }
 
                 MainPage mainPage = new MainPage()
                 {
                     BindingContext = new Person
                     {
-                        Username = person.Username,
-                        Address = person.Address,
-                        FirstName = person.FirstName,
-                        LastName = person.LastName,
-                        Email = person.Email,
-                        Drives = drives.Select(o => (Drive)o).ToList(),
+                        Username = getPersonResponse.Person.Username,
+                        Address = getPersonResponse.Person.Address,
+                        FirstName = getPersonResponse.Person.FirstName,
+                        LastName = getPersonResponse.Person.LastName,
+                        Email = getPersonResponse.Person.Email,
+                        Drives = getPersonDrivesResponse.Drives.Select(o => (Drive)o).ToList(),
                         Friends = new List<Friend>()
                     }
                 };

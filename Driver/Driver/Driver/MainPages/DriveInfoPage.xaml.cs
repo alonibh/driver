@@ -20,36 +20,68 @@ namespace Driver.MainPages
             if (answer)
             {
                 var driveInfo = (DriveInfo)BindingContext;
-                bool isSeccessful = (await App.Database.DeleteDrive(new DeleteDriveRequest
-                {
-                    DriveId = driveInfo.Drive.Id
-                })).Success;
 
-                if (!isSeccessful)
+                DeleteDriveResponse deleteDriveResponse;
+                try
+                {
+                    deleteDriveResponse = await App.Database.DeleteDrive(new DeleteDriveRequest
+                    {
+                        DriveId = driveInfo.Drive.Id
+                    });
+                }
+                catch (Exception e)
+                {
+                    await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                    return;
+                }
+
+                if (!deleteDriveResponse.Success)
+                {
                     await DisplayAlert("Error", "Failed to delete drive", "OK");
+                    return;
+                }
+
                 else
                 {
                     var mainPage = Navigation.NavigationStack[0];
 
-                    var person = (await App.Database.GetPerson(new GetPersonRequest
+                    GetPersonResponse getPersonResponse;
+                    try
                     {
-                        Username = driveInfo.Username
-                    })).Person;
+                        getPersonResponse = (await App.Database.GetPerson(new GetPersonRequest
+                        {
+                            Username = driveInfo.Username
+                        }));
+                    }
+                    catch (Exception e)
+                    {
+                        await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                        return;
+                    }
 
-                    var drives = (await App.Database.GetPersonDrives(new GetPersonDrivesRequest
+                    GetPersonDrivesResponse getPersonDrivesResponse;
+                    try
                     {
-                        Username = driveInfo.Username
-                    })).Drives;
+                        getPersonDrivesResponse = (await App.Database.GetPersonDrives(new GetPersonDrivesRequest
+                        {
+                            Username = driveInfo.Username
+                        }));
+                    }
+                    catch (Exception e)
+                    {
+                        await DisplayAlert("Error", $"The server returned an error: {e.Message}", "OK");
+                        return;
+                    }
 
 
                     Navigation.NavigationStack[0].BindingContext = new Person
                     {
-                        Username = person.Username,
-                        Address = person.Address,
-                        FirstName = person.FirstName,
-                        LastName = person.LastName,
-                        Email = person.Email,
-                        Drives = drives.Select(o => (Drive)o).ToList(),
+                        Username = getPersonResponse.Person.Username,
+                        Address = getPersonResponse.Person.Address,
+                        FirstName = getPersonResponse.Person.FirstName,
+                        LastName = getPersonResponse.Person.LastName,
+                        Email = getPersonResponse.Person.Email,
+                        Drives = getPersonDrivesResponse.Drives.Select(o => (Drive)o).ToList(),
                         Friends = new List<Friend>()
                     };
 

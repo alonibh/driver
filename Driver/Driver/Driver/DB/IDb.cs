@@ -1,9 +1,10 @@
 ﻿using Driver.API;
+using System;
 using System.Threading.Tasks;
 
 namespace Driver.DB
 {
-    public interface IDb
+    public interface IDb : IDisposable
     {
         Task<LoginResponse> Login(LoginRequest request);
         Task<SignupResponse> SignUp(SignupRequest request);
@@ -13,5 +14,6 @@ namespace Driver.DB
         Task<GetPersonResponse> GetPerson(GetPersonRequest request);
         Task<GetPersonDrivesResponse> GetPersonDrives(GetPersonDrivesRequest request);
         Task<GetPersonFriendsResponse> GetPersonFriends(GetPersonFriendsRequest request);
+        void SetToken(string token);
     }
 }

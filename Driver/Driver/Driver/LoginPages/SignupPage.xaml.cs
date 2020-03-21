@@ -1,7 +1,6 @@
 ﻿using Driver.API;
 using Plugin.Toast;
 using System;
-using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace Driver.LoginPages
@@ -23,21 +22,15 @@ namespace Driver.LoginPages
                 LastName = lastNameEntry.Text,
                 Address = addressEntry.Text,
                 Email = emailEntry.Text
-            })).Success;
+            }).ConfigureAwait(false)).Success;
 
             if (!isSuccessful)
-                await DisplayAlert("Error", "Unable to add user", "OK");
+                await DisplayAlert("Error", "Unable to add user", "OK").ConfigureAwait(false);
 
             else
             {
                 CrossToastPopUp.Current.ShowToastMessage("Success!");
-
-                var prevPages = new List<Page>(Navigation.NavigationStack);
-
-                await Navigation.PushAsync(new LoginPage());
-
-                foreach (Page page in prevPages)
-                    Navigation.RemovePage(page);
+                await Navigation.PopToRootAsync().ConfigureAwait(false);
             }
         }
     }

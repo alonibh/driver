@@ -18,16 +18,15 @@ namespace Driver.NewDrivePages
         {
             var drive = (Drive)BindingContext;
             var friends = friendsCollectionView.SelectedItems;
-            List<Friend> participants = new List<Friend>();
+            List<DriveParticipant> participants = new List<DriveParticipant>();
             foreach (Friend friend in friends)
             {
-                participants.Add(new Friend
+                participants.Add(new DriveParticipant
                 {
                     Username = friend.Username,
                     FirstName = friend.FirstName,
                     LastName = friend.LastName,
                     Address = friend.Address,
-                    Status = friend.Status
                 });
             }
 
@@ -35,7 +34,7 @@ namespace Driver.NewDrivePages
             await Navigation.PushAsync(new NewDriveSummaryPage()
             {
                 BindingContext = drive
-            });
+            }).ConfigureAwait(false);
         }
     }
 }

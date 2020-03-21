@@ -22,26 +22,26 @@ namespace Driver.NewDrivePages
             var drive = (Drive)BindingContext;
 
             string driver = JsonConvert.SerializeObject(drive.Driver);
-            var participants = drive.Participants.Select(o => o.Username).ToList();
-            participants.Add(drive.Driver.Username);
+            var participants = drive.Participants;
+            participants.Add(drive.Driver);
 
             await App.Database.AddDrive(new AddDriveRequest
             {
                 Dest = drive.Destination,
                 Date = drive.Date,
                 Driver = drive.Driver.Username,
-                Participants = participants
-            });
+                Participants = participants.Select(o => o.Username).ToList()
+            }).ConfigureAwait(false);
 
             var person = (await App.Database.GetPerson(new GetPersonRequest
             {
                 Username = drive.Driver.Username
-            })).Person;
+            }).ConfigureAwait(false)).Person;
 
             var drives = await App.Database.GetPersonDrives(new GetPersonDrivesRequest
             {
                 Username = drive.Driver.Username
-            });
+            }).ConfigureAwait(false);
 
             var bindingContext = new Person
             {
@@ -54,17 +54,12 @@ namespace Driver.NewDrivePages
                 Friends = new List<Friend>()
             };
 
-            var existingPages = Navigation.NavigationStack.ToList();
-
-            await Navigation.PushAsync(new MainPage
+            MainPage mainPage = new MainPage
             {
                 BindingContext = bindingContext
-            });
-
-            foreach (var page in existingPages)
-            {
-                Navigation.RemovePage(page);
-            }
+            };
+            Navigation.NavigationStack[0].BindingContext = bindingContext;
+            await Navigation.PopToRootAsync().ConfigureAwait(false);
         }
     }
 }

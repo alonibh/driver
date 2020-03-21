@@ -21,27 +21,25 @@ namespace Driver.LoginPages
             {
                 Username = usernameEntry.Text,
                 Password = passwordEntry.Text
-            });
+            }).ConfigureAwait(false);
 
             if (!loginResponse.Success)
             {
-                await DisplayAlert("Error", "Wrong user name or password", "OK");
+                await DisplayAlert("Error", "Wrong user name or password", "OK").ConfigureAwait(false);
             }
             else
             {
                 var person = (await App.Database.GetPerson(new GetPersonRequest
                 {
                     Username = usernameEntry.Text
-                })).Person;
+                }).ConfigureAwait(false)).Person;
 
                 var drives = (await App.Database.GetPersonDrives(new GetPersonDrivesRequest
                 {
                     Username = usernameEntry.Text
-                })).Drives;
+                }).ConfigureAwait(false)).Drives;
 
-                var currPage = Navigation.NavigationStack[0];
-
-                await Navigation.PushAsync(new MainPage()
+                MainPage mainPage = new MainPage()
                 {
                     BindingContext = new Person
                     {
@@ -53,15 +51,16 @@ namespace Driver.LoginPages
                         Drives = drives.Select(o => (Drive)o).ToList(),
                         Friends = new List<Friend>()
                     }
-                });
+                };
 
-                Navigation.RemovePage(currPage);
+                Navigation.InsertPageBefore(mainPage, this);
+                await Navigation.PopAsync().ConfigureAwait(false);
             }
         }
 
         async void OnSignupButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new SignUpPage());
+            await Navigation.PushAsync(new SignUpPage()).ConfigureAwait(false);
         }
     }
 }

@@ -69,7 +69,7 @@
             <StackLayout Margin="{StaticResource PageMargin}">
                 <Label Text="Past Drives" FontAttributes="Bold"/>
                 <ListView x:Name="drivesListView"
-                          ItemTapped="onDriveTapped"
+                          ItemTapped="OnDriveTapped"
                           HeightRequest="120"
                           ItemsSource="{Binding Drives}">
                     <ListView.ItemTemplate>

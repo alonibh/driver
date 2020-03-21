@@ -22,14 +22,14 @@ namespace Driver.NewDrivePages
             var friends = (await App.Database.GetPersonFriends(new GetPersonFriendsRequest
             {
                 Username = drive.Driver.Username
-            })).Friends.Select(o => (Friend)o);
+            }).ConfigureAwait(false)).Friends.Select(o => (Friend)o);
 
             var observableFriends = new ObservableCollection<Friend>(friends);
 
-            await Navigation.PushAsync(new NewDriveParticipantsPage(observableFriends)
+            await Navigation.PushModalAsync(new NewDriveParticipantsPage(observableFriends)
             {
                 BindingContext = drive
-            });
+            }).ConfigureAwait(false);
         }
     }
 }

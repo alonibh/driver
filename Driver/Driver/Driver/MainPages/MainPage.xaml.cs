@@ -17,7 +17,7 @@ namespace Driver.MainPages
             DataGridComponent.Init();
         }
 
-        async void onDriveTapped(object sender, ItemTappedEventArgs e)
+        async void OnDriveTapped(object sender, ItemTappedEventArgs e)
         {
             var person = (Person)BindingContext;
 
@@ -28,7 +28,7 @@ namespace Driver.MainPages
             var drive = (await App.Database.GetDrive(new GetDriveRequest
             {
                 DriveId = driveId
-            })).Drive;
+            }).ConfigureAwait(false)).Drive;
 
             DriveInfo driveInfo = new DriveInfo
             {
@@ -39,7 +39,7 @@ namespace Driver.MainPages
             await Navigation.PushAsync(new DriveInfoPage()
             {
                 BindingContext = driveInfo
-            });
+            }).ConfigureAwait(false);
         }
 
         async void OnSettingsButtonClicked(object sender, EventArgs args)
@@ -50,16 +50,15 @@ namespace Driver.MainPages
         async void OnFriendsListButtonClicked(object sender, EventArgs args)
         {
             var person = (Person)BindingContext;
-
             var friends = (await App.Database.GetPersonFriends(new GetPersonFriendsRequest
             {
                 Username = person.Username
-            })).Friends.Select(o => (Friend)o);
+            }).ConfigureAwait(false)).Friends.Select(o => (Friend)o);
 
             await Navigation.PushAsync(new FriendsPage()
             {
                 BindingContext = friends
-            });
+            }).ConfigureAwait(false);
         }
 
         async void OnNewDriveButtonClicked(object sender, EventArgs args)
@@ -68,20 +67,26 @@ namespace Driver.MainPages
             var drive = new Drive
             {
                 Date = DateTime.Now,
-                Driver = person
+                Driver = new DriveParticipant
+                {
+                    Username = person.Username,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    Address = person.Address
+                }
             };
 
-            await Navigation.PushAsync(new NewDriveDestinationPage()
+            await Navigation.PushModalAsync(new NewDriveDestinationPage()
             {
                 BindingContext = drive
-            });
+            }).ConfigureAwait(false);
         }
 
         protected override bool OnBackButtonPressed()
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
-                var result = await this.DisplayAlert("Alert!", "Do you really want to exit?", "Yes", "No");
+                var result = await DisplayAlert("Alert!", "Do you really want to exit?", "Yes", "No").ConfigureAwait(false);
                 if (result)
                     DependencyService.Get<IAndroidMethods>().CloseApp();
             });

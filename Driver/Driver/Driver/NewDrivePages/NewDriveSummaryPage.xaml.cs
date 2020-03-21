@@ -20,16 +20,17 @@ namespace Driver.NewDrivePages
         async void OnAddDriveButtonClicked(object sender, EventArgs args)
         {
             var drive = (Drive)BindingContext;
-            string participants = JsonConvert.SerializeObject(drive.Participants);
 
             string driver = JsonConvert.SerializeObject(drive.Driver);
+            var participants = drive.Participants.Select(o => o.Username).ToList();
+            participants.Add(drive.Driver.Username);
 
             await App.Database.AddDrive(new AddDriveRequest
             {
-                Destination = drive.Destination,
+                Dest = drive.Destination,
                 Date = drive.Date,
                 Driver = drive.Driver.Username,
-                Participants = drive.Participants.Select(o => o.Username).ToList()
+                Participants = participants
             });
 
             var person = (await App.Database.GetPerson(new GetPersonRequest

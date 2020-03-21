@@ -1,2 +1,2 @@
 # driver
-Driver app and backend repo
+Driver app repo

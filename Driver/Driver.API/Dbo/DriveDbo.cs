@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Driver.API
+namespace Driver.API.Dbo
 {
-    public class AddDriveRequest
+    public class DriveDbo
     {
-        public string Destination { get; set; }
+        public int Id { get; set; }
+        public string Dest { get; set; }
         public DateTime Date { get; set; }
         public List<string> Participants { get; set; }
         public string Driver { get; set; }
-    }
-
-    public class AddDriveResponse
-    {
-        public bool Success { get; set; }
     }
 }

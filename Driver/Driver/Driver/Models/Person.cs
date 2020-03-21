@@ -25,7 +25,7 @@ namespace Driver.Models
             {
                 if (drive.Driver.Username == Username) // If you are the driver
                 {
-                    foreach (var participant in drive.Participants)
+                    foreach (var participant in drive.Participants.Where(o => o.Username != Username))
                     {
                         if (drivesCounter.Any(o => o.Username == participant.Username))
                         {

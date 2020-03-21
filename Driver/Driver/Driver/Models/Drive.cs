@@ -7,7 +7,7 @@ namespace Driver.Models
 {
     public class Drive
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Destination { get; set; }
         public DateTime Date { get; set; }
         public List<DriveParticipant> Participants { get; set; }
@@ -18,7 +18,7 @@ namespace Driver.Models
         {
             return new Drive
             {
-                Id = dbo.Id,
+                Id = dbo._id,
                 Date = dbo.Date,
                 Destination = dbo.Dest,
                 Driver = dbo.Driver,

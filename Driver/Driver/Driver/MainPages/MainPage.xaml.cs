@@ -24,11 +24,11 @@ namespace Driver.MainPages
             ListView lv = (ListView)sender;
             lv.SelectedItem = null;
 
-            int driveId = (e.Item as Drive).Id;
+            string driveId = (e.Item as Drive).Id;
             var drive = (await App.Database.GetDrive(new GetDriveRequest
             {
                 DriveId = driveId
-            }).ConfigureAwait(false)).Drive;
+            })).Drive;
 
             DriveInfo driveInfo = new DriveInfo
             {
@@ -39,7 +39,7 @@ namespace Driver.MainPages
             await Navigation.PushAsync(new DriveInfoPage()
             {
                 BindingContext = driveInfo
-            }).ConfigureAwait(false);
+            });
         }
 
         async void OnSettingsButtonClicked(object sender, EventArgs args)
@@ -53,12 +53,12 @@ namespace Driver.MainPages
             var friends = (await App.Database.GetPersonFriends(new GetPersonFriendsRequest
             {
                 Username = person.Username
-            }).ConfigureAwait(false)).Friends.Select(o => (Friend)o);
+            })).Friends.Select(o => (Friend)o);
 
             await Navigation.PushAsync(new FriendsPage()
             {
                 BindingContext = friends
-            }).ConfigureAwait(false);
+            });
         }
 
         async void OnNewDriveButtonClicked(object sender, EventArgs args)
@@ -76,17 +76,17 @@ namespace Driver.MainPages
                 }
             };
 
-            await Navigation.PushModalAsync(new NewDriveDestinationPage()
+            await Navigation.PushAsync(new NewDriveDestinationPage()
             {
                 BindingContext = drive
-            }).ConfigureAwait(false);
+            });
         }
 
         protected override bool OnBackButtonPressed()
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
-                var result = await DisplayAlert("Alert!", "Do you really want to exit?", "Yes", "No").ConfigureAwait(false);
+                var result = await DisplayAlert("Alert!", "Do you really want to exit?", "Yes", "No");
                 if (result)
                     DependencyService.Get<IAndroidMethods>().CloseApp();
             });

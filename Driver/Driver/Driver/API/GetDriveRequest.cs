@@ -4,7 +4,7 @@ namespace Driver.API
 {
     public class GetDriveRequest
     {
-        public int DriveId { get; set; }
+        public string DriveId { get; set; }
     }
 
     public class GetDriveResponse

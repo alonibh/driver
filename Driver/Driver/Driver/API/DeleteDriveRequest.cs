@@ -2,7 +2,7 @@
 {
     public class DeleteDriveRequest
     {
-        public int DriveId { get; set; }
+        public string DriveId { get; set; }
     }
 
     public class DeleteDriveResponse

@@ -31,17 +31,17 @@ namespace Driver.NewDrivePages
                 Date = drive.Date,
                 Driver = drive.Driver.Username,
                 Participants = participants.Select(o => o.Username).ToList()
-            }).ConfigureAwait(false);
+            });
 
             var person = (await App.Database.GetPerson(new GetPersonRequest
             {
                 Username = drive.Driver.Username
-            }).ConfigureAwait(false)).Person;
+            })).Person;
 
             var drives = await App.Database.GetPersonDrives(new GetPersonDrivesRequest
             {
                 Username = drive.Driver.Username
-            }).ConfigureAwait(false);
+            });
 
             var bindingContext = new Person
             {
@@ -58,8 +58,9 @@ namespace Driver.NewDrivePages
             {
                 BindingContext = bindingContext
             };
+
             Navigation.NavigationStack[0].BindingContext = bindingContext;
-            await Navigation.PopToRootAsync().ConfigureAwait(false);
+            await Navigation.PopToRootAsync(true);
         }
     }
 }

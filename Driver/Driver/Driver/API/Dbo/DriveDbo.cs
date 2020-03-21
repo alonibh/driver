@@ -5,7 +5,7 @@ namespace Driver.API.Dbo
 {
     public class DriveDbo
     {
-        public int Id { get; set; }
+        public string _id { get; set; }
         public string Dest { get; set; }
         public DateTime Date { get; set; }
         public List<DriveParticipantDbo> Participants { get; set; }

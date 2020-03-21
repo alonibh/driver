@@ -22,15 +22,15 @@ namespace Driver.LoginPages
                 LastName = lastNameEntry.Text,
                 Address = addressEntry.Text,
                 Email = emailEntry.Text
-            }).ConfigureAwait(false)).Success;
+            })).Success;
 
             if (!isSuccessful)
-                await DisplayAlert("Error", "Unable to add user", "OK").ConfigureAwait(false);
+                await DisplayAlert("Error", "Unable to add user", "OK");
 
             else
             {
                 CrossToastPopUp.Current.ShowToastMessage("Success!");
-                await Navigation.PopToRootAsync().ConfigureAwait(false);
+                await Navigation.PopToRootAsync();
             }
         }
     }

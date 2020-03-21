@@ -34,7 +34,7 @@ namespace Driver.NewDrivePages
             await Navigation.PushAsync(new NewDriveSummaryPage()
             {
                 BindingContext = drive
-            }).ConfigureAwait(false);
+            });
         }
     }
 }

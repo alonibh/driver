@@ -9,7 +9,6 @@
     <StackLayout VerticalOptions="Center">
         <Entry x:Name="usernameEntry"
                Placeholder="Username"
-               PlaceholderColor="Olive"
                VerticalOptions="Center"/>
         <Entry x:Name="passwordEntry"
                IsPassword="true"

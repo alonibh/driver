@@ -10,11 +10,11 @@
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
             <StackLayout Orientation="Horizontal">
-                <Button x:Name="settingsButton"
-                        Text="Settings"
+                <Button x:Name="logoutButton"
+                        Text="Logout"
                         HorizontalOptions="Start"
                         VerticalOptions="Start"
-                        Clicked="OnSettingsButtonClicked" />
+                        Clicked="OnLogoutButtonClicked" />
                 <Label
                     x:Name="mainLabel"
                     Text="{Binding FirstName, StringFormat='Hello, {0:N}'}"

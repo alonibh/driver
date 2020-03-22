@@ -114,6 +114,9 @@ namespace Driver.DB
             if (_client.DefaultRequestHeaders.Contains("Authorization"))
                 _client.DefaultRequestHeaders.Remove("Authorization");
 
+            if (token == null)
+                return;
+
             _client.DefaultRequestHeaders.Add("Authorization", token);
         }
 

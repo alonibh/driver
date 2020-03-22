@@ -10,9 +10,10 @@
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
             <Entry x:Name="driveDestEntry"
-                Placeholder="Enter Drive Destination"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+                   Keyboard="Text"
+                   Placeholder="Enter Drive Destination"
+                   VerticalOptions="CenterAndExpand" 
+                   HorizontalOptions="CenterAndExpand" />
             <Button x:Name="nextButton"
                 Text="Next"
                 Clicked="OnNextButtonClicked" />

@@ -1,6 +1,8 @@
 ﻿using Driver.API;
+using Driver.LoginPages;
 using Driver.Models;
 using Driver.NewDrivePages;
+using Plugin.Toast;
 using System;
 using System.Linq;
 using Xamarin.Forms;
@@ -51,9 +53,13 @@ namespace Driver.MainPages
             });
         }
 
-        async void OnSettingsButtonClicked(object sender, EventArgs args)
+        async void OnLogoutButtonClicked(object sender, EventArgs args)
         {
-
+            App.Database.SetToken(null);
+            CrossToastPopUp.Current.ShowToastMessage("Successfully logged out");
+            var currPage = Navigation.NavigationStack.Single();
+            await Navigation.PushAsync(new LoginPage());
+            Navigation.RemovePage(currPage);
         }
 
         async void OnFriendsListButtonClicked(object sender, EventArgs args)

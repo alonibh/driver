@@ -95,9 +95,6 @@ namespace Driver.NewDrivePages
             await Navigation.PushAsync(mainPage);
             foreach (var page in existingPages)
                 Navigation.RemovePage(page);
-
-            //Navigation.NavigationStack[0].BindingContext = bindingContext;
-            //await Navigation.PopToRootAsync(true);
         }
     }
 }

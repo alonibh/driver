@@ -17,8 +17,7 @@
 
             <StackLayout>
                 <Label Text="Participants" FontAttributes="Bold"/>
-                <ListView HeightRequest="100"
-                      ItemsSource="{Binding Drive.Participants}">
+                <ListView ItemsSource="{Binding Drive.Participants}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell IsEnabled="False">

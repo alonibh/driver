@@ -8,17 +8,17 @@
              Title="New Drive">
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
-            <Label Text="Select friends" />
-            <StackLayout>
+            <Label Text="Select friends" FontAttributes="Bold" />
+            <StackLayout VerticalOptions="StartAndExpand">
                 <Label FontAttributes="Bold"/>
                 <CollectionView x:Name="friendsCollectionView"
-                                HeightRequest="100"
+                                VerticalOptions="StartAndExpand"
                                 SelectionMode="Multiple"
                                 ItemsSource="{Binding}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid HeightRequest="30">
-                                <Label Text="{Binding FullName}"/>
+                            <Grid HeightRequest="40">
+                                <Label VerticalOptions="Center" Text="{Binding FullName} "/>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

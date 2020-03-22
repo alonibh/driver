@@ -15,15 +15,16 @@
                 <Label Text="{Binding Driver.FullName, StringFormat='Driver: {0:N}'}" />
             </StackLayout>
 
-            <StackLayout>
+            <StackLayout VerticalOptions="StartAndExpand" 
+                HorizontalOptions="StartAndExpand">
                 <Label Text="Participants" FontAttributes="Bold"/>
-                <ListView HeightRequest="100"
+                <ListView VerticalOptions="StartAndExpand"
                       ItemsSource="{Binding Participants}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell IsEnabled="False">
                                 <Grid>
-                                    <Label Text="{Binding FullName}"/>
+                                    <Label VerticalOptions="Center" Text="{Binding FullName}"/>
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>

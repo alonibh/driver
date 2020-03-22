@@ -91,8 +91,13 @@ namespace Driver.NewDrivePages
                 BindingContext = bindingContext
             };
 
-            Navigation.NavigationStack[0].BindingContext = bindingContext;
-            await Navigation.PopToRootAsync(true);
+            var existingPages = Navigation.NavigationStack.ToList();
+            await Navigation.PushAsync(mainPage);
+            foreach (var page in existingPages)
+                Navigation.RemovePage(page);
+
+            //Navigation.NavigationStack[0].BindingContext = bindingContext;
+            //await Navigation.PopToRootAsync(true);
         }
     }
 }

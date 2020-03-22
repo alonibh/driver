@@ -8,7 +8,7 @@
              Title="New Drive">
 
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Margin="{StaticResource PageMargin}">
             <Entry x:Name="driveDestEntry"
                 Placeholder="Enter Drive Destination"
                 VerticalOptions="CenterAndExpand" 

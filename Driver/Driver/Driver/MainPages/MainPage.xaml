@@ -8,8 +8,8 @@
              mc:Ignorable="d"
              x:Class="Driver.MainPages.MainPage">
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
+        <StackLayout Margin="{StaticResource PageMargin}">
+            <StackLayout Orientation="Horizontal">
                 <Button x:Name="settingsButton"
                         Text="Settings"
                         HorizontalOptions="Start"
@@ -18,7 +18,7 @@
                 <Label
                     x:Name="mainLabel"
                     Text="{Binding FirstName, StringFormat='Hello, {0:N}'}"
-                    VerticalOptions="Start"
+                    VerticalOptions="Center"
                     HorizontalOptions="CenterAndExpand" />
                 <Button x:Name="friendsListButton"
                         Text="Friends List"
@@ -27,7 +27,7 @@
                         Clicked="OnFriendsListButtonClicked" />
             </StackLayout>
 
-            <ContentView BackgroundColor="White" >
+            <ContentView BackgroundColor="White" VerticalOptions="FillAndExpand" MinimumHeightRequest="90">
                 <dg:DataGrid ItemsSource="{Binding DrivesCounter}"
 						 RowHeight="35" HeaderHeight="40" BorderColor="#CCCCCC" HeaderBackground="#E0E6F8" SelectionEnabled="False">
                     <x:Arguments>
@@ -44,8 +44,9 @@
                         <dg:DataGridColumn Title="Drive Counter" Width="*">
                             <dg:DataGridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"
-						 BackgroundColor="{Binding Counter, Converter={StaticResource DrivesCounterToColorConverter}}">
+                                    <ContentView HorizontalOptions="Fill"
+                                                 VerticalOptions="Fill"
+                                                 BackgroundColor="{Binding Counter, Converter={StaticResource DrivesCounterToColorConverter}}">
                                         <Label Text="{Binding CounterStr}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black"/>
                                     </ContentView>
                                 </DataTemplate>
@@ -66,11 +67,10 @@
                 </dg:DataGrid>
             </ContentView>
             
-            <StackLayout Margin="{StaticResource PageMargin}">
+            <StackLayout VerticalOptions="Fill">
                 <Label Text="Past Drives" FontAttributes="Bold"/>
                 <ListView x:Name="drivesListView"
                           ItemTapped="OnDriveTapped"
-                          HeightRequest="120"
                           ItemsSource="{Binding Drives}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -99,7 +99,7 @@
                 </ListView>
             </StackLayout>
             
-            <StackLayout Margin="{StaticResource PageMargin}">
+            <StackLayout VerticalOptions="EndAndExpand">
                 <Button x:Name="newDriveButton"
                         Text="Add New Drive"
                         HorizontalOptions="Center"

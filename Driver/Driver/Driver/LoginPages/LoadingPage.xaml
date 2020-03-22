@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              x:Class="Driver.LoginPages.LoadingPage">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Margin="{StaticResource PageMargin}">
             <Label Text="Loading..."
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />

@@ -56,6 +56,8 @@ namespace Driver.MainPages
         async void OnLogoutButtonClicked(object sender, EventArgs args)
         {
             App.Database.SetToken(null);
+            Application.Current.Properties.Remove("username");
+            Application.Current.Properties.Remove("token");
             CrossToastPopUp.Current.ShowToastMessage("Successfully logged out");
             var currPage = Navigation.NavigationStack.Single();
             await Navigation.PushAsync(new LoginPage());

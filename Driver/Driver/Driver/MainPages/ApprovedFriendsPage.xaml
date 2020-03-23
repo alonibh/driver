@@ -4,14 +4,13 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Driver.MainPages.FriendsPage">
+             x:Class="Driver.MainPages.ApprovedFriendsPage">
 
     <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
         <Label FontAttributes="Bold"/>
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding RefreshCommand}">
-            <ListView x:Name="friendsListView"
-                      ItemsSource="{Binding Friends}">
+            <ListView ItemsSource="{Binding ApprovedFriends}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell IsEnabled="False">

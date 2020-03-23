@@ -31,6 +31,9 @@
     <Compile Update="LoginPages\SignupPage.xaml.cs">
       <DependentUpon>SignUpPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="MainPages\PendingFriendsPage.xaml.cs">
+      <DependentUpon>PendingFriendsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="NewDrivePages\NewDriveDestinationPage.xaml.cs">
       <DependentUpon>NewDriveDestinationPage.xaml</DependentUpon>
     </Compile>
@@ -46,10 +49,13 @@
     <EmbeddedResource Update="LoginPages\SignUpPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="MainPages\ApprovedFriendsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="MainPages\DriveInfoPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="MainPages\FriendsPage.xaml">
+    <EmbeddedResource Update="MainPages\PendingFriendsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="MainPages\FriendsTabbedPage.xaml">

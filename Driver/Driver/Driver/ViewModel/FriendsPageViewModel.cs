@@ -14,35 +14,43 @@ namespace Driver.ViewModel
 {
     public class FriendsPageViewModel : INotifyPropertyChanged
     {
-        bool isRefreshing;
+        bool _isRefreshing;
 
         public bool IsRefreshing
         {
-            get { return isRefreshing; }
+            get { return _isRefreshing; }
             set
             {
-                isRefreshing = value;
+                _isRefreshing = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<Friend> Friends { get; private set; }
+        public ObservableCollection<Friend> PendingFriends { get; private set; }
+        public ObservableCollection<Friend> ApprovedFriends { get; private set; }
         public string Username { get; private set; }
-
 
         public ICommand RefreshCommand => new Command(async () => await RefreshItemsAsync());
 
         public FriendsPageViewModel(ObservableCollection<Friend> friends, string username)
         {
             Username = username;
-            Friends = friends;
+            PendingFriends = new ObservableCollection<Friend>();
+            ApprovedFriends = new ObservableCollection<Friend>();
+            AddFriends(friends);
         }
 
         void AddFriends(IEnumerable<Friend> friends)
         {
-            Friends.Clear();
+            PendingFriends.Clear();
+            ApprovedFriends.Clear();
             foreach (var friend in friends)
-                Friends.Add(friend);
+            {
+                if (friend.Status == FriendRequestStatus.Accepted)
+                    ApprovedFriends.Add(friend);
+                else
+                    PendingFriends.Add(friend);
+            }
         }
 
         async Task RefreshItemsAsync()

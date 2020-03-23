@@ -6,9 +6,9 @@ using Xamarin.Forms;
 
 namespace Driver.MainPages
 {
-    public partial class FriendsPage : ContentPage
+    public partial class PendingFriendsPage : ContentPage
     {
-        public FriendsPage(IEnumerable<Friend> friends, string username)
+        public PendingFriendsPage(IEnumerable<Friend> friends, string username)
         {
             InitializeComponent();
 

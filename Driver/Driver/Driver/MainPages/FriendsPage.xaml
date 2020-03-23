@@ -4,25 +4,24 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Driver.MainPages.FriendsPage"
-             Title="Friends">
-    <ContentPage.Content>
-        <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
-            <StackLayout>
-                <Label FontAttributes="Bold"/>
-                <ListView HeightRequest="100"
-                      ItemsSource="{Binding}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell IsEnabled="False">
-                                <Grid>
-                                    <Label Text="{Binding FullName}"/>
-                                </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackLayout>
-        </StackLayout>
-    </ContentPage.Content>
+             x:Class="Driver.MainPages.FriendsPage">
+
+    <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
+        <Label FontAttributes="Bold"/>
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <ListView x:Name="friendsListView"
+                      ItemsSource="{Binding Friends}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell IsEnabled="False">
+                            <Grid>
+                                <Label Text="{Binding FullName}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </RefreshView>
+    </StackLayout>
 </ContentPage>

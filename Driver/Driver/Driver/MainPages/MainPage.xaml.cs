@@ -80,10 +80,7 @@ namespace Driver.MainPages
                 return;
             }
 
-            await Navigation.PushAsync(new FriendsPage()
-            {
-                BindingContext = getPersonFriendsResponse.Friends.Select(o => (Friend)o)
-            });
+            await Navigation.PushAsync(new FriendsTabbedPage(getPersonFriendsResponse.Friends.Select(o => (Friend)o), person.Username));
         }
 
         async void OnNewDriveButtonClicked(object sender, EventArgs args)

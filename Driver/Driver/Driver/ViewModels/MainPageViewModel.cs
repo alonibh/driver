@@ -15,7 +15,7 @@ namespace Driver.ViewModels
     public class MainPageViewModel : BaseViewModel
     {
         private readonly INavigation _navigation;
-        private readonly RemoteDbHelper _dbHelper;
+        private readonly IDbHelper _dbHelper;
 
         public ICommand OnLogoutButtonClicked => new Command(async () => await Logout());
         public ICommand OnFriendsListButtonClicked => new Command(async () => await ShowFriends());
@@ -26,7 +26,7 @@ namespace Driver.ViewModels
         {
             Person = person;
             _navigation = navigation;
-            _dbHelper = new RemoteDbHelper();
+            _dbHelper = DependencyService.Get<IDbHelper>();
         }
 
         internal async void OnDriveTapped(object sender, ItemTappedEventArgs args)

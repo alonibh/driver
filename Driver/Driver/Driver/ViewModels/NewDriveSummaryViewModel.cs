@@ -2,6 +2,7 @@
 using Driver.Helpers;
 using Driver.Models;
 using Driver.Views;
+using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -15,8 +16,8 @@ namespace Driver.ViewModels
     public class NewDriveSummaryViewModel : BaseViewModel
     {
         private readonly INavigation _navigation;
-        private readonly DialogService _dialogService;
-        private readonly RemoteDbHelper _dbHelper;
+        private readonly IDialogService _dialogService;
+        private readonly IDbHelper _dbHelper;
 
         public ICommand OnAddDriveButtonClicked => new Command(async () => await AddDrive());
         public Drive Drive { get; set; }
@@ -25,8 +26,8 @@ namespace Driver.ViewModels
         {
             Drive = drive;
             _navigation = navigation;
-            _dialogService = new DialogService();
-            _dbHelper = new RemoteDbHelper();
+            _dialogService = DependencyService.Get<IDialogService>();
+            _dbHelper = DependencyService.Get<IDbHelper>();
         }
 
         async Task AddDrive()
@@ -44,7 +45,7 @@ namespace Driver.ViewModels
 
             if (!addDriveResponse.Success)
             {
-                await _dialogService.ShowMessage("Error", "Unable to add drive", "OK");
+                await _dialogService.ShowMessage("Error", "Unable to add drive", "OK", null);
                 return;
             }
 

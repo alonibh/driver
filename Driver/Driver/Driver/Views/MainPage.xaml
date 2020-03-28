@@ -11,8 +11,7 @@
         <StackLayout Margin="{StaticResource PageMargin}">
             <StackLayout Orientation="Horizontal">
                 <Button Text="Logout"
-                        HorizontalOptions="Start"
-                        VerticalOptions="Start"
+                        HorizontalOptions="FillAndExpand"
                         Command="{Binding OnLogoutButtonClicked}" />
                 <Label
                     x:Name="mainLabel"
@@ -20,12 +19,11 @@
                     VerticalOptions="Center"
                     HorizontalOptions="CenterAndExpand" />
                 <Button Text="Friends List"
-                        HorizontalOptions="Start"
-                        VerticalOptions="Start"
+                        HorizontalOptions="FillAndExpand"
                         Command="{Binding OnFriendsListButtonClicked}"/>
             </StackLayout>
 
-            <ContentView BackgroundColor="White" VerticalOptions="FillAndExpand" MinimumHeightRequest="90">
+            <ContentView BackgroundColor="White" VerticalOptions="FillAndExpand" MinimumHeightRequest="150">
                 <dg:DataGrid ItemsSource="{Binding Person.DrivesCounter}"
 						 RowHeight="35" HeaderHeight="40" BorderColor="#CCCCCC" HeaderBackground="#E0E6F8" SelectionEnabled="False">
                     <x:Arguments>
@@ -101,8 +99,7 @@
 
             <StackLayout VerticalOptions="EndAndExpand">
                 <Button Text="Add New Drive"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Start"
+                        HorizontalOptions="Fill"
                         Command="{Binding OnNewDriveButtonClicked}"/>
             </StackLayout>
 

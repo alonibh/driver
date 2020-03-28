@@ -1,5 +1,6 @@
 ﻿using Driver.API;
 using Driver.Helpers;
+using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
 using Plugin.Toast;
 using System.Threading.Tasks;
@@ -12,8 +13,8 @@ namespace Driver.ViewModels
     {
         private readonly INavigation _navigation;
         private SignupRequest _signupRequest = new SignupRequest();
-        private readonly DialogService _dialogService;
-        private readonly RemoteDbHelper _dbHelper;
+        private readonly IDialogService _dialogService;
+        private readonly IDbHelper _dbHelper;
 
         public ICommand OnSignupButtonClicked => new Command(async () => await Signup());
         public SignupRequest SignupRequest
@@ -29,8 +30,8 @@ namespace Driver.ViewModels
         public SignupViewModel(INavigation navigation)
         {
             _navigation = navigation;
-            _dialogService = new DialogService();
-            _dbHelper = new RemoteDbHelper();
+            _dialogService = DependencyService.Get<IDialogService>();
+            _dbHelper = DependencyService.Get<IDbHelper>();
         }
 
         async Task Signup()
@@ -47,7 +48,7 @@ namespace Driver.ViewModels
 
             if (!signupResponse.Success)
             {
-                await _dialogService.ShowMessage("Error", "Unable to sign user", "OK");
+                await _dialogService.ShowMessage("Error", "Unable to sign user", "OK", null);
             }
             else
             {

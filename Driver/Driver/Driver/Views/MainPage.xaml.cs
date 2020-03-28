@@ -24,7 +24,7 @@ namespace Driver.Views
                 var result = await DisplayAlert("Alert!", "Do you really want to exit?", "Yes", "No");
                 if (result)
                 {
-                    DependencyService.Get<IAndroidMethods>().CloseApp();
+                    DependencyService.Get<IAndroidMethods>().CloseApp(); // TODO - Improve
                 }
             });
 

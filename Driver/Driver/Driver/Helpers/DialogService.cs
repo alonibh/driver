@@ -7,14 +7,14 @@ namespace Driver.Helpers
 {
     public class DialogService : IDialogService
     {
-        public async Task ShowError(string message, string title, string buttonText, Action afterHideCallback = null)
+        public async Task ShowError(string message, string title, string buttonText, Action afterHideCallback)
         {
             await Application.Current.MainPage.DisplayAlert(title, message, buttonText);
 
             afterHideCallback?.Invoke();
         }
 
-        public async Task ShowError(Exception error, string title, string buttonText, Action afterHideCallback = null)
+        public async Task ShowError(Exception error, string title, string buttonText, Action afterHideCallback)
         {
             await Application.Current.MainPage.DisplayAlert(title, error.Message, buttonText);
 
@@ -26,14 +26,14 @@ namespace Driver.Helpers
             await Application.Current.MainPage.DisplayAlert(title, message, "OK");
         }
 
-        public async Task ShowMessage(string message, string title, string buttonText, Action afterHideCallback = null)
+        public async Task ShowMessage(string message, string title, string buttonText, Action afterHideCallback)
         {
             await Application.Current.MainPage.DisplayAlert(title, message, buttonText);
 
             afterHideCallback?.Invoke();
         }
 
-        public async Task<bool> ShowMessage(string message, string title, string buttonConfirmText, string buttonCancelText, Action<bool> afterHideCallback = null)
+        public async Task<bool> ShowMessage(string message, string title, string buttonConfirmText, string buttonCancelText, Action<bool> afterHideCallback)
         {
             var result = await Application.Current.MainPage.DisplayAlert(title, message, buttonConfirmText, buttonCancelText);
 

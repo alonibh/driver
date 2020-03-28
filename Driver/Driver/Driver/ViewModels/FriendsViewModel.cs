@@ -14,7 +14,7 @@ namespace Driver.ViewModels
     public class FriendsViewModel : BaseViewModel
     {
         private readonly string _username;
-        private readonly RemoteDbHelper _dbHelper;
+        private readonly IDbHelper _dbHelper;
 
         public ICommand RefreshCommand => new Command(async () => await RefreshItemsAsync());
         public ObservableCollection<Friend> PendingFriends { get; private set; }
@@ -25,7 +25,7 @@ namespace Driver.ViewModels
             _username = username;
             PendingFriends = new ObservableCollection<Friend>();
             ApprovedFriends = new ObservableCollection<Friend>();
-            _dbHelper = new RemoteDbHelper();
+            _dbHelper = DependencyService.Get<IDbHelper>();
             AddFriends(friends);
         }
 

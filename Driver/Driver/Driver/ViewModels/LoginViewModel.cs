@@ -2,6 +2,7 @@
 using Driver.Helpers;
 using Driver.Models;
 using Driver.Views;
+using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,8 @@ namespace Driver.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         private readonly INavigation _navigation;
-        private readonly DialogService _dialogService;
-        private readonly RemoteDbHelper _dbHelper;
+        private readonly IDialogService _dialogService;
+        private readonly IDbHelper _dbHelper;
         private LoginRequest _loginRequest = new LoginRequest();
 
         public ICommand OnSigninButtonClicked => new Command(async () => await Signin());
@@ -33,8 +34,8 @@ namespace Driver.ViewModels
         public LoginViewModel(INavigation navigation)
         {
             _navigation = navigation;
-            _dialogService = new DialogService();
-            _dbHelper = new RemoteDbHelper();
+            _dialogService = DependencyService.Get<IDialogService>();
+            _dbHelper = DependencyService.Get<IDbHelper>();
         }
 
         async Task Signin()
@@ -49,7 +50,7 @@ namespace Driver.ViewModels
 
             if (!loginResponse.Success)
             {
-                await _dialogService.ShowMessage("Error", "Wrong user name or password", "OK");
+                await _dialogService.ShowMessage("Error", "Wrong user name or password", "OK", null);
             }
             else
             {

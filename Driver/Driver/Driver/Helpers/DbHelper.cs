@@ -1,16 +1,18 @@
 ﻿using Driver.API;
+using GalaSoft.MvvmLight.Views;
 using System;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Driver.Helpers
 {
     public class RemoteDbHelper : IDbHelper
     {
-        private readonly DialogService _dialogService;
+        private readonly IDialogService _dialogService;
 
         public RemoteDbHelper()
         {
-            _dialogService = new DialogService();
+            _dialogService = DependencyService.Get<IDialogService>();
         }
 
         public async Task<LoginResponse> Login(LoginRequest request)
@@ -26,7 +28,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
+                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
             }
             return loginResponse;
         }
@@ -48,7 +50,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
+                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
             }
             return signupResponse;
         }
@@ -68,7 +70,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
+                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
             }
             return addDriveResponse;
         }
@@ -85,7 +87,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
+                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
             }
             return getDriveResponse;
         }
@@ -102,7 +104,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
+                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
             }
             return deleteDriveResponse;
         }
@@ -119,7 +121,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
+                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
             }
             return getPersonResponse;
         }
@@ -136,7 +138,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
+                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
             }
             return getPersonDrivesResponse;
         }
@@ -153,7 +155,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
+                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
             }
             return getPersonFriendsResponse;
         }

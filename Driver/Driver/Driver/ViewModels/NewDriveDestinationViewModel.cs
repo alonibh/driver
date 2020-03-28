@@ -14,7 +14,7 @@ namespace Driver.ViewModels
     public class NewDriveDestinationViewModel : BaseViewModel
     {
         private readonly INavigation _navigation;
-        private readonly RemoteDbHelper _dbHelper;
+        private readonly IDbHelper _dbHelper;
 
         public ICommand OnNextButtonClicked => new Command(async () => await NextPage());
         public Drive Drive { get; set; }
@@ -24,7 +24,7 @@ namespace Driver.ViewModels
         {
             Drive = drive;
             _navigation = navigation;
-            _dbHelper = new RemoteDbHelper();
+            _dbHelper = DependencyService.Get<IDbHelper>();
         }
 
         async Task NextPage()

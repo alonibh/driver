@@ -1,8 +1,10 @@
 ﻿using Driver.API;
 using Driver.API.Dbo;
 using Driver.DB;
+using Driver.Helpers;
 using Driver.Models;
 using Driver.Views;
+using GalaSoft.MvvmLight.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +36,9 @@ namespace Driver
         public App()
         {
             InitializeComponent();
+
+            DependencyService.Register<IDbHelper, RemoteDbHelper>();
+            DependencyService.Register<IDialogService, DialogService>();
 
             if (Current.Properties.ContainsKey("token") && Current.Properties.ContainsKey("username"))
             {

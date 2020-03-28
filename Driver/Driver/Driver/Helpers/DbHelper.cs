@@ -160,7 +160,7 @@ namespace Driver.Helpers
 
         public void SetToken(string token)
         {
-            throw new NotImplementedException();
+            App.Database.SetToken(token);
         }
     }
 }

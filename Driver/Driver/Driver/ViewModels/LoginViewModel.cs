@@ -50,7 +50,7 @@ namespace Driver.ViewModels
 
             if (!loginResponse.Success)
             {
-                await _dialogService.ShowMessage("Error", "Wrong user name or password", "OK", null);
+                await _dialogService.ShowMessage("Wrong user name or password", "Error", "OK", null);
             }
             else
             {

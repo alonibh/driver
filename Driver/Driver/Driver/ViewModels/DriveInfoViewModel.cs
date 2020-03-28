@@ -44,7 +44,7 @@ namespace Driver.ViewModels
 
                 if (!deleteDriveResponse.Success)
                 {
-                    await _dialogService.ShowMessage("Error", "Failed to delete drive", "OK", null);
+                    await _dialogService.ShowMessage("Failed to delete drive", "Error", "OK", null);
                     return;
                 }
 

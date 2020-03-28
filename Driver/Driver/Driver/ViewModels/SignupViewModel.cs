@@ -48,7 +48,7 @@ namespace Driver.ViewModels
 
             if (!signupResponse.Success)
             {
-                await _dialogService.ShowMessage("Error", "Unable to sign user", "OK", null);
+                await _dialogService.ShowMessage("Unable to sign user", "Error", "OK", null);
             }
             else
             {

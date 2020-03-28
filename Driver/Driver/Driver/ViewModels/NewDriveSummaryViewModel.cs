@@ -45,7 +45,7 @@ namespace Driver.ViewModels
 
             if (!addDriveResponse.Success)
             {
-                await _dialogService.ShowMessage("Error", "Unable to add drive", "OK", null);
+                await _dialogService.ShowMessage("Unable to add drive", "Error", "OK", null);
                 return;
             }
 

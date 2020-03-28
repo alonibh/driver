@@ -115,6 +115,27 @@ namespace Driver.DB
             return getPersonFriendsReponse;
         }
 
+        public async Task<SearchPersonResponse> SearchPerson(SearchPersonRequest request)
+        {
+            var res = await _client.GetAsync($"person/{request.Query}/search");
+            var content = await res.Content.ReadAsStringAsync();
+            EnsureSuccessStatusCode(res, content);
+
+            var searchPersonResponse = JsonConvert.DeserializeObject<SearchPersonResponse>(content);
+            return searchPersonResponse;
+        }
+
+        public async Task<AddFriendResponse> AddFriend(AddFriendRequest request)
+        {
+            string json = JsonConvert.SerializeObject(request, _settings);
+            HttpResponseMessage res = await _client.PutAsync($"person/{request.Username}/friend", new StringContent(json, Encoding.UTF8, "application/json"));
+            var content = await res.Content.ReadAsStringAsync();
+            EnsureSuccessStatusCode(res, content);
+
+            var addFriendResponse = JsonConvert.DeserializeObject<AddFriendResponse>(content);
+            return addFriendResponse;
+        }
+
         public void SetToken(string token)
         {
             if (_client.DefaultRequestHeaders.Contains("Authorization"))

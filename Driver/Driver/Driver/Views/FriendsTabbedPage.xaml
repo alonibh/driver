@@ -6,4 +6,10 @@
              mc:Ignorable="d"
              Title="Friends"
              x:Class="Driver.Views.FriendsTabbedPage">
+    <TabbedPage.ToolbarItems>
+        <ToolbarItem Text="+"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding OnSearchPersonToolbarItemClicked}"/>
+    </TabbedPage.ToolbarItems>
 </TabbedPage>

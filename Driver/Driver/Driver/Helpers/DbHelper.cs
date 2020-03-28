@@ -28,7 +28,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
+                await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
             }
             return loginResponse;
         }
@@ -50,7 +50,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
+                await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
             }
             return signupResponse;
         }
@@ -70,7 +70,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
+                await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
             }
             return addDriveResponse;
         }
@@ -87,7 +87,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
+                await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
             }
             return getDriveResponse;
         }
@@ -104,7 +104,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
+                await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
             }
             return deleteDriveResponse;
         }
@@ -121,7 +121,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
+                await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
             }
             return getPersonResponse;
         }
@@ -138,7 +138,7 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
+                await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
             }
             return getPersonDrivesResponse;
         }
@@ -155,9 +155,43 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK", null);
+                await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
             }
             return getPersonFriendsResponse;
+        }
+
+        public async Task<SearchPersonResponse> SearchPerson(SearchPersonRequest request)
+        {
+            SearchPersonResponse searchPersonResponse = new SearchPersonResponse();
+            try
+            {
+                searchPersonResponse = (await App.Database.SearchPerson(new SearchPersonRequest
+                {
+                    Query = request.Query
+                }));
+            }
+            catch (Exception e)
+            {
+                await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
+            }
+            return searchPersonResponse;
+        }
+
+        public async Task<AddFriendResponse> AddFriend(AddFriendRequest request)
+        {
+            AddFriendResponse addFriendResponse = new AddFriendResponse();
+            try
+            {
+                addFriendResponse = (await App.Database.AddFriend(new AddFriendRequest
+                {
+                    Username = request.Username
+                }));
+            }
+            catch (Exception e)
+            {
+                await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
+            }
+            return addFriendResponse;
         }
 
         public void SetToken(string token)

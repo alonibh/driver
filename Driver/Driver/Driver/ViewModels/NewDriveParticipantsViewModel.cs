@@ -11,7 +11,7 @@ namespace Driver.ViewModels
 {
     public class NewDriveParticipantsViewModel : BaseViewModel
     {
-        private INavigation _navigation;
+        private readonly INavigation _navigation;
         private ObservableCollection<object> _selectedFriends = new ObservableCollection<object>();
 
         public ICommand OnNextButtonClicked => new Command(async () => await NextPage());

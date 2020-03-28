@@ -14,22 +14,19 @@ namespace Driver.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
-        private INavigation _navigation;
-        private DialogService _dialogService;
+        private readonly INavigation _navigation;
+        private readonly RemoteDbHelper _dbHelper;
 
         public ICommand OnLogoutButtonClicked => new Command(async () => await Logout());
         public ICommand OnFriendsListButtonClicked => new Command(async () => await ShowFriends());
-
-
-
         public ICommand OnNewDriveButtonClicked => new Command(async () => await AddDrive());
         public Person Person { get; set; }
 
         public MainPageViewModel(Person person, INavigation navigation)
         {
             Person = person;
-            _dialogService = new DialogService();
             _navigation = navigation;
+            _dbHelper = new RemoteDbHelper();
         }
 
         internal async void OnDriveTapped(object sender, ItemTappedEventArgs args)
@@ -38,19 +35,10 @@ namespace Driver.ViewModels
             lv.SelectedItem = null;
 
             string driveId = (args.Item as Drive).Id;
-            GetDriveResponse getDriveResponse;
-            try
+            GetDriveResponse getDriveResponse = await _dbHelper.GetDrive(new GetDriveRequest
             {
-                getDriveResponse = await App.Database.GetDrive(new GetDriveRequest
-                {
-                    DriveId = driveId
-                });
-            }
-            catch (Exception e)
-            {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                return;
-            }
+                DriveId = driveId
+            });
 
             Drive drive = new Drive
             {
@@ -67,19 +55,10 @@ namespace Driver.ViewModels
         async Task ShowFriends()
         {
 
-            GetPersonFriendsResponse getPersonFriendsResponse;
-            try
+            GetPersonFriendsResponse getPersonFriendsResponse = await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
             {
-                getPersonFriendsResponse = (await App.Database.GetPersonFriends(new GetPersonFriendsRequest
-                {
-                    Username = Person.Username
-                }));
-            }
-            catch (Exception e)
-            {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                return;
-            }
+                Username = Person.Username
+            });
 
             await _navigation.PushAsync(new FriendsTabbedPage(getPersonFriendsResponse.Friends.Select(o => (Friend)o), Person.Username));
         }
@@ -103,7 +82,7 @@ namespace Driver.ViewModels
 
         async Task Logout()
         {
-            App.Database.SetToken(null);
+            _dbHelper.SetToken(null);
             Application.Current.Properties.Remove("username");
             Application.Current.Properties.Remove("token");
             CrossToastPopUp.Current.ShowToastMessage("Successfully logged out");

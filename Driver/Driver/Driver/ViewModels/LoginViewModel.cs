@@ -3,7 +3,6 @@ using Driver.Helpers;
 using Driver.Models;
 using Driver.Views;
 using MvvmHelpers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,8 +13,9 @@ namespace Driver.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        private INavigation _navigation;
-        private DialogService _dialogService;
+        private readonly INavigation _navigation;
+        private readonly DialogService _dialogService;
+        private readonly RemoteDbHelper _dbHelper;
         private LoginRequest _loginRequest = new LoginRequest();
 
         public ICommand OnSigninButtonClicked => new Command(async () => await Signin());
@@ -34,24 +34,18 @@ namespace Driver.ViewModels
         {
             _navigation = navigation;
             _dialogService = new DialogService();
+            _dbHelper = new RemoteDbHelper();
         }
 
         async Task Signin()
         {
-            LoginResponse loginResponse = null;
-            try
+            LoginResponse loginResponse = await _dbHelper.Login(new LoginRequest
             {
-                loginResponse = await App.Database.Login(new LoginRequest
-                {
-                    Username = LoginRequest.Username,
-                    Password = LoginRequest.Password
-                });
-            }
-            catch (Exception e)
-            {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                return;
-            }
+                Username = LoginRequest.Username,
+                Password = LoginRequest.Password
+            });
+
+
 
             if (!loginResponse.Success)
             {
@@ -61,35 +55,18 @@ namespace Driver.ViewModels
             {
                 Application.Current.Properties["username"] = LoginRequest.Username;
                 Application.Current.Properties["token"] = loginResponse.Token;
-                App.Database.SetToken(loginResponse.Token);
+                _dbHelper.SetToken(loginResponse.Token);
 
-                GetPersonResponse getPersonResponse;
-                try
+                GetPersonResponse getPersonResponse = await _dbHelper.GetPerson(new GetPersonRequest
                 {
-                    getPersonResponse = (await App.Database.GetPerson(new GetPersonRequest
-                    {
-                        Username = LoginRequest.Username
-                    }));
-                }
-                catch (Exception e)
-                {
-                    await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                    return;
-                }
+                    Username = LoginRequest.Username
+                });
 
-                GetPersonDrivesResponse getPersonDrivesResponse;
-                try
+                GetPersonDrivesResponse getPersonDrivesResponse = await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
                 {
-                    getPersonDrivesResponse = (await App.Database.GetPersonDrives(new GetPersonDrivesRequest
-                    {
-                        Username = LoginRequest.Username
-                    }));
-                }
-                catch (Exception e)
-                {
-                    await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                    return;
-                }
+                    Username = LoginRequest.Username
+                });
+
                 Person person = new Person
                 {
                     Username = getPersonResponse.Person.Username,

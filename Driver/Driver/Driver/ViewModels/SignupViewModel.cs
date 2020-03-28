@@ -2,7 +2,6 @@
 using Driver.Helpers;
 using MvvmHelpers;
 using Plugin.Toast;
-using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -11,9 +10,10 @@ namespace Driver.ViewModels
 {
     public class SignupViewModel : BaseViewModel
     {
-        private INavigation _navigation;
+        private readonly INavigation _navigation;
         private SignupRequest _signupRequest = new SignupRequest();
-        private DialogService _dialogService;
+        private readonly DialogService _dialogService;
+        private readonly RemoteDbHelper _dbHelper;
 
         public ICommand OnSignupButtonClicked => new Command(async () => await Signup());
         public SignupRequest SignupRequest
@@ -30,28 +30,20 @@ namespace Driver.ViewModels
         {
             _navigation = navigation;
             _dialogService = new DialogService();
+            _dbHelper = new RemoteDbHelper();
         }
 
         async Task Signup()
         {
-            SignupResponse signupResponse;
-            try
+            SignupResponse signupResponse = await _dbHelper.SignUp(new SignupRequest
             {
-                signupResponse = await App.Database.SignUp(new SignupRequest
-                {
-                    Username = SignupRequest.Username,
-                    Password = SignupRequest.Password,
-                    FirstName = SignupRequest.FirstName,
-                    LastName = SignupRequest.LastName,
-                    Address = SignupRequest.Address,
-                    Email = SignupRequest.Email
-                });
-            }
-            catch (Exception e)
-            {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                return;
-            }
+                Username = SignupRequest.Username,
+                Password = SignupRequest.Password,
+                FirstName = SignupRequest.FirstName,
+                LastName = SignupRequest.LastName,
+                Address = SignupRequest.Address,
+                Email = SignupRequest.Email
+            });
 
             if (!signupResponse.Success)
             {

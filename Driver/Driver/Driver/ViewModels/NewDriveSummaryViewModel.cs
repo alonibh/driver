@@ -4,7 +4,6 @@ using Driver.Models;
 using Driver.Views;
 using MvvmHelpers;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,8 +14,9 @@ namespace Driver.ViewModels
 {
     public class NewDriveSummaryViewModel : BaseViewModel
     {
-        private INavigation _navigation;
-        private DialogService _dialogService;
+        private readonly INavigation _navigation;
+        private readonly DialogService _dialogService;
+        private readonly RemoteDbHelper _dbHelper;
 
         public ICommand OnAddDriveButtonClicked => new Command(async () => await AddDrive());
         public Drive Drive { get; set; }
@@ -26,6 +26,7 @@ namespace Driver.ViewModels
             Drive = drive;
             _navigation = navigation;
             _dialogService = new DialogService();
+            _dbHelper = new RemoteDbHelper();
         }
 
         async Task AddDrive()
@@ -33,22 +34,13 @@ namespace Driver.ViewModels
             string driver = JsonConvert.SerializeObject(Drive.Driver);
             var participants = Drive.Participants;
             participants.Add(Drive.Driver);
-            AddDriveResponse addDriveResponse = null;
-            try
+            AddDriveResponse addDriveResponse = await _dbHelper.AddDrive(new AddDriveRequest
             {
-                addDriveResponse = await App.Database.AddDrive(new AddDriveRequest
-                {
-                    Dest = Drive.Destination,
-                    Date = Drive.Date,
-                    Driver = Drive.Driver.Username,
-                    Participants = participants.Select(o => o.Username).ToList()
-                });
-            }
-            catch (Exception e)
-            {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                return;
-            }
+                Dest = Drive.Destination,
+                Date = Drive.Date,
+                Driver = Drive.Driver.Username,
+                Participants = participants.Select(o => o.Username).ToList()
+            });
 
             if (!addDriveResponse.Success)
             {
@@ -56,33 +48,15 @@ namespace Driver.ViewModels
                 return;
             }
 
-            GetPersonResponse getPersonResponse;
-            try
+            GetPersonResponse getPersonResponse = await _dbHelper.GetPerson(new GetPersonRequest
             {
-                getPersonResponse = (await App.Database.GetPerson(new GetPersonRequest
-                {
-                    Username = Drive.Driver.Username
-                }));
-            }
-            catch (Exception e)
-            {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                return;
-            }
+                Username = Drive.Driver.Username
+            });
 
-            GetPersonDrivesResponse getPersonDrivesResponse;
-            try
+            GetPersonDrivesResponse getPersonDrivesResponse = await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
             {
-                getPersonDrivesResponse = (await App.Database.GetPersonDrives(new GetPersonDrivesRequest
-                {
-                    Username = Drive.Driver.Username
-                }));
-            }
-            catch (Exception e)
-            {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                return;
-            }
+                Username = Drive.Driver.Username
+            });
 
             var person = new Person
             {

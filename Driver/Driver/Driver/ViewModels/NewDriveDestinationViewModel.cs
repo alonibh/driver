@@ -3,7 +3,6 @@ using Driver.Helpers;
 using Driver.Models;
 using Driver.Views;
 using MvvmHelpers;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,8 +13,8 @@ namespace Driver.ViewModels
 {
     public class NewDriveDestinationViewModel : BaseViewModel
     {
-        private INavigation _navigation;
-        private DialogService _dialogService;
+        private readonly INavigation _navigation;
+        private readonly RemoteDbHelper _dbHelper;
 
         public ICommand OnNextButtonClicked => new Command(async () => await NextPage());
         public Drive Drive { get; set; }
@@ -25,26 +24,17 @@ namespace Driver.ViewModels
         {
             Drive = drive;
             _navigation = navigation;
-            _dialogService = new DialogService();
+            _dbHelper = new RemoteDbHelper();
         }
 
         async Task NextPage()
         {
             Drive.Destination = DriveDest;
 
-            GetPersonFriendsResponse getPersonFriendsResponse;
-            try
+            GetPersonFriendsResponse getPersonFriendsResponse = await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
             {
-                getPersonFriendsResponse = (await App.Database.GetPersonFriends(new GetPersonFriendsRequest
-                {
-                    Username = Drive.Driver.Username
-                }));
-            }
-            catch (Exception e)
-            {
-                await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                return;
-            }
+                Username = Drive.Driver.Username
+            });
 
             var friends = getPersonFriendsResponse.Friends.Select(o => (Friend)o);
             var observableFriends = new ObservableCollection<Friend>(friends);

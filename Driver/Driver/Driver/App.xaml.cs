@@ -20,7 +20,6 @@ namespace Driver
             {
                 if (_database == null)
                 {
-                    //database = new LocalDb(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Users.db3"));
                     _database = new RemoteDb("http://roeij.com:3000/api/");
                     if (Current.Properties.ContainsKey("token"))
                     {

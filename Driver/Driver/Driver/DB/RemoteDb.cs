@@ -10,6 +10,7 @@ namespace Driver.DB
 {
     public class RemoteDb : IDb
     {
+        private bool _disposed = false;
         private readonly HttpClient _client;
         private readonly JsonSerializerSettings _settings;
 
@@ -24,6 +25,11 @@ namespace Driver.DB
                 ContractResolver = new CamelCaseExceptDictionaryKeysResolver(),
                 Formatting = Formatting.Indented
             };
+        }
+
+        ~RemoteDb()
+        {
+            Dispose(false);
         }
 
         public async Task<LoginResponse> Login(LoginRequest request)
@@ -126,7 +132,23 @@ namespace Driver.DB
 
         public void Dispose()
         {
-            _client.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                _client.Dispose();
+            }
+
+            _disposed = true;
         }
 
         private void EnsureSuccessStatusCode(HttpResponseMessage res, string content)

@@ -3,7 +3,6 @@ using Driver.Helpers;
 using Driver.Models;
 using Driver.Views;
 using MvvmHelpers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,19 +13,22 @@ namespace Driver.ViewModels
 {
     public class DriveInfoViewModel : BaseViewModel
     {
-        private INavigation _navigation;
-        private DialogService _dialogService;
+        private readonly INavigation _navigation;
+        private readonly DialogService _dialogService;
+        private readonly RemoteDbHelper _dbHelper;
 
         public ICommand OnDeleteDriveButtonClicked => new Command(async () => await DeleteDrive());
         public Drive Drive { get; set; }
         public string Username { get; }
         public bool IsUserDriver => Drive.Driver.Username == Username;
+
         public DriveInfoViewModel(Drive drive, string username, INavigation navigation)
         {
             Drive = drive;
             Username = username;
             _navigation = navigation;
             _dialogService = new DialogService();
+            _dbHelper = new RemoteDbHelper();
         }
 
         async Task DeleteDrive()
@@ -34,19 +36,10 @@ namespace Driver.ViewModels
             bool answer = await _dialogService.ShowMessage("Delete Drive", "Are you sure you want to delete this drive?", "Yes", "No");
             if (answer)
             {
-                DeleteDriveResponse deleteDriveResponse;
-                try
+                DeleteDriveResponse deleteDriveResponse = await _dbHelper.DeleteDrive(new DeleteDriveRequest
                 {
-                    deleteDriveResponse = await App.Database.DeleteDrive(new DeleteDriveRequest
-                    {
-                        DriveId = Drive.Id
-                    });
-                }
-                catch (Exception e)
-                {
-                    await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                    return;
-                }
+                    DriveId = Drive.Id
+                });
 
                 if (!deleteDriveResponse.Success)
                 {
@@ -56,33 +49,15 @@ namespace Driver.ViewModels
 
                 else
                 {
-                    GetPersonResponse getPersonResponse;
-                    try
+                    GetPersonResponse getPersonResponse = await _dbHelper.GetPerson(new GetPersonRequest
                     {
-                        getPersonResponse = (await App.Database.GetPerson(new GetPersonRequest
-                        {
-                            Username = Username
-                        }));
-                    }
-                    catch (Exception e)
-                    {
-                        await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                        return;
-                    }
+                        Username = Username
+                    });
 
-                    GetPersonDrivesResponse getPersonDrivesResponse;
-                    try
+                    GetPersonDrivesResponse getPersonDrivesResponse = await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
                     {
-                        getPersonDrivesResponse = (await App.Database.GetPersonDrives(new GetPersonDrivesRequest
-                        {
-                            Username = Username
-                        }));
-                    }
-                    catch (Exception e)
-                    {
-                        await _dialogService.ShowMessage("Error", $"The server returned an error: {e.Message}", "OK");
-                        return;
-                    }
+                        Username = Username
+                    });
 
                     Person person = new Person
                     {

@@ -11,10 +11,14 @@ namespace Driver.Views
         {
             InitializeComponent();
 
-            ApprovedFriendsPage approvedFriendsPage = new ApprovedFriendsPage(friends, username);
-            approvedFriendsPage.Title = "Friends";
-            PendingFriendsPage pendingFriendRequestsPage = new PendingFriendsPage(friends, username);
-            pendingFriendRequestsPage.Title = "Pending Requests";
+            ApprovedFriendsPage approvedFriendsPage = new ApprovedFriendsPage(friends, username)
+            {
+                Title = "Friends"
+            };
+            PendingFriendsPage pendingFriendRequestsPage = new PendingFriendsPage(friends, username)
+            {
+                Title = "Pending Requests"
+            };
 
             Children.Add(approvedFriendsPage);
             Children.Add(pendingFriendRequestsPage);

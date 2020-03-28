@@ -16,24 +16,5 @@ namespace Driver.Views
             DataGridComponent.Init();
             drivesListView.ItemTapped += viewModel.OnDriveTapped;
         }
-
-        protected override bool OnBackButtonPressed()
-        {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                var result = await DisplayAlert("Alert!", "Do you really want to exit?", "Yes", "No");
-                if (result)
-                {
-                    DependencyService.Get<IAndroidMethods>().CloseApp(); // TODO - Improve
-                }
-            });
-
-            return true;
-        }
-    }
-
-    public interface IAndroidMethods
-    {
-        void CloseApp();
     }
 }

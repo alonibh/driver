@@ -1,9 +1,8 @@
 ﻿using Driver.API;
 using Driver.API.Dbo;
 using Driver.DB;
-using Driver.LoginPages;
-using Driver.MainPages;
 using Driver.Models;
+using Driver.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,9 +37,13 @@ namespace Driver
             InitializeComponent();
 
             if (Current.Properties.ContainsKey("token") && Current.Properties.ContainsKey("username"))
+            {
                 MainPage = new LoadingPage();
+            }
             else
+            {
                 MainPage = new NavigationPage(new LoginPage());
+            }
         }
 
         protected override async void OnStart()
@@ -52,11 +55,11 @@ namespace Driver
 
                 Database.SetToken(token);
 
-                PersonDbo person;
+                PersonDbo personDbo;
                 List<DriveDbo> drives;
                 try
                 {
-                    person = (await Database.GetPerson(new GetPersonRequest
+                    personDbo = (await Database.GetPerson(new GetPersonRequest
                     {
                         Username = username
                     })).Person;
@@ -72,21 +75,18 @@ namespace Driver
                     return;
                 }
 
-                MainPage mainPage = new MainPage()
+                Person person = new Person
                 {
-                    BindingContext = new Person
-                    {
-                        Username = person.Username,
-                        Address = person.Address,
-                        FirstName = person.FirstName,
-                        LastName = person.LastName,
-                        Email = person.Email,
-                        Drives = drives.Select(o => (Drive)o).ToList(),
-                        Friends = new List<Friend>()
-                    }
+                    Username = personDbo.Username,
+                    Address = personDbo.Address,
+                    FirstName = personDbo.FirstName,
+                    LastName = personDbo.LastName,
+                    Email = personDbo.Email,
+                    Drives = drives.Select(o => (Drive)o).ToList(),
+                    Friends = new List<Friend>()
                 };
 
-                MainPage = new NavigationPage(mainPage);
+                MainPage = new NavigationPage(new MainPage(person));
             }
         }
 

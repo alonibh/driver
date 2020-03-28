@@ -10,7 +10,10 @@
         private string GetCounterStr()
         {
             if (Counter == 0)
+            {
                 return "You're even";
+            }
+
             var returnStr = Counter > 0 ? $"You get {Counter} drives back" : $"You owe {Counter * -1} drives";
             return returnStr;
         }

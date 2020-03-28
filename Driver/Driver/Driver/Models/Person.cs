@@ -19,7 +19,10 @@ namespace Driver.Models
         private List<DrivesCounter> GetDrivesCounter()
         {
             if (Drives == null)
+            {
                 return new List<DrivesCounter>();
+            }
+
             var drivesCounter = new List<DrivesCounter>();
             foreach (var drive in Drives)
             {

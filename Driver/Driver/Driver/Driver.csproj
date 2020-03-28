@@ -15,65 +15,61 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Plugin.Toast" Version="2.1.2" />
+    <PackageReference Include="Refractored.MvvmHelpers" Version="1.3.0" />
     <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.396" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.1" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.1.1" />
     <PackageReference Include="Xamarin.Forms.DataGrid" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="LoginPages\LoginPage.xaml.cs">
+    <Compile Update="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="LoginPages\SignupPage.xaml.cs">
+    <Compile Update="Views\SignupPage.xaml.cs">
       <DependentUpon>SignUpPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="MainPages\PendingFriendsPage.xaml.cs">
+    <Compile Update="Views\PendingFriendsPage.xaml.cs">
       <DependentUpon>PendingFriendsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="NewDrivePages\NewDriveDestinationPage.xaml.cs">
+    <Compile Update="Views\NewDriveDestinationPage.xaml.cs">
       <DependentUpon>NewDriveDestinationPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="NewDrivePages\NewDriveNamePage.xaml.cs">
-      <DependentUpon>NewDriveNamePage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="LoginPages\LoadingPage.xaml">
+    <EmbeddedResource Update="Views\LoadingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="LoginPages\SignUpPage.xaml">
+    <EmbeddedResource Update="Views\SignupPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="MainPages\ApprovedFriendsPage.xaml">
+    <EmbeddedResource Update="Views\ApprovedFriendsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="MainPages\DriveInfoPage.xaml">
+    <EmbeddedResource Update="Views\DriveInfoPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="MainPages\PendingFriendsPage.xaml">
+    <EmbeddedResource Update="Views\PendingFriendsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="MainPages\FriendsTabbedPage.xaml">
+    <EmbeddedResource Update="Views\FriendsTabbedPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="MainPages\MainPage.xaml">
+    <EmbeddedResource Update="Views\MainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="NewDrivePages\NewDriveDestinationPage.xaml">
+    <EmbeddedResource Update="Views\NewDriveDestinationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="NewDrivePages\NewDriveNamePage.xaml">
+    <EmbeddedResource Update="Views\NewDriveParticipantsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="NewDrivePages\NewDriveParticipantsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="NewDrivePages\NewDriveSummaryPage.xaml">
+    <EmbeddedResource Update="Views\NewDriveSummaryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Driver.Views.NewDriveParticipantsPage"
+             Title="New Drive">
+    <ContentPage.Content>
+        <StackLayout Margin="{StaticResource PageMargin}">
+            <Label Text="Select friends" FontAttributes="Bold" />
+            <StackLayout VerticalOptions="StartAndExpand">
+                <Label FontAttributes="Bold"/>
+                <CollectionView VerticalOptions="StartAndExpand"
+                                SelectionMode="Multiple"
+                                ItemsSource="{Binding ObservableFriends}"
+                                SelectedItems="{Binding SelectedFriends}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HeightRequest="40">
+                                <Label VerticalOptions="Center" Text="{Binding FullName} "/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+            <Button Text="Next"
+                    Command="{Binding OnNextButtonClicked}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

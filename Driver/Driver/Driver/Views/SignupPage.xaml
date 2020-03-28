@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Driver.Views.SignUpPage"
+             Title="SignUp Page">
+
+    <StackLayout Margin="{StaticResource PageMargin}" VerticalOptions="Center">
+        <Entry x:Name="usernameEntry"
+               Text="{Binding SignupRequest.Username, Mode=TwoWay}"
+               Placeholder="Username"
+               VerticalOptions="Center"/>
+        <Entry x:Name="passwordEntry"
+               Text="{Binding SignupRequest.Password, Mode=TwoWay}"
+               IsPassword="true"
+               Placeholder="Password"
+               VerticalOptions="Center"/>
+        <Entry x:Name="firstNameEntry"
+               Text="{Binding SignupRequest.FirstName, Mode=TwoWay}"
+               Placeholder="First Name"
+               Keyboard="Text"
+               VerticalOptions="Center"/>
+        <Entry x:Name="lastNameEntry"
+               Text="{Binding SignupRequest.LastName, Mode=TwoWay}"
+               Placeholder="Last Name"
+               Keyboard="Text"
+               VerticalOptions="Center"/>
+        <Entry x:Name="addressEntry"
+               Text="{Binding SignupRequest.Address, Mode=TwoWay}"
+               Placeholder="Address"
+               Keyboard="Text"
+               VerticalOptions="Center"/>
+        <Entry x:Name="emailEntry"
+               Text="{Binding SignupRequest.Email, Mode=TwoWay}"
+               Placeholder="Email"
+               Keyboard="Email"
+               VerticalOptions="Center"/>
+        <Button Text="Sign up"
+                HorizontalOptions="CenterAndExpand"
+                Command="{Binding OnSignupButtonClicked}" />
+    </StackLayout>
+</ContentPage>

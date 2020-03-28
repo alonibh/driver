@@ -1,6 +1,6 @@
 ﻿using Android.OS;
 using Driver.Droid;
-using Driver.MainPages;
+using Driver.Views;
 
 [assembly: Xamarin.Forms.Dependency(typeof(AndroidMethods))]
 namespace Driver.Droid

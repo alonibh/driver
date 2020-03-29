@@ -29,7 +29,7 @@ namespace Driver.ViewModels
             _dbHelper = DependencyService.Get<IDbHelper>();
         }
 
-        internal async void OnDriveTapped(object sender, ItemTappedEventArgs args)
+        public async void OnDriveTapped(object sender, ItemTappedEventArgs args)
         {
             ListView lv = (ListView)sender;
             lv.SelectedItem = null;

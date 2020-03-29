@@ -8,7 +8,7 @@ namespace Driver.Views
         public SearchPersonPage()
         {
             InitializeComponent();
-            SearchPersonViewModel viewModel = new SearchPersonViewModel(Navigation);
+            SearchPersonViewModel viewModel = new SearchPersonViewModel();
             BindingContext = viewModel;
             searchBar.TextChanged += viewModel.OnTextChanged;
             friendsListView.ItemTapped += viewModel.OnFriendTapped;

@@ -10,10 +10,10 @@
         <Label FontAttributes="Bold"/>
         <RefreshView IsRefreshing="{Binding IsBusy}"
                      Command="{Binding RefreshCommand}">
-            <ListView ItemsSource="{Binding ApprovedFriends}">
+            <ListView x:Name ="approvedFriendsListView" ItemsSource="{Binding ApprovedFriends}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell IsEnabled="False">
+                        <ViewCell>
                             <Grid>
                                 <Label Text="{Binding FullName}"/>
                             </Grid>

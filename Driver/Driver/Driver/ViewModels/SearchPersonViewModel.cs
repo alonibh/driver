@@ -13,13 +13,10 @@ namespace Driver.ViewModels
 {
     public class SearchPersonViewModel : BaseViewModel
     {
-        private readonly INavigation _navigation;
         private readonly IDialogService _dialogService;
         private readonly IDbHelper _dbHelper;
+
         private ObservableCollection<Friend> _searchResults = new ObservableCollection<Friend>();
-
-
-        public ICommand PerformSearch => new Command<string>(async (string query) => await SearchPerson(query));
         public ObservableCollection<Friend> SearchResults
         {
             get
@@ -33,34 +30,30 @@ namespace Driver.ViewModels
             }
         }
 
-        public SearchPersonViewModel(INavigation navigation)
+        public ICommand PerformSearch => new Command<string>(async (string query) => await SearchPerson(query));
+
+        public SearchPersonViewModel()
         {
-            _navigation = navigation;
             _dbHelper = DependencyService.Get<IDbHelper>();
             _dialogService = DependencyService.Get<IDialogService>();
         }
 
-        internal async void OnTextChanged(object sender, TextChangedEventArgs e) =>
+        public async void OnTextChanged(object sender, TextChangedEventArgs e) =>
             await SearchPerson(e.NewTextValue);
 
-        internal async void OnFriendTapped(object sender, ItemTappedEventArgs args)
+        public async void OnFriendTapped(object sender, ItemTappedEventArgs args)
         {
             ListView lv = (ListView)sender;
             lv.SelectedItem = null;
 
             Friend friend = (args.Item as Friend);
-            bool answer = await _dialogService.ShowMessage("Add Friend", $"Do you want to send a friend request to {friend.FullName}", "Yes", "No", null);
+            bool answer = await _dialogService.ShowMessage($"Do you want to send a friend request to {friend.FullName}", "Add Friend", "Yes", "No", null);
             if (answer)
             {
-                var addDriveResponse = await _dbHelper.AddFriend(new AddFriendRequest
+                await _dbHelper.AddFriend(new AddFriendRequest
                 {
                     Username = friend.Username
                 });
-                if (!addDriveResponse.Success)
-                {
-                    await _dialogService.ShowMessage("Unable to add friend", "Error", "OK", null);
-                    return;
-                }
             }
         }
 

@@ -16,6 +16,7 @@ namespace Driver.ViewModels
         {
             _navigation = navigation;
         }
+
         async Task OpenSearchPersonModal()
         {
             await _navigation.PushModalAsync(new SearchPersonPage());

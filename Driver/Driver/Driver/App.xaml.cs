@@ -96,7 +96,7 @@ namespace Driver
 
         protected override void OnSleep()
         {
-            _database.Dispose();
+            _database?.Dispose();
             _database = null;
         }
 

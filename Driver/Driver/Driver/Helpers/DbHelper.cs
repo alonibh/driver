@@ -194,6 +194,23 @@ namespace Driver.Helpers
             return addFriendResponse;
         }
 
+        public async Task<DeleteFriendResponse> DeleteFriend(DeleteFriendRequest request)
+        {
+            DeleteFriendResponse deleteFriendResponse = new DeleteFriendResponse();
+            try
+            {
+                deleteFriendResponse = await App.Database.DeleteFriend(new DeleteFriendRequest
+                {
+                    Username = request.Username
+                });
+            }
+            catch (Exception e)
+            {
+                await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
+            }
+            return deleteFriendResponse;
+        }
+
         public void SetToken(string token)
         {
             App.Database.SetToken(token);

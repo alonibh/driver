@@ -7,6 +7,6 @@
 
     public class AddFriendResponse
     {
-        public bool Success { get; set; }
+        public string Status { get; set; }
     }
 }

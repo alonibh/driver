@@ -16,6 +16,7 @@ namespace Driver.DB
         Task<GetPersonFriendsResponse> GetPersonFriends(GetPersonFriendsRequest request);
         Task<SearchPersonResponse> SearchPerson(SearchPersonRequest request);
         Task<AddFriendResponse> AddFriend(AddFriendRequest request);
+        Task<DeleteFriendResponse> DeleteFriend(DeleteFriendRequest request);
         void SetToken(string token);
     }
 }

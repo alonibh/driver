@@ -17,10 +17,8 @@ namespace Driver.ViewModels
         private readonly INavigation _navigation;
         private readonly IDialogService _dialogService;
         private readonly IDbHelper _dbHelper;
-        private LoginRequest _loginRequest = new LoginRequest();
 
-        public ICommand OnSigninButtonClicked => new Command(async () => await Signin());
-        public ICommand OnSignupButtonClicked => new Command(async () => await Signup());
+        private LoginRequest _loginRequest = new LoginRequest();
         public LoginRequest LoginRequest
         {
             get { return _loginRequest; }
@@ -30,6 +28,9 @@ namespace Driver.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public ICommand OnSigninButtonClicked => new Command(async () => await Signin());
+        public ICommand OnSignupButtonClicked => new Command(async () => await Signup());
 
         public LoginViewModel(INavigation navigation)
         {

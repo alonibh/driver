@@ -34,7 +34,7 @@ namespace Driver.ViewModels
 
         async Task DeleteDrive()
         {
-            bool answer = await _dialogService.ShowMessage("Delete Drive", "Are you sure you want to delete this drive?", "Yes", "No", null);
+            bool answer = await _dialogService.ShowMessage("Are you sure you want to delete this drive?", "Delete Drive", "Yes", "No", null);
             if (answer)
             {
                 DeleteDriveResponse deleteDriveResponse = await _dbHelper.DeleteDrive(new DeleteDriveRequest

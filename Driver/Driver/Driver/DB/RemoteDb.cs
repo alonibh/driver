@@ -136,6 +136,16 @@ namespace Driver.DB
             return addFriendResponse;
         }
 
+        public async Task<DeleteFriendResponse> DeleteFriend(DeleteFriendRequest request)
+        {
+            var res = await _client.DeleteAsync($"person/{request.Username}/friend");
+            var content = await res.Content.ReadAsStringAsync();
+            EnsureSuccessStatusCode(res, content);
+
+            var deleteFriendReponse = JsonConvert.DeserializeObject<DeleteFriendResponse>(content);
+            return deleteFriendReponse;
+        }
+
         public void SetToken(string token)
         {
             if (_client.DefaultRequestHeaders.Contains("Authorization"))

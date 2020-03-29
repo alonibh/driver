@@ -12,11 +12,10 @@ namespace Driver.ViewModels
     public class SignupViewModel : BaseViewModel
     {
         private readonly INavigation _navigation;
-        private SignupRequest _signupRequest = new SignupRequest();
         private readonly IDialogService _dialogService;
         private readonly IDbHelper _dbHelper;
 
-        public ICommand OnSignupButtonClicked => new Command(async () => await Signup());
+        private SignupRequest _signupRequest = new SignupRequest();
         public SignupRequest SignupRequest
         {
             get { return _signupRequest; }
@@ -26,6 +25,8 @@ namespace Driver.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public ICommand OnSignupButtonClicked => new Command(async () => await Signup());
 
         public SignupViewModel(INavigation navigation)
         {

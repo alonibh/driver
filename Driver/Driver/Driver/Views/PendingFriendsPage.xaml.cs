@@ -8,10 +8,20 @@ namespace Driver.Views
 {
     public partial class PendingFriendsPage : ContentPage
     {
+        private FriendsViewModel _viewModel;
+
         public PendingFriendsPage(IEnumerable<Friend> friends, string username)
         {
             InitializeComponent();
-            BindingContext = new FriendsViewModel(new ObservableCollection<Friend>(friends), username); ;
+            _viewModel = new FriendsViewModel(new ObservableCollection<Friend>(friends), username);
+            BindingContext = _viewModel;
+            pendingFriendsListView.ItemTapped += _viewModel.OnPendingFriendTapped;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            _viewModel.ReloadFriends();
         }
     }
 }

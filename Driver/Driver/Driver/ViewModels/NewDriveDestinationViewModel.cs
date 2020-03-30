@@ -36,7 +36,7 @@ namespace Driver.ViewModels
                 Username = Drive.Driver.Username
             });
 
-            var friends = getPersonFriendsResponse.Friends.Select(o => (Friend)o);
+            var friends = getPersonFriendsResponse.Friends.Select(o => (Friend)o).Where(o => o.Status == FriendRequestStatus.Accepted);
             var observableFriends = new ObservableCollection<Friend>(friends);
 
             await _navigation.PushAsync(new NewDriveParticipantsPage(Drive, observableFriends));

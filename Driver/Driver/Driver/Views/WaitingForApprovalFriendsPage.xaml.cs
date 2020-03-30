@@ -6,16 +6,16 @@ using Xamarin.Forms;
 
 namespace Driver.Views
 {
-    public partial class PendingFriendsPage : ContentPage
+    public partial class WaitingForApprovalFriendsFriendsPage : ContentPage
     {
-        private FriendsViewModel _viewModel;
+        private readonly FriendsViewModel _viewModel;
 
-        public PendingFriendsPage(IEnumerable<Friend> friends, string username)
+        public WaitingForApprovalFriendsFriendsPage(IEnumerable<Friend> friends, string username)
         {
             InitializeComponent();
             _viewModel = new FriendsViewModel(new ObservableCollection<Friend>(friends), username);
             BindingContext = _viewModel;
-            pendingFriendsListView.ItemTapped += _viewModel.OnPendingFriendTapped;
+            WaitingForApprovalFriendsListView.ItemTapped += _viewModel.OnWaitingForApprovalFriendTapped;
         }
 
         protected override void OnAppearing()

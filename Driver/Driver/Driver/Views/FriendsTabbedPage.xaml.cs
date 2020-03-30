@@ -18,13 +18,13 @@ namespace Driver.Views
             {
                 Title = "Friends"
             };
-            PendingFriendsPage pendingFriendRequestsPage = new PendingFriendsPage(friends, username)
+            WaitingForApprovalFriendsFriendsPage waitingForApprovalFriendRequestsPage = new WaitingForApprovalFriendsFriendsPage(friends, username)
             {
-                Title = "Pending Requests"
+                Title = "Waiting For Approval Requests"
             };
 
             Children.Add(approvedFriendsPage);
-            Children.Add(pendingFriendRequestsPage);
+            Children.Add(waitingForApprovalFriendRequestsPage);
         }
     }
 }

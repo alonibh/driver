@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Driver.Views.SearchPersonPage">
-    <StackLayout>
+    <StackLayout Margin="{StaticResource PageMargin}">
         <SearchBar x:Name="searchBar"
                    SearchCommand="{Binding PerformSearch}"
                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>

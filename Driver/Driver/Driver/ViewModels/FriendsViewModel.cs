@@ -20,12 +20,12 @@ namespace Driver.ViewModels
 
         public ICommand RefreshCommand => new Command(async () => await RefreshItemsAsync());
         public ObservableCollection<Friend> ApprovedFriends { get; set; }
-        public ObservableCollection<Friend> PendingFriends { get; set; }
+        public ObservableCollection<Friend> WaitingForApprovalFriends { get; set; }
 
         public FriendsViewModel(ObservableCollection<Friend> friends, string username)
         {
             _username = username;
-            PendingFriends = new ObservableCollection<Friend>();
+            WaitingForApprovalFriends = new ObservableCollection<Friend>();
             ApprovedFriends = new ObservableCollection<Friend>();
             _dbHelper = DependencyService.Get<IDbHelper>();
             _dialogService = DependencyService.Get<IDialogService>();
@@ -51,7 +51,7 @@ namespace Driver.ViewModels
             }
         }
 
-        public async void OnPendingFriendTapped(object sender, ItemTappedEventArgs args)
+        public async void OnWaitingForApprovalFriendTapped(object sender, ItemTappedEventArgs args)
         {
             ListView lv = (ListView)sender;
             lv.SelectedItem = null;
@@ -81,7 +81,7 @@ namespace Driver.ViewModels
 
         void AddFriends(IEnumerable<Friend> friends)
         {
-            PendingFriends.Clear();
+            WaitingForApprovalFriends.Clear();
             ApprovedFriends.Clear();
             foreach (var friend in friends)
             {
@@ -89,9 +89,9 @@ namespace Driver.ViewModels
                 {
                     ApprovedFriends.Add(friend);
                 }
-                else
+                else if (friend.Status == FriendRequestStatus.WaitingForApproval)
                 {
-                    PendingFriends.Add(friend);
+                    WaitingForApprovalFriends.Add(friend);
                 }
             }
         }

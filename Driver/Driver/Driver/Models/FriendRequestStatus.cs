@@ -3,6 +3,7 @@
     public enum FriendRequestStatus
     {
         Accepted,
-        Pending
+        Pending,
+        WaitingForApproval
     }
 }

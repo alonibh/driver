@@ -4,13 +4,13 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Driver.Views.PendingFriendsPage">
+             x:Class="Driver.Views.WaitingForApprovalFriendsFriendsPage">
 
     <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
         <Label FontAttributes="Bold"/>
         <RefreshView IsRefreshing="{Binding IsBusy}"
                      Command="{Binding RefreshCommand}">
-            <ListView x:Name ="pendingFriendsListView" ItemsSource="{Binding PendingFriends}">
+            <ListView x:Name ="WaitingForApprovalFriendsListView" ItemsSource="{Binding WaitingForApprovalFriends}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

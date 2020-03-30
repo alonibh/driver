@@ -8,7 +8,7 @@ namespace Driver.Views
 {
     public partial class ApprovedFriendsPage : ContentPage
     {
-        private FriendsViewModel _viewModel;
+        private readonly FriendsViewModel _viewModel;
 
         public ApprovedFriendsPage(IEnumerable<Friend> friends, string username)
         {

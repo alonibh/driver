@@ -4,8 +4,11 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             Visual="Material"
+             NavigationPage.HasNavigationBar="False"
              BackgroundColor="White"
              x:Class="Driver.Views.LoadingPage">
+    
     <ContentPage.Content>
         <StackLayout>
             <Image Source="splashlogo.png" Aspect="AspectFill" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />

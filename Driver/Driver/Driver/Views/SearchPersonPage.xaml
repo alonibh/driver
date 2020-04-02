@@ -4,21 +4,26 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             Visual="Material"
+             NavigationPage.HasNavigationBar="False"
              x:Class="Driver.Views.SearchPersonPage">
-    <StackLayout Margin="{StaticResource PageMargin}">
-        <SearchBar x:Name="searchBar"
-                   SearchCommand="{Binding PerformSearch}"
-                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
-        <ListView x:Name="friendsListView" ItemsSource="{Binding SearchResults, Mode=TwoWay}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid>
-                            <Label Text="{Binding FullName}"/>
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+
+    <ContentPage.Content>
+        <StackLayout Margin="{StaticResource PageMargin}">
+            <SearchBar x:Name="searchBar"
+                       SearchCommand="{Binding PerformSearch}"
+                       SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
+            <ListView x:Name="friendsListView" ItemsSource="{Binding SearchResults, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Label Text="{Binding FullName}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

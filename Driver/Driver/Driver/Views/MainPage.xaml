@@ -6,7 +6,10 @@
              xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
              xmlns:conv="clr-namespace:Driver.Utils"
              mc:Ignorable="d"
+             Visual="Material"
+             NavigationPage.HasNavigationBar="False"
              x:Class="Driver.Views.MainPage">
+    
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
             <StackLayout Orientation="Horizontal">

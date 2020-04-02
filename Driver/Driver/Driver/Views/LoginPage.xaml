@@ -4,28 +4,78 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             Visual="Material"
+             NavigationPage.HasNavigationBar="False"
              x:Class="Driver.Views.LoginPage"
+             BackgroundColor="White"
              Title="Login Page">
-    <StackLayout VerticalOptions="Center">
-        <Entry x:Name="usernameEntry"
-               Text="{Binding LoginRequest.Username, Mode=TwoWay}"
-               Placeholder="Username"
-               VerticalOptions="Center"/>
-        <Entry x:Name="passwordEntry"
-               Text="{Binding LoginRequest.Password, Mode=TwoWay}"
-               IsPassword="true"
-               Placeholder="Password"
-               VerticalOptions="Center"/>
-        <StackLayout Orientation="Horizontal">
-            <Button x:Name="signinButton"
-                Text="Sign in"
-                HorizontalOptions="CenterAndExpand"
-                Command="{Binding OnSigninButtonClicked}" />
-            <Button x:Name="signunButton"
-                Text="Sign up"
-                HorizontalOptions="CenterAndExpand"
-                Command="{Binding OnSignupButtonClicked}" />
-        </StackLayout>
-    </StackLayout>
 
+    <ContentPage.Content>
+        <RelativeLayout>
+            <Image Source="splashlogo.png" WidthRequest="150" HeightRequest="150"
+
+                RelativeLayout.WidthConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Width, Factor=.5,Constant=0}"
+                   
+                RelativeLayout.YConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Height, Factor=.1,Constant=0}"
+
+                RelativeLayout.XConstraint = "{ConstraintExpression  
+                    Type=RelativeToParent, Property=Width, Factor=0.25, Constant=0}"/>
+
+            <Entry x:Name="usernameEntry" WidthRequest="150" HeightRequest="150"
+                Text="{Binding LoginRequest.Username, Mode=TwoWay}" Placeholder="Username" BackgroundColor="White"
+                   
+               RelativeLayout.WidthConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Width, Factor=0.7,Constant=0}"
+                   
+                RelativeLayout.YConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Height, Factor=.35,Constant=0}"
+                   
+                RelativeLayout.XConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Width, Factor=0.15, Constant=0}"/>
+
+            <Entry x:Name="passwordEntry" Text="{Binding LoginRequest.Password, Mode=TwoWay}" IsPassword="true" Placeholder="Password" BackgroundColor="White"
+                RelativeLayout.WidthConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Width, Factor=0.7,Constant=0}"
+                   
+                RelativeLayout.YConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Height, Factor=.48,Constant=0}"
+                   
+                RelativeLayout.XConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Width, Factor=0.15, Constant=0}"/>
+            <Button x:Name="signinButton" Text="Sign in"
+                    Command="{Binding OnSigninButtonClicked}" 
+                    
+                RelativeLayout.WidthConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Width, Factor=0.7,Constant=0}"
+                   
+                RelativeLayout.YConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Height, Factor=.65,Constant=0}"
+                   
+                RelativeLayout.XConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Width, Factor=0.15, Constant=0}"/>
+            
+            <Label Text="Already A Member?" FontSize="Large" TextColor="DarkGray"
+                   
+                RelativeLayout.YConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Height, Factor=.8,Constant=0}"
+                   
+                RelativeLayout.XConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Width, Factor=0.23, Constant=0}"/>
+
+            <Button x:Name="signunButton" Text="Sign up" BackgroundColor="White" TextColor="LightSkyBlue"
+                    Command="{Binding OnSignupButtonClicked}"
+                    
+                RelativeLayout.WidthConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Width, Factor=0.35,Constant=0}"
+                   
+                RelativeLayout.YConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Height, Factor=.88,Constant=0}"
+                   
+                RelativeLayout.XConstraint="{ConstraintExpression
+                    Type=RelativeToParent, Property=Width, Factor=0.30, Constant=0}"/>
+
+        </RelativeLayout>
+    </ContentPage.Content>
 </ContentPage>

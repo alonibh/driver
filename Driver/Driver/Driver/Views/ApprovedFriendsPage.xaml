@@ -4,23 +4,27 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             Visual="Material"
+             NavigationPage.HasNavigationBar="False"
              x:Class="Driver.Views.ApprovedFriendsPage">
-
-    <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
-        <Label FontAttributes="Bold"/>
-        <RefreshView IsRefreshing="{Binding IsBusy}"
-                     Command="{Binding RefreshCommand}">
-            <ListView x:Name ="approvedFriendsListView" ItemsSource="{Binding ApprovedFriends}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid>
-                                <Label Text="{Binding FullName}"/>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </RefreshView>
-    </StackLayout>
+    
+    <ContentPage.Content>
+        <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
+            <Label FontAttributes="Bold"/>
+            <RefreshView IsRefreshing="{Binding IsBusy}"
+                         Command="{Binding RefreshCommand}">
+                <ListView x:Name ="approvedFriendsListView" ItemsSource="{Binding ApprovedFriends}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid>
+                                    <Label Text="{Binding FullName}"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RefreshView>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

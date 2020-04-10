@@ -26,8 +26,6 @@
 	<string>com.companyname.Driver</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
 	<string>Driver</string>
 	<key>NSAppTransportSecurity</key>
@@ -45,5 +43,9 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/AppIcons.appiconset</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 </dict>
 </plist>

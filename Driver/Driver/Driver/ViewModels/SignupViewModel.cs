@@ -2,7 +2,6 @@
 using Driver.Helpers;
 using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
-using Plugin.Toast;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -53,7 +52,6 @@ namespace Driver.ViewModels
             }
             else
             {
-                CrossToastPopUp.Current.ShowToastSuccess("Success!");
                 await _navigation.PopToRootAsync();
             }
         }

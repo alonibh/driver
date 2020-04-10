@@ -12,7 +12,7 @@
 
     <ContentPage.Content>
         <RelativeLayout>
-            <Image Source="splashlogo.png" WidthRequest="150" HeightRequest="150"
+            <Image Source="logo.png" WidthRequest="150" HeightRequest="150"
 
                 RelativeLayout.WidthConstraint="{ConstraintExpression
                     Type=RelativeToParent, Property=Width, Factor=.5,Constant=0}"
@@ -56,13 +56,13 @@
                 RelativeLayout.XConstraint="{ConstraintExpression
                     Type=RelativeToParent, Property=Width, Factor=0.15, Constant=0}"/>
             
-            <Label Text="Already A Member?" FontSize="Large" TextColor="DarkGray"
+            <Label Text="Are You A New Member?" FontSize="Medium" TextColor="DarkGray"
                    
                 RelativeLayout.YConstraint="{ConstraintExpression
                     Type=RelativeToParent, Property=Height, Factor=.8,Constant=0}"
                    
                 RelativeLayout.XConstraint="{ConstraintExpression
-                    Type=RelativeToParent, Property=Width, Factor=0.23, Constant=0}"/>
+                    Type=RelativeToParent, Property=Width, Factor=0.22, Constant=0}"/>
 
             <Button x:Name="signunButton" Text="Sign up" BackgroundColor="White" TextColor="LightSkyBlue"
                     Command="{Binding OnSignupButtonClicked}"

@@ -2,8 +2,8 @@
 using Driver.Helpers;
 using Driver.Models;
 using Driver.Views;
+using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
-using Plugin.Toast;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +16,7 @@ namespace Driver.ViewModels
     {
         private readonly INavigation _navigation;
         private readonly IDbHelper _dbHelper;
+        private readonly IDialogService _dialogService;
 
         public ICommand OnLogoutButtonClicked => new Command(async () => await Logout());
         public ICommand OnFriendsListButtonClicked => new Command(async () => await ShowFriends());
@@ -27,6 +28,7 @@ namespace Driver.ViewModels
             Person = person;
             _navigation = navigation;
             _dbHelper = DependencyService.Get<IDbHelper>();
+            _dialogService = DependencyService.Get<IDialogService>();
         }
 
         public async void OnDriveTapped(object sender, ItemTappedEventArgs args)
@@ -82,13 +84,17 @@ namespace Driver.ViewModels
 
         async Task Logout()
         {
-            _dbHelper.SetToken(null);
-            Application.Current.Properties.Remove("username");
-            Application.Current.Properties.Remove("token");
-            CrossToastPopUp.Current.ShowToastMessage("Successfully logged out");
-            var currPage = _navigation.NavigationStack.Single();
-            await _navigation.PushAsync(new LoginPage());
-            _navigation.RemovePage(currPage);
+            bool answer = await _dialogService.ShowMessage("Are you sure you want to logout?", "Logout", "Yes", "No", null);
+            if (answer)
+            {
+                _dbHelper.SetToken(null);
+                Application.Current.Properties.Remove("username");
+                Application.Current.Properties.Remove("token");
+
+                var rootPage = _navigation.NavigationStack[0];
+                _navigation.InsertPageBefore(new LoginPage(), rootPage);
+                await _navigation.PopToRootAsync();
+            }
         }
     }
 }

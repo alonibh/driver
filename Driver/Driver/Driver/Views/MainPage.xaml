@@ -9,7 +9,13 @@
              Visual="Material"
              NavigationPage.HasNavigationBar="False"
              x:Class="Driver.Views.MainPage">
-    
+
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,20,0,0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
             <StackLayout Orientation="Horizontal">

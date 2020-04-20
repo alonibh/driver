@@ -22,7 +22,7 @@ namespace Driver
             {
                 if (_database == null)
                 {
-                    _database = new RemoteDb("http://roeij.com:3000/api/");
+                    _database = new RemoteDb("http://driverapp-dev.ddns.net:3000/api/");
                     if (Current.Properties.ContainsKey("token"))
                     {
                         string token = Current.Properties["token"].ToString();
@@ -90,7 +90,8 @@ namespace Driver
                     Friends = new List<Friend>()
                 };
 
-                MainPage = new NavigationPage(new MainPage(person));
+
+                MainPage = new MainPage(person);
             }
         }
 

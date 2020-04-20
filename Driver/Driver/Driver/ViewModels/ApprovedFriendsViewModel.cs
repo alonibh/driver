@@ -1,8 +1,10 @@
 ﻿using Driver.API;
 using Driver.Helpers;
 using Driver.Models;
+using Driver.Views;
 using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
+using Rg.Plugins.Popup.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,7 +14,7 @@ using Xamarin.Forms;
 
 namespace Driver.ViewModels
 {
-    public class FriendsViewModel : BaseViewModel
+    public class ApprovedFriendsViewModel : BaseViewModel
     {
         private readonly IDbHelper _dbHelper;
         private readonly IDialogService _dialogService;
@@ -20,35 +22,47 @@ namespace Driver.ViewModels
 
         public ICommand RefreshCommand => new Command(async () => await RefreshItemsAsync());
         public ObservableCollection<Friend> ApprovedFriends { get; set; }
-        public ObservableCollection<Friend> WaitingForApprovalFriends { get; set; }
 
-        public FriendsViewModel(ObservableCollection<Friend> friends, string username)
+        public ApprovedFriendsViewModel(ObservableCollection<Friend> friends, string username)
         {
             _username = username;
-            WaitingForApprovalFriends = new ObservableCollection<Friend>();
-            ApprovedFriends = new ObservableCollection<Friend>();
             _dbHelper = DependencyService.Get<IDbHelper>();
             _dialogService = DependencyService.Get<IDialogService>();
+            ApprovedFriends = new ObservableCollection<Friend>();
             AddFriends(friends);
         }
 
-        public async void OnApprovedFriendTapped(object sender, ItemTappedEventArgs args)
+        public void SubscribePoppingEvent()
         {
-            ListView lv = (ListView)sender;
-            lv.SelectedItem = null;
+            PopupNavigation.Instance.Popping += Instance_Popping;
+        }
 
-            Friend friend = (args.Item as Friend);
-            bool response = await _dialogService.ShowMessage($"Are you sure you want to remove {friend.FullName} as your friend?",
-                                                             "Remove Friend", "Yes", "No", null);
-            if (response)
+        public void UnsubscribePoppingEvent()
+        {
+            PopupNavigation.Instance.Popping -= Instance_Popping;
+        }
+
+        public async void OnApprovedFriendTapped(object sender, SelectionChangedEventArgs args)
+        {
+            if (!args.CurrentSelection.Any())
             {
-                await _dbHelper.DeleteFriend(new DeleteFriendRequest
-                {
-                    Username = friend.Username
-                });
-
-                ReloadFriends();
+                return;
             }
+
+            Friend friend = (args.CurrentSelection[0] as Friend);
+
+            CollectionView cv = (CollectionView)sender;
+            cv.SelectedItem = null;
+
+            var personDrives = (await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
+            {
+                Username = _username
+            })).Drives.Select(o => (Drive)o);
+
+            List<Drive> drives = new List<Drive>();
+            drives.AddRange(personDrives.Where(d => d.Participants.Exists(p => p.Username == friend.Username)));
+
+            await PopupNavigation.Instance.PushAsync(new FriendPopupPage(friend, drives));
         }
 
         public async void OnWaitingForApprovalFriendTapped(object sender, ItemTappedEventArgs args)
@@ -79,21 +93,9 @@ namespace Driver.ViewModels
             AddFriends(getPersonFriendsResponse.Friends.Select(o => (Friend)o));
         }
 
-        void AddFriends(IEnumerable<Friend> friends)
+        void Instance_Popping(object sender, Rg.Plugins.Popup.Events.PopupNavigationEventArgs e)
         {
-            WaitingForApprovalFriends.Clear();
-            ApprovedFriends.Clear();
-            foreach (var friend in friends)
-            {
-                if (friend.Status == FriendRequestStatus.Accepted)
-                {
-                    ApprovedFriends.Add(friend);
-                }
-                else if (friend.Status == FriendRequestStatus.WaitingForApproval)
-                {
-                    WaitingForApprovalFriends.Add(friend);
-                }
-            }
+            ReloadFriends();
         }
 
         async Task RefreshItemsAsync()
@@ -108,6 +110,18 @@ namespace Driver.ViewModels
             AddFriends(getPersonFriendsResponse.Friends.Select(o => (Friend)o));
 
             IsBusy = false;
+        }
+
+        void AddFriends(IEnumerable<Friend> friends)
+        {
+            ApprovedFriends.Clear();
+            foreach (var friend in friends)
+            {
+                if (friend.Status == FriendRequestStatus.Accepted)
+                {
+                    ApprovedFriends.Add(friend);
+                }
+            }
         }
     }
 }

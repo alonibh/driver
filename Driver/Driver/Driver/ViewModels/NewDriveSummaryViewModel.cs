@@ -69,10 +69,10 @@ namespace Driver.ViewModels
                 Drives = getPersonDrivesResponse.Drives.Select(o => (Drive)o).ToList(),
                 Friends = new List<Friend>()
             };
-            MainPage mainPage = new MainPage(person);
+            HomePage homePage = new HomePage(person);
 
             var rootPage = _navigation.NavigationStack[0];
-            _navigation.InsertPageBefore(mainPage, rootPage);
+            _navigation.InsertPageBefore(homePage, rootPage);
             await _navigation.PopToRootAsync();
         }
     }

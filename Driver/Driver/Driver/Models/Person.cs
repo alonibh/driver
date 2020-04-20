@@ -13,17 +13,17 @@ namespace Driver.Models
         public string Email { get; set; }
         public List<Drive> Drives { get; set; }
         public List<Friend> Friends { get; set; }
-        public List<DrivesCounter> DrivesCounter => GetDrivesCounter();
+        public List<DriveCounter> DrivesCounter => GetDrivesCounter();
         public string FullName => FirstName + " " + LastName;
 
-        private List<DrivesCounter> GetDrivesCounter()
+        private List<DriveCounter> GetDrivesCounter()
         {
             if (Drives == null)
             {
-                return new List<DrivesCounter>();
+                return new List<DriveCounter>();
             }
 
-            var drivesCounter = new List<DrivesCounter>();
+            var drivesCounter = new List<DriveCounter>();
             foreach (var drive in Drives)
             {
                 if (drive.Driver.Username == Username) // If you are the driver
@@ -36,7 +36,7 @@ namespace Driver.Models
                         }
                         else
                         {
-                            drivesCounter.Add(new DrivesCounter
+                            drivesCounter.Add(new DriveCounter
                             {
                                 Counter = 1,
                                 FullName = participant.FullName,
@@ -53,7 +53,7 @@ namespace Driver.Models
                     }
                     else
                     {
-                        drivesCounter.Add(new DrivesCounter
+                        drivesCounter.Add(new DriveCounter
                         {
                             Counter = -1,
                             FullName = drive.Driver.FirstName + " " + drive.Driver.LastName,

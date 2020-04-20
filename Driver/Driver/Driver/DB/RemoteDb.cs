@@ -45,6 +45,7 @@ namespace Driver.DB
 
         public async Task<SignupResponse> SignUp(SignupRequest request)
         {
+            SetToken(null);
             string json = JsonConvert.SerializeObject(request, _settings);
             HttpResponseMessage res = await _client.PostAsync("auth/signup", new StringContent(json, Encoding.UTF8, "application/json"));
             var content = await res.Content.ReadAsStringAsync();

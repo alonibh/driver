@@ -2,33 +2,59 @@
 using Driver.Helpers;
 using Driver.Models;
 using Driver.Views;
-using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Driver.ViewModels
 {
-    public class MainPageViewModel : BaseViewModel
+    public class HomePageViewModel : BaseViewModel
     {
         private readonly INavigation _navigation;
         private readonly IDbHelper _dbHelper;
-        private readonly IDialogService _dialogService;
 
-        public ICommand OnLogoutButtonClicked => new Command(async () => await Logout());
-        public ICommand OnFriendsListButtonClicked => new Command(async () => await ShowFriends());
-        public ICommand OnNewDriveButtonClicked => new Command(async () => await AddDrive());
+        private ObservableCollection<DriveCounter> _driveCounters;
+        public ObservableCollection<DriveCounter> DriveCounters
+        {
+            get { return _driveCounters; }
+            set
+            {
+                _driveCounters = new ObservableCollection<DriveCounter>(value.OrderByDescending(o => o.Counter));
+                OnPropertyChanged();
+            }
+        }
+
+        private DriveCounter _currentDriveCounter;
+        public DriveCounter CurrentDriveCounter
+        {
+            get { return _currentDriveCounter; }
+            set
+            {
+                _currentDriveCounter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand OnAddNewDriveButtonClicked => new Command(() => ShowNewDrivePage());
+
+        public int GlobalDrivesCounter => GetGlobalDrivesCounter();
+
         public Person Person { get; set; }
 
-        public MainPageViewModel(Person person, INavigation navigation)
+        public HomePageViewModel(Person person, INavigation navigation)
         {
-            Person = person;
             _navigation = navigation;
             _dbHelper = DependencyService.Get<IDbHelper>();
-            _dialogService = DependencyService.Get<IDialogService>();
+            Person = person;
+
+            DriveCounters = new ObservableCollection<DriveCounter>(Person.DrivesCounter);
+            if (DriveCounters.Count > 0)
+            {
+                CurrentDriveCounter = DriveCounters[0];
+            }
         }
 
         public async void OnDriveTapped(object sender, ItemTappedEventArgs args)
@@ -54,18 +80,17 @@ namespace Driver.ViewModels
             await _navigation.PushAsync(new DriveInfoPage(drive, Person.Username));
         }
 
-        async Task ShowFriends()
+        private int GetGlobalDrivesCounter()
         {
-
-            GetPersonFriendsResponse getPersonFriendsResponse = await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
+            int counter = 0;
+            foreach (var driveCounter in DriveCounters)
             {
-                Username = Person.Username
-            });
-
-            await _navigation.PushAsync(new FriendsTabbedPage(getPersonFriendsResponse.Friends.Select(o => (Friend)o), Person.Username));
+                counter += driveCounter.Counter;
+            }
+            return counter;
         }
 
-        async Task AddDrive()
+        private void ShowNewDrivePage()
         {
             var drive = new Drive
             {
@@ -79,22 +104,11 @@ namespace Driver.ViewModels
                 }
             };
 
-            await _navigation.PushAsync(new NewDriveDestinationPage(drive));
-        }
-
-        async Task Logout()
-        {
-            bool answer = await _dialogService.ShowMessage("Are you sure you want to logout?", "Logout", "Yes", "No", null);
-            if (answer)
+            ((MasterDetailPage)App.Current.MainPage).Detail = new NavigationPage(new NewDriveDestinationPage(drive))
             {
-                _dbHelper.SetToken(null);
-                Application.Current.Properties.Remove("username");
-                Application.Current.Properties.Remove("token");
-
-                var rootPage = _navigation.NavigationStack[0];
-                _navigation.InsertPageBefore(new LoginPage(), rootPage);
-                await _navigation.PopToRootAsync();
-            }
+                BarBackgroundColor = Color.LightGray,
+                BarTextColor = Color.Black
+            };
         }
     }
 }

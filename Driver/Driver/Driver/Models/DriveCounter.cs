@@ -1,6 +1,6 @@
 ﻿namespace Driver.Models
 {
-    public class DrivesCounter
+    public class DriveCounter
     {
         public string Username { get; set; }
         public string FullName { get; set; }
@@ -14,8 +14,8 @@
                 return "You're even";
             }
 
-            var returnStr = Counter > 0 ? $"You get {Counter} drives back" : $"You owe {Counter * -1} drives";
-            return returnStr;
+            var counterStr = Counter > 0 ? $"You get {Counter} drives back" : $"You owe {Counter * -1} drives";
+            return counterStr;
         }
     }
 }

@@ -5,7 +5,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              Visual="Material"
-             NavigationPage.HasNavigationBar="False"
              x:Class="Driver.Views.NewDriveDestinationPage"
              Title="New Drive">
 

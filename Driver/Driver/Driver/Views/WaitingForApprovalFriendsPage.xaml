@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              Visual="Material"
              NavigationPage.HasNavigationBar="False"
-             x:Class="Driver.Views.WaitingForApprovalFriendsFriendsPage">
+             x:Class="Driver.Views.WaitingForApprovalFriendsPage">
     
     <ContentPage.Content>
         <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">

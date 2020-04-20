@@ -47,8 +47,6 @@ namespace Driver.ViewModels
                 Password = LoginRequest.Password
             });
 
-
-
             if (!loginResponse.Success)
             {
                 await _dialogService.ShowMessage("Wrong user name or password", "Error", "OK", null);
@@ -81,9 +79,7 @@ namespace Driver.ViewModels
                 };
                 MainPage mainPage = new MainPage(person);
 
-                var currPage = _navigation.NavigationStack[0];
-                _navigation.InsertPageBefore(mainPage, currPage);
-                await _navigation.PopAsync();
+                Application.Current.MainPage = mainPage;
             }
         }
 

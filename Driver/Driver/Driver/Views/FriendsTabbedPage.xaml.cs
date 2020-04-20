@@ -12,15 +12,25 @@ namespace Driver.Views
         {
             InitializeComponent();
 
-            BindingContext = new FriendsTabbedViewModel(Navigation);
+            var bindingContext = new FriendsTabbedViewModel(Navigation);
+            BindingContext = bindingContext;
+
+            ToolbarItem item = new ToolbarItem
+            {
+                IconImageSource = ImageSource.FromFile("find.png"),
+                Order = ToolbarItemOrder.Primary,
+                Priority = 0,
+                Command = bindingContext.OnSearchPersonToolbarItemClicked
+            };
+            this.ToolbarItems.Add(item);
 
             ApprovedFriendsPage approvedFriendsPage = new ApprovedFriendsPage(friends, username)
             {
                 Title = "Friends"
             };
-            WaitingForApprovalFriendsFriendsPage waitingForApprovalFriendRequestsPage = new WaitingForApprovalFriendsFriendsPage(friends, username)
+            WaitingForApprovalFriendsPage waitingForApprovalFriendRequestsPage = new WaitingForApprovalFriendsPage(friends, username)
             {
-                Title = "Waiting For Approval Requests"
+                Title = "Requests"
             };
 
             Children.Add(approvedFriendsPage);

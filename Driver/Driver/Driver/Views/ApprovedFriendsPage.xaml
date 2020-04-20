@@ -13,17 +13,38 @@
             <Label FontAttributes="Bold"/>
             <RefreshView IsRefreshing="{Binding IsBusy}"
                          Command="{Binding RefreshCommand}">
-                <ListView x:Name ="approvedFriendsListView" ItemsSource="{Binding ApprovedFriends}">
-                    <ListView.ItemTemplate>
+                <CollectionView x:Name="approvedFriendsCollectionView" 
+                                ItemsSource="{Binding ApprovedFriends}"
+                                SelectionMode="Single">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <Grid>
-                                    <Label Text="{Binding FullName}"/>
-                                </Grid>
-                            </ViewCell>
+                            <Grid Padding="10">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                
+                                <Image
+                                       Source="person.png"
+                                       Aspect="AspectFill"
+                                       HeightRequest="60"
+                                       WidthRequest="60" />
+                                
+                                <Label Grid.Column="1"
+                                       HorizontalTextAlignment="Start"
+                                       VerticalOptions="Center"
+                                       Text="{Binding FullName}"
+                                       LineBreakMode="TailTruncation"/>
+                                
+                                
+                            </Grid>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </RefreshView>
         </StackLayout>
     </ContentPage.Content>

@@ -1,7 +1,6 @@
 ﻿using Driver.Models;
 using Driver.ViewModels;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Xamarin.Forms;
 
 namespace Driver.Views
@@ -10,19 +9,19 @@ namespace Driver.Views
     {
         private readonly ApprovedFriendsViewModel _viewModel;
 
-        public ApprovedFriendsPage(IEnumerable<Friend> friends, string username)
+        public ApprovedFriendsPage(IEnumerable<Friend> friends, IEnumerable<Drive> drives, string username)
         {
             InitializeComponent();
-            _viewModel = new ApprovedFriendsViewModel(new ObservableCollection<Friend>(friends), username);
+            _viewModel = new ApprovedFriendsViewModel(friends, drives, username);
             BindingContext = _viewModel;
             approvedFriendsCollectionView.SelectionChanged += _viewModel.OnApprovedFriendTapped;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
             _viewModel.SubscribePoppingEvent();
-            _viewModel.ReloadFriends();
+            await _viewModel.ReloadFriends();
         }
 
         protected override void OnDisappearing()

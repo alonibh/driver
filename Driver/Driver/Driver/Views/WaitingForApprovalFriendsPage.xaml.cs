@@ -1,7 +1,6 @@
 ﻿using Driver.Models;
 using Driver.ViewModels;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Xamarin.Forms;
 
 namespace Driver.Views
@@ -13,22 +12,14 @@ namespace Driver.Views
         public WaitingForApprovalFriendsPage(IEnumerable<Friend> friends, string username)
         {
             InitializeComponent();
-            _viewModel = new WaitingForApprovalFriendsViewModel(new ObservableCollection<Friend>(friends), username);
+            _viewModel = new WaitingForApprovalFriendsViewModel(friends, username);
             BindingContext = _viewModel;
-            WaitingForApprovalFriendsListView.ItemTapped += _viewModel.OnWaitingForApprovalFriendTapped;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            _viewModel.SubscribePoppingEvent();
-            _viewModel.ReloadFriends();
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            _viewModel.UnsubscribePoppingEvent();
+            await _viewModel.ReloadFriends();
         }
     }
 }

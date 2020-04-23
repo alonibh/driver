@@ -1,5 +1,6 @@
 ﻿using Driver.API;
 using GalaSoft.MvvmLight.Views;
+using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -189,7 +190,17 @@ namespace Driver.Helpers
             }
             catch (Exception e)
             {
-                await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
+                var exception = JsonConvert.DeserializeObject<ErrorMsg>(e.Message);
+                switch (exception.err)
+                {
+                    case ErrorType.PersonAlreadyFriend:
+                        await _dialogService.ShowMessage($"Friend request already sent", "Error", "OK", null);
+                        break;
+
+                    default:
+                        await _dialogService.ShowMessage($"The server returned an error: {e.Message}", "Error", "OK", null);
+                        break;
+                }
             }
             return addFriendResponse;
         }

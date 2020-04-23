@@ -2,7 +2,6 @@
 using Driver.Helpers;
 using Driver.Models;
 using Driver.Views;
-using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
 using Rg.Plugins.Popup.Services;
 using System.Collections.Generic;
@@ -17,19 +16,17 @@ namespace Driver.ViewModels
     public class ApprovedFriendsViewModel : BaseViewModel
     {
         private readonly IDbHelper _dbHelper;
-        private readonly IDialogService _dialogService;
         private readonly string _username;
 
         public ICommand RefreshCommand => new Command(async () => await RefreshItemsAsync());
-        public ObservableCollection<Friend> ApprovedFriends { get; set; }
+        public ObservableCollection<FriendDrivesCounter> ApprovedFriends { get; set; }
 
-        public ApprovedFriendsViewModel(ObservableCollection<Friend> friends, string username)
+        public ApprovedFriendsViewModel(IEnumerable<Friend> friends, IEnumerable<Drive> drives, string username)
         {
             _username = username;
             _dbHelper = DependencyService.Get<IDbHelper>();
-            _dialogService = DependencyService.Get<IDialogService>();
-            ApprovedFriends = new ObservableCollection<Friend>();
-            AddFriends(friends);
+            ApprovedFriends = new ObservableCollection<FriendDrivesCounter>();
+            AddFriends(friends, drives);
         }
 
         public void SubscribePoppingEvent()
@@ -49,7 +46,7 @@ namespace Driver.ViewModels
                 return;
             }
 
-            Friend friend = (args.CurrentSelection[0] as Friend);
+            Friend friend = (args.CurrentSelection[0] as FriendDrivesCounter).Friend;
 
             CollectionView cv = (CollectionView)sender;
             cv.SelectedItem = null;
@@ -65,61 +62,74 @@ namespace Driver.ViewModels
             await PopupNavigation.Instance.PushAsync(new FriendPopupPage(friend, drives));
         }
 
-        public async void OnWaitingForApprovalFriendTapped(object sender, ItemTappedEventArgs args)
+        public async Task ReloadFriends()
         {
-            ListView lv = (ListView)sender;
-            lv.SelectedItem = null;
-
-            Friend friend = (args.Item as Friend);
-            bool response = await _dialogService.ShowMessage($"Do you want to add {friend.FullName} as your friend?", "Add Friend", "Yes", "No", null);
-            if (response)
-            {
-                await _dbHelper.AddFriend(new AddFriendRequest
-                {
-                    Username = friend.Username
-                });
-
-                ReloadFriends();
-            }
-        }
-
-        public async void ReloadFriends()
-        {
-            GetPersonFriendsResponse getPersonFriendsResponse = await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
+            var friends = (await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
             {
                 Username = _username
-            });
+            })).Friends.Select(o => (Friend)o);
 
-            AddFriends(getPersonFriendsResponse.Friends.Select(o => (Friend)o));
+            var drives = (await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
+            {
+                Username = _username
+            })).Drives.Select(o => (Drive)o);
+
+            AddFriends(friends, drives);
         }
 
-        void Instance_Popping(object sender, Rg.Plugins.Popup.Events.PopupNavigationEventArgs e)
+        async void Instance_Popping(object sender, Rg.Plugins.Popup.Events.PopupNavigationEventArgs e)
         {
-            ReloadFriends();
+            await ReloadFriends();
         }
 
         async Task RefreshItemsAsync()
         {
             IsBusy = true;
 
-            GetPersonFriendsResponse getPersonFriendsResponse = await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
-            {
-                Username = _username
-            });
-
-            AddFriends(getPersonFriendsResponse.Friends.Select(o => (Friend)o));
+            await ReloadFriends();
 
             IsBusy = false;
         }
 
-        void AddFriends(IEnumerable<Friend> friends)
+        void AddFriends(IEnumerable<Friend> friends, IEnumerable<Drive> drives)
         {
             ApprovedFriends.Clear();
+            Dictionary<string, int> drivesCounter = new Dictionary<string, int>();
+            foreach (var drive in drives)
+            {
+                if (drive.Driver.Username == _username)
+                {
+                    foreach (var participant in drive.Participants)
+                    {
+                        if (!drivesCounter.ContainsKey(participant.Username))
+                        {
+                            drivesCounter.Add(participant.Username, 0);
+                        }
+
+                        drivesCounter[participant.Username]++;
+                    }
+                }
+                else
+                {
+                    if (!drivesCounter.ContainsKey(drive.Driver.Username))
+                    {
+                        drivesCounter.Add(drive.Driver.Username, 0);
+                    }
+
+                    drivesCounter[drive.Driver.Username]--;
+                }
+            }
             foreach (var friend in friends)
             {
                 if (friend.Status == FriendRequestStatus.Accepted)
                 {
-                    ApprovedFriends.Add(friend);
+                    int counter;
+                    drivesCounter.TryGetValue(friend.Username, out counter);
+                    ApprovedFriends.Add(new FriendDrivesCounter
+                    {
+                        Friend = friend,
+                        Counter = counter
+                    });
                 }
             }
         }

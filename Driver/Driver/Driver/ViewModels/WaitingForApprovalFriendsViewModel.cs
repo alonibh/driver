@@ -1,9 +1,7 @@
 ﻿using Driver.API;
 using Driver.Helpers;
 using Driver.Models;
-using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
-using Rg.Plugins.Popup.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,63 +14,65 @@ namespace Driver.ViewModels
     public class WaitingForApprovalFriendsViewModel : BaseViewModel
     {
         private readonly IDbHelper _dbHelper;
-        private readonly IDialogService _dialogService;
         private readonly string _username;
 
         public ICommand RefreshCommand => new Command(async () => await RefreshItemsAsync());
+        public ICommand OnAcceptFriendClicked => new Command((friend) => AcceptFriend(friend as Friend));
+        public ICommand OnRemoveFriendClicked => new Command((friend) => RemoveFriend(friend as Friend));
+
 
         public ObservableCollection<Friend> WaitingForApprovalFriends { get; set; }
 
-        public WaitingForApprovalFriendsViewModel(ObservableCollection<Friend> friends, string username)
+        public WaitingForApprovalFriendsViewModel(IEnumerable<Friend> friends, string username)
         {
             _username = username;
             _dbHelper = DependencyService.Get<IDbHelper>();
-            _dialogService = DependencyService.Get<IDialogService>();
             WaitingForApprovalFriends = new ObservableCollection<Friend>();
             AddFriends(friends);
         }
 
-        public void SubscribePoppingEvent()
+        public async void AcceptFriend(Friend friend)
         {
-            PopupNavigation.Instance.Popping += Instance_Popping;
-        }
-
-        public void UnsubscribePoppingEvent()
-        {
-            PopupNavigation.Instance.Popping -= Instance_Popping;
-        }
-
-        public async void OnWaitingForApprovalFriendTapped(object sender, ItemTappedEventArgs args)
-        {
-            ListView lv = (ListView)sender;
-            lv.SelectedItem = null;
-
-            Friend friend = (args.Item as Friend);
-            bool response = await _dialogService.ShowMessage($"Do you want to add {friend.FullName} as your friend?", "Add Friend", "Yes", "No", null);
-            if (response)
+            await _dbHelper.AddFriend(new AddFriendRequest
             {
-                await _dbHelper.AddFriend(new AddFriendRequest
-                {
-                    Username = friend.Username
-                });
-
-                ReloadFriends();
-            }
-        }
-
-        public async void ReloadFriends()
-        {
-            GetPersonFriendsResponse getPersonFriendsResponse = await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
-            {
-                Username = _username
+                Username = friend.Username
             });
 
-            AddFriends(getPersonFriendsResponse.Friends.Select(o => (Friend)o));
+            await ReloadFriends();
         }
 
-        void Instance_Popping(object sender, Rg.Plugins.Popup.Events.PopupNavigationEventArgs e)
+        public async void RemoveFriend(Friend friend)
         {
-            ReloadFriends();
+            var a = await _dbHelper.DeleteFriend(new DeleteFriendRequest
+            {
+                Username = friend.Username
+            });
+
+            await ReloadFriends();
+        }
+
+        public async Task ReloadFriends()
+        {
+            var friends = (await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
+            {
+                Username = _username
+            })).Friends.Select(o => (Friend)o);
+
+            AddFriends(friends);
+        }
+
+        async void Instance_Popping(object sender, Rg.Plugins.Popup.Events.PopupNavigationEventArgs e)
+        {
+            await ReloadFriends();
+        }
+
+        async Task RefreshItemsAsync()
+        {
+            IsBusy = true;
+
+            await ReloadFriends();
+
+            IsBusy = false;
         }
 
         void AddFriends(IEnumerable<Friend> friends)
@@ -85,20 +85,6 @@ namespace Driver.ViewModels
                     WaitingForApprovalFriends.Add(friend);
                 }
             }
-        }
-
-        async Task RefreshItemsAsync()
-        {
-            IsBusy = true;
-
-            GetPersonFriendsResponse getPersonFriendsResponse = await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
-            {
-                Username = _username
-            });
-
-            AddFriends(getPersonFriendsResponse.Friends.Select(o => (Friend)o));
-
-            IsBusy = false;
         }
     }
 }

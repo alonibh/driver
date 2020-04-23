@@ -17,7 +17,7 @@
                                 ItemsSource="{Binding ApprovedFriends}"
                                 SelectionMode="Single">
                     <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" Span="2" />
+                        <GridItemsLayout Orientation="Vertical" Span="1" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -27,20 +27,26 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                
+                              
                                 <Image
                                        Source="person.png"
                                        Aspect="AspectFill"
                                        HeightRequest="60"
                                        WidthRequest="60" />
                                 
-                                <Label Grid.Column="1"
-                                       HorizontalTextAlignment="Start"
+                                <StackLayout Grid.Column="1">
+                                    
+                                <Label HorizontalTextAlignment="Start"
                                        VerticalOptions="Center"
-                                       Text="{Binding FullName}"
-                                       LineBreakMode="TailTruncation"/>
-                                
-                                
+                                       Text="{Binding Friend.FullName}"
+                                       LineBreakMode="TailTruncation"
+                                       FontAttributes="Bold"/>
+
+                                <Label HorizontalTextAlignment="Start"
+                                    VerticalOptions="Center"
+                                    Text="{Binding CounterStr}"
+                                    TextColor="Gray"/>
+                                </StackLayout>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

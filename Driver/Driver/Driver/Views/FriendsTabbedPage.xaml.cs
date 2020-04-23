@@ -8,7 +8,7 @@ namespace Driver.Views
 {
     public partial class FriendsTabbedPage : TabbedPage
     {
-        public FriendsTabbedPage(IEnumerable<Friend> friends, string username)
+        public FriendsTabbedPage(IEnumerable<Friend> friends, IEnumerable<Drive> drives, string username)
         {
             InitializeComponent();
 
@@ -24,7 +24,7 @@ namespace Driver.Views
             };
             this.ToolbarItems.Add(item);
 
-            ApprovedFriendsPage approvedFriendsPage = new ApprovedFriendsPage(friends, username)
+            ApprovedFriendsPage approvedFriendsPage = new ApprovedFriendsPage(friends, drives, username)
             {
                 Title = "Friends"
             };

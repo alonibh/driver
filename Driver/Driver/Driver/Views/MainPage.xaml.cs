@@ -90,12 +90,17 @@ namespace Driver.Views
 
         async Task ShowFriends()
         {
-            GetPersonFriendsResponse getPersonFriendsResponse = await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
+            var friends = (await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
             {
                 Username = _person.Username
-            });
+            })).Friends.Select(o => (Friend)o);
 
-            Detail = new NavigationPage(new FriendsTabbedPage(getPersonFriendsResponse.Friends.Select(o => (Friend)o), _person.Username))
+            var drives = (await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
+            {
+                Username = _person.Username
+            })).Drives.Select(o => (Drive)o);
+
+            Detail = new NavigationPage(new FriendsTabbedPage(friends, drives, _person.Username))
             {
                 BarBackgroundColor = Color.FloralWhite,
                 BarTextColor = Color.Black

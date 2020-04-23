@@ -7,23 +7,81 @@
              Visual="Material"
              NavigationPage.HasNavigationBar="False"
              x:Class="Driver.Views.WaitingForApprovalFriendsPage">
-    
+
     <ContentPage.Content>
         <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
             <Label FontAttributes="Bold"/>
             <RefreshView IsRefreshing="{Binding IsBusy}"
                          Command="{Binding RefreshCommand}">
-                <ListView x:Name ="WaitingForApprovalFriendsListView" ItemsSource="{Binding WaitingForApprovalFriends}">
-                    <ListView.ItemTemplate>
+                <CollectionView x:Name="WaitingForApprovalFriendsCollectionView"
+                                ItemsSource="{Binding WaitingForApprovalFriends}"
+                                SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="1" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <Grid>
-                                    <Label Text="{Binding FullName}"/>
+                            <Grid Padding="10">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0"
+                                       Source="person.png"
+                                       Aspect="AspectFill"
+                                       HeightRequest="60"
+                                       WidthRequest="60" />
+
+                                <Grid Grid.Column="1" Padding="10,0,0,0">
+                                    
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    
+                                    <Label Grid.Row="0"
+                                       HorizontalTextAlignment="Start"
+                                       VerticalOptions="Center"
+                                       Text="{Binding FullName}"
+                                       TextColor="Black"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       LineBreakMode="TailTruncation"/>
+
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button Grid.Column="0"
+                                                VerticalOptions="Center"
+                                                CornerRadius="10"
+                                                Text="Add Friend"
+                                                FontSize="12"
+                                                FontAttributes="Bold"
+                                                BackgroundColor="#E8F2FE"
+                                                TextColor="#2B86D2"
+                                                Command="{Binding Path=BindingContext.OnAcceptFriendClicked, Source={x:Reference                    WaitingForApprovalFriendsCollectionView}}"
+                                                CommandParameter="{Binding}"/>
+
+                                        <Button Grid.Column="1"
+                                                VerticalOptions="Center"
+                                                CornerRadius="10"
+                                                FontSize="12"
+                                                FontAttributes="Bold"
+                                                Text="Remove"
+                                                Command="{Binding Path=BindingContext.OnRemoveFriendClicked, Source={x:Reference                    WaitingForApprovalFriendsCollectionView}}"
+                                                CommandParameter="{Binding}"/>
+                                    </Grid>
                                 </Grid>
-                            </ViewCell>
+                                
+                            </Grid>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </RefreshView>
         </StackLayout>
     </ContentPage.Content>

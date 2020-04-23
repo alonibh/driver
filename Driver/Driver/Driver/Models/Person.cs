@@ -56,7 +56,7 @@ namespace Driver.Models
                         drivesCounter.Add(new DriveCounter
                         {
                             Counter = -1,
-                            FullName = drive.Driver.FirstName + " " + drive.Driver.LastName,
+                            FullName = drive.Driver.FullName,
                             Username = drive.Driver.Username
                         });
                     }

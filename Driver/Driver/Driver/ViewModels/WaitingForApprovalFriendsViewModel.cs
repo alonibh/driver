@@ -17,8 +17,8 @@ namespace Driver.ViewModels
         private readonly string _username;
 
         public ICommand RefreshCommand => new Command(async () => await RefreshItemsAsync());
-        public ICommand OnAcceptFriendClicked => new Command((friend) => AcceptFriend(friend as Friend));
-        public ICommand OnRemoveFriendClicked => new Command((friend) => RemoveFriend(friend as Friend));
+        public ICommand OnAcceptFriendClicked => new Command(async (friend) => await AcceptFriend(friend as Friend));
+        public ICommand OnRemoveFriendClicked => new Command(async (friend) => await RemoveFriend(friend as Friend));
 
 
         public ObservableCollection<Friend> WaitingForApprovalFriends { get; set; }
@@ -31,7 +31,7 @@ namespace Driver.ViewModels
             AddFriends(friends);
         }
 
-        public async void AcceptFriend(Friend friend)
+        public async Task AcceptFriend(Friend friend)
         {
             await _dbHelper.AddFriend(new AddFriendRequest
             {
@@ -41,9 +41,9 @@ namespace Driver.ViewModels
             await ReloadFriends();
         }
 
-        public async void RemoveFriend(Friend friend)
+        public async Task RemoveFriend(Friend friend)
         {
-            var a = await _dbHelper.DeleteFriend(new DeleteFriendRequest
+            await _dbHelper.DeleteFriend(new DeleteFriendRequest
             {
                 Username = friend.Username
             });

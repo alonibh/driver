@@ -6,6 +6,7 @@ using MvvmHelpers;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -38,7 +39,7 @@ namespace Driver.ViewModels
             }
         }
 
-        public ICommand OnAddNewDriveButtonClicked => new Command(() => ShowNewDrivePage());
+        public ICommand OnAddNewDriveButtonClicked => new Command(async () => await ShowNewDrivePage());
 
         public int GlobalDrivesCounter => GetGlobalDrivesCounter();
 
@@ -90,7 +91,7 @@ namespace Driver.ViewModels
             return counter;
         }
 
-        private void ShowNewDrivePage()
+        private async Task ShowNewDrivePage()
         {
             var drive = new Drive
             {
@@ -104,11 +105,8 @@ namespace Driver.ViewModels
                 }
             };
 
-            ((MasterDetailPage)App.Current.MainPage).Detail = new NavigationPage(new NewDriveDestinationPage(drive))
-            {
-                BarBackgroundColor = Color.LightGray,
-                BarTextColor = Color.Black
-            };
+            var masterDetailPage = ((MasterDetailPage)Application.Current.MainPage).Detail;
+            await ((NavigationPage)masterDetailPage).PushAsync(new NewDriveDestinationPage(drive));
         }
     }
 }

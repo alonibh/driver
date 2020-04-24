@@ -65,7 +65,7 @@ namespace Driver.Views
                             }
                         case nameof(NewDriveDestinationPage):
                             {
-                                AddDrive();
+                                await AddDrive();
                                 break;
                             }
                     }
@@ -100,14 +100,10 @@ namespace Driver.Views
                 Username = _person.Username
             })).Drives.Select(o => (Drive)o);
 
-            Detail = new NavigationPage(new FriendsTabbedPage(friends, drives, _person.Username))
-            {
-                BarBackgroundColor = Color.FloralWhite,
-                BarTextColor = Color.Black
-            };
+            await ((NavigationPage)Detail).PushAsync(new FriendsTabbedPage(friends, drives, _person.Username));
         }
 
-        void AddDrive()
+        async Task AddDrive()
         {
             var drive = new Drive
             {
@@ -121,11 +117,7 @@ namespace Driver.Views
                 }
             };
 
-            Detail = new NavigationPage(new NewDriveDestinationPage(drive))
-            {
-                BarBackgroundColor = Color.FloralWhite,
-                BarTextColor = Color.Black
-            };
+            await ((NavigationPage)Detail).PushAsync(new NewDriveDestinationPage(drive));
         }
     }
 }

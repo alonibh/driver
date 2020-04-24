@@ -11,7 +11,6 @@ namespace Driver.Views
             InitializeComponent();
             var viewModel = new HomePageViewModel(person, Navigation);
             BindingContext = viewModel;
-            NavigationPage.SetHasBackButton(this, false);
             //drivesListView.ItemTapped += viewModel.OnDriveTapped;
         }
     }

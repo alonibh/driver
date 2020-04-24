@@ -51,17 +51,17 @@
             <On Platform="iOS" Value="0,20,0,0" />
         </OnPlatform>
     </ContentPage.Padding>
-    
+
     <yummy:PancakeView 
          BackgroundGradientAngle="180"
          BackgroundGradientEndColor="FloralWhite"
          BackgroundGradientStartColor="LightBlue"
          IsClippedToBounds="True" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
-    <StackLayout Spacing="20">
+    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
-            <Image Source="logo.png" HeightRequest="60" WidthRequest="60" Margin="0,30,0,0"></Image>
-
+        <Image Source="logo.png" HeightRequest="60" WidthRequest="60" Margin="0,30,0,0"></Image>
+        
         <!--User View-->
         <Grid>
             <Grid.RowDefinitions>
@@ -96,11 +96,9 @@
 
         </Grid>
 
-            <Button Text="Add New Drive" BackgroundColor="White" TextColor="LightSkyBlue" HorizontalOptions="Center" WidthRequest="120" FontSize="Micro"
-                    Command="{Binding OnAddNewDriveButtonClicked}"/>
-
         <Label Text="Friends" FontSize="Medium" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Start"  Margin="{StaticResource PageMargin}"/>
 
+        
         <!--Drive-Counter Carousel View-->
         <Grid>
             <Grid.RowDefinitions>
@@ -129,7 +127,11 @@
                 </CarouselView.ItemsLayout>
             </CarouselView>
         </Grid>
-
+        
+        <Button HorizontalOptions="End" VerticalOptions="EndAndExpand" Text="+" FontSize="28" WidthRequest="60" HeightRequest="60"
+                    BorderRadius="30" Margin="0,0,20,15" Command="{Binding OnAddNewDriveButtonClicked}">
+        </Button>
+        
     </StackLayout>
     </yummy:PancakeView>
 

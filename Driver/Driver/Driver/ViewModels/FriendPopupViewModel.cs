@@ -39,8 +39,6 @@ namespace Driver.ViewModels
             }
         }
 
-
-
         private readonly IDialogService _dialogService;
         private readonly IDbHelper _dbHelper;
 

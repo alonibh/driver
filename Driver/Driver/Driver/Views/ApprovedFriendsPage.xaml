@@ -10,7 +10,6 @@
     
     <ContentPage.Content>
         <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
-            <Label FontAttributes="Bold"/>
             <RefreshView IsRefreshing="{Binding IsBusy}"
                          Command="{Binding RefreshCommand}">
                 <CollectionView x:Name="approvedFriendsCollectionView" 

@@ -68,6 +68,11 @@ namespace Driver.Views
                                 await AddDrive();
                                 break;
                             }
+                        case nameof(DrivesHistoryPage):
+                            {
+                                await ShowDrivesHistory();
+                                break;
+                            }
                     }
                 }
                 _masterPage.listView.SelectedItem = null;
@@ -101,6 +106,16 @@ namespace Driver.Views
             })).Drives.Select(o => (Drive)o);
 
             await ((NavigationPage)Detail).PushAsync(new FriendsTabbedPage(friends, drives, _person.Username));
+        }
+
+        async Task ShowDrivesHistory()
+        {
+            var drives = (await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
+            {
+                Username = _person.Username
+            })).Drives.Select(o => (Drive)o);
+
+            await ((NavigationPage)Detail).PushAsync(new DrivesHistoryPage(drives));
         }
 
         async Task AddDrive()

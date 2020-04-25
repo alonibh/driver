@@ -13,7 +13,6 @@
         <StackLayout Margin="{StaticResource PageMargin}">
             <Label Text="Select friends" FontAttributes="Bold" />
             <StackLayout VerticalOptions="StartAndExpand">
-                <Label FontAttributes="Bold"/>
                 <CollectionView VerticalOptions="StartAndExpand"
                                 SelectionMode="Multiple"
                                 ItemsSource="{Binding ObservableFriends}"

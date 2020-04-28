@@ -47,7 +47,7 @@
                                        TextColor="Black"
                                        FontAttributes="Bold"
                                        FontSize="16"
-                                       LineBreakMode="TailTruncation"/>
+                                       LineBreakMode="MiddleTruncation"/>
 
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>

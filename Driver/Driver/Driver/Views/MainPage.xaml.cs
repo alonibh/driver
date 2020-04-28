@@ -40,17 +40,14 @@ namespace Driver.Views
             var item = e.SelectedItem as MasterPageItem;
             if (item != null)
             {
-                if (item.TargetType != Detail.Navigation.NavigationStack[0].GetType())
+                var navigationStack = Detail.Navigation.NavigationStack;
+                if (item.TargetType != navigationStack[navigationStack.Count - 1].GetType())
                 {
                     switch (item.TargetType.Name)
                     {
                         case nameof(HomePage):
                             {
-                                Detail = new NavigationPage(new HomePage(_person))
-                                {
-                                    BarBackgroundColor = Color.FloralWhite,
-                                    BarTextColor = Color.Black
-                                };
+                                await ((NavigationPage)Detail).PopToRootAsync();
                                 break;
                             }
                         case nameof(LoginPage):
@@ -63,7 +60,7 @@ namespace Driver.Views
                                 await ShowFriends();
                                 break;
                             }
-                        case nameof(NewDriveDestinationPage):
+                        case nameof(NewDriveParticipantsPage):
                             {
                                 await AddDrive();
                                 break;
@@ -122,7 +119,7 @@ namespace Driver.Views
         {
             var drive = new Drive
             {
-                Date = DateTime.Now,
+                Date = new DateTime(2010, 1, 1),
                 Driver = new DriveParticipant
                 {
                     Username = _person.Username,
@@ -132,7 +129,12 @@ namespace Driver.Views
                 }
             };
 
-            await ((NavigationPage)Detail).PushAsync(new NewDriveDestinationPage(drive));
+            var friends = (await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
+            {
+                Username = _person.Username
+            })).Friends.Select(o => (Friend)o).Where(f => f.Status == FriendRequestStatus.Accepted);
+
+            await ((NavigationPage)Detail).PushAsync(new NewDriveParticipantsPage(drive, friends));
         }
     }
 }

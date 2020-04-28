@@ -12,9 +12,9 @@
             <ListView.ItemsSource>
                 <x:Array Type="{x:Type local:MasterPageItem}">
                     <local:MasterPageItem Title="Home" IconSource="homepage.png" TargetType="{x:Type local:HomePage}" />
-                    <local:MasterPageItem Title="Friends List" IconSource="friendslist.png" TargetType="{x:Type local:FriendsTabbedPage}" />
+                    <local:MasterPageItem Title="Friends" IconSource="friendslist.png" TargetType="{x:Type local:FriendsTabbedPage}" />
                     <local:MasterPageItem Title="Drives History" IconSource="driveshistory.png" TargetType="{x:Type local:DrivesHistoryPage}" />
-                    <local:MasterPageItem Title="Add New Drive" IconSource="addnewdrive.png" TargetType="{x:Type local:NewDriveDestinationPage}" />
+                    <local:MasterPageItem Title="Add New Drive" IconSource="addnewdrive.png" TargetType="{x:Type local:NewDriveParticipantsPage}" />
                     <local:MasterPageItem Title="Logout" IconSource="logout.png" TargetType="{x:Type local:LoginPage}" />
                 </x:Array>
             </ListView.ItemsSource>

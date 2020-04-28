@@ -1,16 +1,21 @@
 ﻿using Driver.Models;
 using Driver.ViewModels;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace Driver.Views
 {
     public partial class NewDriveParticipantsPage : ContentPage
     {
-        public NewDriveParticipantsPage(Drive drive, ObservableCollection<Friend> observableFriends)
+        private readonly NewDriveParticipantsViewModel _viewModel;
+
+        public NewDriveParticipantsPage(Drive drive, IEnumerable<Friend> friends)
         {
             InitializeComponent();
-            BindingContext = new NewDriveParticipantsViewModel(drive, observableFriends, Navigation);
+            _viewModel = new NewDriveParticipantsViewModel(drive, friends, Navigation);
+            BindingContext = _viewModel;
+            searchBar.TextChanged += _viewModel.OnTextChanged;
+            friendsCollectionView.SelectionChanged += _viewModel.OnFriendTapped;
         }
     }
 }

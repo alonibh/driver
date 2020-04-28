@@ -2,41 +2,100 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              mc:Ignorable="d"
              Visual="Material"
-             NavigationPage.HasNavigationBar="False"
              x:Class="Driver.Views.NewDriveSummaryPage"
-             Title="New Drive Summery">
+             Title="Summery">
 
     <ContentPage.Content>
-        <StackLayout Margin="{StaticResource PageMargin}">
 
-            <StackLayout>
-                <Label Text="{Binding Drive.Destination, StringFormat='Destination: {0:N}'}" />
-                <Label Text="{Binding Drive.Driver.FullName, StringFormat='Driver: {0:N}'}" />
-            </StackLayout>
+        <StackLayout VerticalOptions="FillAndExpand">
 
-            <StackLayout VerticalOptions="StartAndExpand" 
-                HorizontalOptions="StartAndExpand">
-                <Label Text="Participants" FontAttributes="Bold"/>
-                <ListView VerticalOptions="StartAndExpand"
-                      ItemsSource="{Binding Drive.Participants}">
-                    <ListView.ItemTemplate>
+            <Grid RowSpacing="10" Margin="{StaticResource PageMargin}" VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <StackLayout>
+                    <Entry x:Name="destEntry"
+                           Placeholder="Drive Destination"
+                           Keyboard="Text"
+                           VerticalOptions="Center"
+                           WidthRequest="150"/>
+
+                    <Label Text="Drive Date:" Margin="0,20,0,0" />
+
+                    <DatePicker x:Name="datePicker" Format="D" BackgroundColor="Transparent" Margin="30, -20, 0, 30"/>
+                        <BoxView HeightRequest="1" 
+                     Margin="0,20,0,0"
+                     BackgroundColor="Black" 
+                     HorizontalOptions="FillAndExpand" />
+                    </StackLayout>
+            </Grid>
+
+            <Grid Grid.Row="1" BackgroundColor="LightGray">
+                
+                <!--#region Selected Friends CollectionView -->
+                <CollectionView x:Name="selectedFriendsCollectionView" 
+                                ItemsSource="{Binding Participants}"
+                                SelectionMode="None">
+
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="4" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell IsEnabled="False">
-                                <Grid>
-                                    <Label VerticalOptions="Center" Text="{Binding FullName}"/>
+                            <StackLayout HeightRequest="80" WidthRequest="80">
+                                <Grid Padding="10">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="40" />
+                                    </Grid.RowDefinitions>
+
+                                    <yummy:PancakeView
+                                        HorizontalOptions="Center"
+                                        HeightRequest="40"
+                                        WidthRequest="40"
+                                        Grid.Row="0"
+                                        CornerRadius="20"
+                                        BorderThickness="3"
+                                        BorderColor="Black"
+                                        IsClippedToBounds="True">
+
+                                        <Image Source="person.png"
+                                               Aspect="AspectFit"/>
+                                    </yummy:PancakeView>
+
+                                    <Label Grid.Row="1"
+                                       HorizontalTextAlignment="Center"
+                                       Text="{Binding FullName}"
+                                       LineBreakMode="MiddleTruncation"
+                                       FontSize="10"
+                                       FontAttributes="Bold"/>
                                 </Grid>
-                            </ViewCell>
+                            </StackLayout>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackLayout>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <!--#endregion-->
 
-            <Button Text="Add Drive"
-                    Command="{Binding OnAddDriveButtonClicked}" />
+            </Grid>
+        </Grid>
 
+            <yummy:PancakeView Margin="0,0,20,15" 
+                               HorizontalOptions="End" 
+                               VerticalOptions="EndAndExpand"
+                               IsClippedToBounds="True"
+                               WidthRequest="50" HeightRequest="120" CornerRadius="40">
+                <ImageButton Source="done.png" BackgroundColor="Transparent" Aspect="AspectFit"
+                        Command="{Binding OnDoneButtonClicked}"/>
+            </yummy:PancakeView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

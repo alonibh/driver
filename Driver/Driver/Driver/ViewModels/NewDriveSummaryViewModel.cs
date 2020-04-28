@@ -4,8 +4,8 @@ using Driver.Models;
 using Driver.Views;
 using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -18,29 +18,40 @@ namespace Driver.ViewModels
         private readonly INavigation _navigation;
         private readonly IDialogService _dialogService;
         private readonly IDbHelper _dbHelper;
+        private readonly Drive _drive;
 
-        public ICommand OnAddDriveButtonClicked => new Command(async () => await AddDrive());
-        public Drive Drive { get; set; }
+        public ObservableCollection<DriveParticipant> Participants { get; set; }
+
+        public ICommand OnDoneButtonClicked => new Command(async () => await AddDrive());
 
         public NewDriveSummaryViewModel(Drive drive, INavigation navigation)
         {
-            Drive = drive;
+            _drive = drive;
             _navigation = navigation;
             _dialogService = DependencyService.Get<IDialogService>();
             _dbHelper = DependencyService.Get<IDbHelper>();
+
+            Participants = new ObservableCollection<DriveParticipant>(_drive.Participants);
+        }
+
+        public void OnDateSelected(object sender, DateChangedEventArgs e)
+        {
+            _drive.Date = e.NewDate;
+        }
+
+        public void OnDestChanged(object sender, TextChangedEventArgs e)
+        {
+            _drive.Destination = e.NewTextValue;
         }
 
         async Task AddDrive()
         {
-            string driver = JsonConvert.SerializeObject(Drive.Driver);
-            var participants = Drive.Participants;
-            participants.Add(Drive.Driver);
             AddDriveResponse addDriveResponse = await _dbHelper.AddDrive(new AddDriveRequest
             {
-                Dest = Drive.Destination,
-                Date = Drive.Date,
-                Driver = Drive.Driver.Username,
-                Participants = participants.Select(o => o.Username).ToList()
+                Driver = _drive.Driver.Username,
+                Participants = _drive.Participants.Select(o => o.Username).ToList(),
+                Date = _drive.Date,
+                Dest = _drive.Destination
             });
 
             if (!addDriveResponse.Success)
@@ -51,12 +62,12 @@ namespace Driver.ViewModels
 
             GetPersonResponse getPersonResponse = await _dbHelper.GetPerson(new GetPersonRequest
             {
-                Username = Drive.Driver.Username
+                Username = _drive.Driver.Username
             });
 
             GetPersonDrivesResponse getPersonDrivesResponse = await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
             {
-                Username = Drive.Driver.Username
+                Username = _drive.Driver.Username
             });
 
             var person = new Person

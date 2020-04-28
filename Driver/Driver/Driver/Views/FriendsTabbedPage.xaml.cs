@@ -1,7 +1,6 @@
 ﻿using Driver.Models;
 using Driver.ViewModels;
 using System.Collections.Generic;
-
 using Xamarin.Forms;
 
 namespace Driver.Views
@@ -22,7 +21,7 @@ namespace Driver.Views
                 Priority = 0,
                 Command = bindingContext.OnSearchPersonToolbarItemClicked
             };
-            this.ToolbarItems.Add(item);
+            ToolbarItems.Add(item);
 
             ApprovedFriendsPage approvedFriendsPage = new ApprovedFriendsPage(friends, drives, username)
             {
@@ -35,6 +34,16 @@ namespace Driver.Views
 
             Children.Add(approvedFriendsPage);
             Children.Add(waitingForApprovalFriendRequestsPage);
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await Navigation.PopToRootAsync();
+            });
+
+            return true;
         }
     }
 }

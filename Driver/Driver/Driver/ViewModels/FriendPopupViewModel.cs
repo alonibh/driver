@@ -15,18 +15,8 @@ namespace Driver.ViewModels
 {
     public class FriendPopupViewModel : BaseViewModel
     {
-        public Friend Friend { get; set; }
-
-        private ObservableCollection<Drive> _drives;
-        public ObservableCollection<Drive> Drives
-        {
-            get { return _drives; }
-            set
-            {
-                _drives = new ObservableCollection<Drive>(value.OrderByDescending(o => o.Date));
-                OnPropertyChanged();
-            }
-        }
+        private readonly IDialogService _dialogService;
+        private readonly IDbHelper _dbHelper;
 
         private Drive _currentDrive;
         public Drive CurrentDrive
@@ -39,8 +29,18 @@ namespace Driver.ViewModels
             }
         }
 
-        private readonly IDialogService _dialogService;
-        private readonly IDbHelper _dbHelper;
+        private ObservableCollection<Drive> _drives;
+        public ObservableCollection<Drive> Drives
+        {
+            get { return _drives; }
+            set
+            {
+                _drives = new ObservableCollection<Drive>(value.OrderByDescending(o => o.Date));
+                OnPropertyChanged();
+            }
+        }
+
+        public Friend Friend { get; set; }
 
         public ICommand OnUnfriendButtonClicked => new Command(async () => await Unfriend());
 

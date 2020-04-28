@@ -1,6 +1,6 @@
 ﻿using Driver.Models;
 using Driver.ViewModels;
-
+using System;
 using Xamarin.Forms;
 
 namespace Driver.Views
@@ -10,7 +10,15 @@ namespace Driver.Views
         public NewDriveSummaryPage(Drive drive)
         {
             InitializeComponent();
-            BindingContext = new NewDriveSummaryViewModel(drive, Navigation);
+
+            var viewModel = new NewDriveSummaryViewModel(drive, Navigation);
+            BindingContext = viewModel;
+
+            datePicker.MaximumDate = DateTime.Today;
+            datePicker.Date = drive.Date;
+            datePicker.DateSelected += viewModel.OnDateSelected;
+
+            destEntry.TextChanged += viewModel.OnDestChanged;
         }
     }
 }

@@ -11,6 +11,7 @@
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
             <SearchBar x:Name="searchBar"
+                       Placeholder="Find Friends"
                        SearchCommand="{Binding PerformSearch}"
                        SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
             <ListView x:Name="friendsListView" ItemsSource="{Binding SearchResults, Mode=TwoWay}">

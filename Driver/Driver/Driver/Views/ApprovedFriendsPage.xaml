@@ -38,7 +38,7 @@
                                 <Label HorizontalTextAlignment="Start"
                                        VerticalOptions="Center"
                                        Text="{Binding Friend.FullName}"
-                                       LineBreakMode="TailTruncation"
+                                       LineBreakMode="MiddleTruncation"
                                        FontAttributes="Bold"/>
 
                                 <Label HorizontalTextAlignment="Start"

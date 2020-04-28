@@ -18,7 +18,7 @@ namespace Driver.ViewModels
         private readonly IDialogService _dialogService;
         private readonly IDbHelper _dbHelper;
 
-        private LoginRequest _loginRequest = new LoginRequest();
+        private LoginRequest _loginRequest;
         public LoginRequest LoginRequest
         {
             get { return _loginRequest; }
@@ -37,6 +37,8 @@ namespace Driver.ViewModels
             _navigation = navigation;
             _dialogService = DependencyService.Get<IDialogService>();
             _dbHelper = DependencyService.Get<IDbHelper>();
+
+            LoginRequest = new LoginRequest();
         }
 
         async Task Signin()

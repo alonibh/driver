@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <None Remove="Images\addnewdrive.png" />
+    <None Remove="Images\arrow.png" />
+    <None Remove="Images\done.png" />
     <None Remove="Images\driveshistory.png" />
     <None Remove="Images\find.png" />
     <None Remove="Images\friendslist.png" />
@@ -39,6 +41,8 @@
 
   <ItemGroup>
     <SharedImage Include="Images\addnewdrive.png" BaseSize="512,512" />
+    <SharedImage Include="Images\arrow.png" BaseSize="512,512" />
+    <SharedImage Include="Images\done.png" BaseSize="512,512" />
     <SharedImage Include="Images\driveshistory.png" BaseSize="512,512" />
     <SharedImage Include="Images\find.png" BaseSize="512,512" />
     <SharedImage Include="Images\friendslist.png" BaseSize="512,512" />
@@ -69,9 +73,6 @@
     </Compile>
     <Compile Update="Views\WaitingForApprovalFriendsPage.xaml.cs">
       <DependentUpon>WaitingForApprovalFriendsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\NewDriveDestinationPage.xaml.cs">
-      <DependentUpon>NewDriveDestinationPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -110,9 +111,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\HomePage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\NewDriveDestinationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\NewDriveParticipantsPage.xaml">

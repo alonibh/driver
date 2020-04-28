@@ -20,7 +20,6 @@ namespace Driver.ViewModels
         public ICommand OnAcceptFriendClicked => new Command(async (friend) => await AcceptFriend(friend as Friend));
         public ICommand OnRemoveFriendClicked => new Command(async (friend) => await RemoveFriend(friend as Friend));
 
-
         public ObservableCollection<Friend> WaitingForApprovalFriends { get; set; }
 
         public WaitingForApprovalFriendsViewModel(IEnumerable<Friend> friends, string username)

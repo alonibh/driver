@@ -40,9 +40,7 @@ namespace Driver.ViewModels
         }
 
         public ICommand OnAddNewDriveButtonClicked => new Command(async () => await ShowNewDrivePage());
-
         public int GlobalDrivesCounter => GetGlobalDrivesCounter();
-
         public Person Person { get; set; }
 
         public HomePageViewModel(Person person, INavigation navigation)
@@ -56,29 +54,6 @@ namespace Driver.ViewModels
             {
                 CurrentDriveCounter = DriveCounters[0];
             }
-        }
-
-        public async void OnDriveTapped(object sender, ItemTappedEventArgs args)
-        {
-            ListView lv = (ListView)sender;
-            lv.SelectedItem = null;
-
-            string driveId = (args.Item as Drive).Id;
-            GetDriveResponse getDriveResponse = await _dbHelper.GetDrive(new GetDriveRequest
-            {
-                DriveId = driveId
-            });
-
-            Drive drive = new Drive
-            {
-                Id = getDriveResponse.Drive._id,
-                Date = getDriveResponse.Drive.Date,
-                Destination = getDriveResponse.Drive.Dest,
-                Driver = getDriveResponse.Drive.Driver,
-                Participants = getDriveResponse.Drive.Participants.Select(o => (DriveParticipant)o).ToList()
-            };
-
-            await _navigation.PushAsync(new DriveInfoPage(drive, Person.Username));
         }
 
         private int GetGlobalDrivesCounter()
@@ -105,8 +80,12 @@ namespace Driver.ViewModels
                 }
             };
 
-            var masterDetailPage = ((MasterDetailPage)Application.Current.MainPage).Detail;
-            await ((NavigationPage)masterDetailPage).PushAsync(new NewDriveDestinationPage(drive));
+            var friends = (await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
+            {
+                Username = Person.Username
+            })).Friends.Select(o => (Friend)o).Where(f => f.Status == FriendRequestStatus.Accepted);
+
+            await _navigation.PushAsync(new NewDriveParticipantsPage(drive, friends));
         }
     }
 }

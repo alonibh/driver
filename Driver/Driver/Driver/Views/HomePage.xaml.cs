@@ -11,7 +11,6 @@ namespace Driver.Views
             InitializeComponent();
             var viewModel = new HomePageViewModel(person, Navigation);
             BindingContext = viewModel;
-            //drivesListView.ItemTapped += viewModel.OnDriveTapped;
         }
     }
 }

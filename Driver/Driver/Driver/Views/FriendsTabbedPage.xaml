@@ -6,5 +6,6 @@
              mc:Ignorable="d"
              Visual="Material"
              BarBackgroundColor="Black"
+             NavigationPage.HasBackButton="False"
              x:Class="Driver.Views.FriendsTabbedPage">
 </TabbedPage>

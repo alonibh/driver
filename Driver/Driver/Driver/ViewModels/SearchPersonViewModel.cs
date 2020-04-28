@@ -16,7 +16,7 @@ namespace Driver.ViewModels
         private readonly IDialogService _dialogService;
         private readonly IDbHelper _dbHelper;
 
-        private ObservableCollection<Friend> _searchResults = new ObservableCollection<Friend>();
+        private ObservableCollection<Friend> _searchResults;
         public ObservableCollection<Friend> SearchResults
         {
             get
@@ -36,6 +36,7 @@ namespace Driver.ViewModels
         {
             _dbHelper = DependencyService.Get<IDbHelper>();
             _dialogService = DependencyService.Get<IDialogService>();
+            _searchResults = new ObservableCollection<Friend>();
         }
 
         public async void OnTextChanged(object sender, TextChangedEventArgs e) =>

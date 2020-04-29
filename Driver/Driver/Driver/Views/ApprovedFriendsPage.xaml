@@ -7,7 +7,7 @@
              Visual="Material"
              NavigationPage.HasNavigationBar="False"
              x:Class="Driver.Views.ApprovedFriendsPage">
-    
+
     <ContentPage.Content>
         <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
             <RefreshView IsRefreshing="{Binding IsBusy}"
@@ -27,22 +27,22 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                              
+
                                 <Image
                                        Source="person.png"
                                        Aspect="AspectFill"
                                        HeightRequest="60"
                                        WidthRequest="60" />
-                                
+
                                 <StackLayout Grid.Column="1">
-                                    
-                                <Label HorizontalTextAlignment="Start"
+
+                                    <Label HorizontalTextAlignment="Start"
                                        VerticalOptions="Center"
                                        Text="{Binding Friend.FullName}"
-                                       LineBreakMode="MiddleTruncation"
+                                       LineBreakMode="TailTruncation"
                                        FontAttributes="Bold"/>
 
-                                <Label HorizontalTextAlignment="Start"
+                                    <Label HorizontalTextAlignment="Start"
                                     VerticalOptions="Center"
                                     Text="{Binding CounterStr}"
                                     TextColor="Gray"/>

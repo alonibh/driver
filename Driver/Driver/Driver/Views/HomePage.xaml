@@ -14,13 +14,13 @@
             <conv:DriveCounterToColorConverter x:Key="driveCounterToColorConverter" />
 
             <DataTemplate x:Key="DriveCounterItemTemplate">
-                <yummy:PancakeView
-                Margin="16"
-                BackgroundGradientAngle="90"
-                BackgroundGradientStartColor="FloralWhite"
-                BackgroundGradientEndColor="{Binding Counter, Converter={StaticResource driveCounterToColorConverter}}"
-                HasShadow="True"
-                VerticalOptions="CenterAndExpand">
+                <yummy:PancakeView Margin="16"
+                                   BackgroundGradientAngle="90"
+                                   BackgroundGradientStartColor="FloralWhite"
+                                   BackgroundGradientEndColor="LightBlue"
+                                   BackgroundColor="Transparent"
+                                   CornerRadius="20"
+                                   VerticalOptions="CenterAndExpand">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -35,9 +35,13 @@
                                 <Label XAlign="Center"
                                        Text="{Binding FullName}"
                                        MaxLines="1"
-                                       LineBreakMode="MiddleTruncation"/>
+                                       LineBreakMode="TailTruncation"
+                                       FontAttributes="Bold"/>
 
-                                <Label XAlign="Center" Text="{Binding Counter}"/>
+                                <Label XAlign="Center"
+                                       Text="{Binding Counter}"
+                                       TextColor="{Binding Counter, Converter={StaticResource driveCounterToColorConverter}}"
+                                       FontAttributes="Bold"/>
                             </StackLayout>
                         </Grid>
                     </Grid>
@@ -46,21 +50,15 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness">
-            <On Platform="iOS" Value="0,20,0,0" />
-        </OnPlatform>
-    </ContentPage.Padding>
-
     <yummy:PancakeView 
          BackgroundGradientAngle="180"
          BackgroundGradientEndColor="FloralWhite"
          BackgroundGradientStartColor="LightBlue"
          IsClippedToBounds="True" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
-    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
-        <Image Source="logo.png" HeightRequest="60" WidthRequest="60" Margin="0,30,0,0"></Image>
+            <Image Source="logo.png" HeightRequest="60" WidthRequest="60" Margin="0,30,0,0"></Image>
 
             <!--#region User View -->
             <Grid>
@@ -74,6 +72,7 @@
                 BackgroundGradientStartColor="FloralWhite"
                 BackgroundGradientEndColor="LightBlue"
                 HasShadow="True"
+                CornerRadius="20"
                 VerticalOptions="CenterAndExpand">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -86,8 +85,10 @@
                         <Grid Grid.Column="1">
                             <StackLayout VerticalOptions="Center">
 
-                                <Label Text="{Binding Person.FullName}" LineBreakMode="MiddleTruncation"/>
-                                <Label Text="{Binding GlobalDrivesCounter}"/>
+                                <Label Text="{Binding Person.FullName}" LineBreakMode="TailTruncation" FontAttributes="Bold"/>
+                                <Label Text="{Binding GlobalDrivesCounter}"
+                                       TextColor="{Binding GlobalDrivesCounter, Converter={StaticResource driveCounterToColorConverter}}"
+                                       FontAttributes="Bold"/>
 
                             </StackLayout>
                         </Grid>
@@ -101,7 +102,7 @@
 
 
             <!--#region Drive-Counter CarouselView -->
-            <Grid>
+            <Grid Padding="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="120" />
                 </Grid.RowDefinitions>

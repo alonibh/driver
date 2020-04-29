@@ -3,38 +3,122 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              mc:Ignorable="d"
              Visual="Material"
              NavigationPage.HasBackButton="False"
-             x:Class="Driver.Views.DrivesHistoryPage">
-    
+             x:Class="Driver.Views.DrivesHistoryPage"
+             Title="History">
+
     <ContentPage.Content>
         <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
             <CollectionView x:Name="drivesCollectionView" 
-                                ItemsSource="{Binding Drives}"
-                                SelectionMode="Single"
-                                EmptyView="No Drive History">
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" Span="2" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                            ItemsSource="{Binding Drives}"
+                            SelectionMode="None"
+                            EmptyView="No Drive History">
 
-                                <StackLayout>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="20" SnapPointsAlignment="Start" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" BackgroundColor="Transparent">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition Height="45" />
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition Height="40" />
+                                </Grid.RowDefinitions>
+
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="0">
+                                    <Image Source="chauffeur.png"
+                                           Aspect="AspectFit"
+                                           HeightRequest="20"
+                                           WidthRequest="20" />
+
+                                    <Label HorizontalTextAlignment="Start"
+                                           VerticalOptions="Center"
+                                           Text="{Binding Driver.FullName}"
+                                           LineBreakMode="TailTruncation"/>
+                                </StackLayout>
+
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="1">
+                                    <Image Source="friendslist.png"
+                                           Aspect="AspectFit"
+                                           HeightRequest="20"
+                                           WidthRequest="20" />
+
+                                    <CollectionView VerticalOptions="Center"
+                                                    ItemsSource="{Binding Participants}"
+                                                    SelectionMode="None">
+
+                                        <CollectionView.ItemsLayout>
+                                            <GridItemsLayout Orientation="Horizontal" />
+                                        </CollectionView.ItemsLayout>
+
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackLayout HeightRequest="50">
+                                                    <Grid Padding="0,0,10,0">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="25" />
+                                                            <RowDefinition Height="15" />
+                                                        </Grid.RowDefinitions>
+
+                                                        <yummy:PancakeView HorizontalOptions="Center"
+                                                                           HeightRequest="25"
+                                                                           WidthRequest="25"
+                                                                           Grid.Row="0"
+                                                                           CornerRadius="15"
+                                                                           BorderThickness="1"
+                                                                           BorderColor="Black"
+                                                                           IsClippedToBounds="True">
+
+                                                            <Image Source="person.png" Aspect="AspectFit"/>
+                                                        </yummy:PancakeView>
+
+                                                        <Label Grid.Row="1"
+                                                               HorizontalTextAlignment="Center"
+                                                               Text="{Binding FullName}"
+                                                               LineBreakMode="TailTruncation"
+                                                               FontSize="10"
+                                                               FontAttributes="Bold"/>
+                                                    </Grid>
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </StackLayout>
+
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="2">
+                                    <Image Source="location.png"
+                                           Aspect="AspectFit"
+                                           HeightRequest="20"
+                                           WidthRequest="20" />
+
                                     <Label HorizontalTextAlignment="Start"
                                        VerticalOptions="Center"
                                        Text="{Binding Destination}"
-                                       FontAttributes="Bold"/>
+                                       LineBreakMode="TailTruncation"/>
+                                </StackLayout>
+
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="3">
+                                    <Image Source="calendar.png"
+                                           Aspect="AspectFit"
+                                           HeightRequest="20"
+                                           WidthRequest="20" />
 
                                     <Label HorizontalTextAlignment="Start"
-                                    VerticalOptions="Center"
-                                    Text="{Binding Date}"
-                                    TextColor="Gray"/>
+                                       VerticalOptions="Center"
+                                       Text="{Binding Date, StringFormat='{0:dd/MM/yyyy}'}"/>
                                 </StackLayout>
-                            
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage> 

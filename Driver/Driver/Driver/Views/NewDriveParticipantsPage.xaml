@@ -65,7 +65,7 @@
                                     <Label Grid.Row="1"
                                        HorizontalTextAlignment="Center"
                                        Text="{Binding FullName}"
-                                       LineBreakMode="MiddleTruncation"
+                                       LineBreakMode="TailTruncation"
                                        FontSize="10"
                                        FontAttributes="Bold"/>
                                 </Grid>
@@ -112,7 +112,7 @@
                                    VerticalOptions="Center"
                                    HorizontalTextAlignment="Start"
                                    Text="{Binding Friend.FullName}"
-                                   LineBreakMode="MiddleTruncation"
+                                   LineBreakMode="TailTruncation"
                                    FontAttributes="Bold"/>
 
                                 <CheckBox Grid.Column="2" Visual="Material"

@@ -4,11 +4,20 @@
              xmlns:local="using:Driver.Views"
              Visual="Material"
 			 x:Class="Driver.Views.MasterPage"
-			 Padding="0,40,0,0"
-			 IconImageSource="hamburger.png"
+             Icon ="menu.png"
 			 Title="Menu">
+
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,60,0,0" />
+            <On Platform="Android" Value="0,40,0,0" />
+        </OnPlatform>
+
+    </ContentPage.Padding>
+
     <StackLayout>
-        <ListView x:Name="listView" x:FieldModifier="public">
+        <Image Source="logo.png" HeightRequest="60" WidthRequest="60"></Image>
+        <ListView x:Name="listView" x:FieldModifier="public" Margin="0,20,0,0" SeparatorVisibility="None">
             <ListView.ItemsSource>
                 <x:Array Type="{x:Type local:MasterPageItem}">
                     <local:MasterPageItem Title="Home" IconSource="homepage.png" TargetType="{x:Type local:HomePage}" />

@@ -59,7 +59,11 @@ namespace Driver.ViewModels
             List<Drive> drives = new List<Drive>();
             drives.AddRange(personDrives.Where(d => d.Participants.Exists(p => p.Username == friend.Username)));
 
-            await PopupNavigation.Instance.PushAsync(new FriendPopupPage(friend, drives));
+            await PopupNavigation.Instance.PushAsync(new FriendPopupPage(friend, drives)
+            {
+                HasSystemPadding = true,
+                Padding = 10
+            });
         }
 
         public async Task ReloadFriends()

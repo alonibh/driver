@@ -36,7 +36,9 @@ namespace Driver.ViewModels
             foreach (var participant in _drive.Participants)
             {
                 if (participant.Username == _drive.Driver.Username)
+                {
                     break;
+                }
 
                 Participants.Add(new DriveParticipant
                 {

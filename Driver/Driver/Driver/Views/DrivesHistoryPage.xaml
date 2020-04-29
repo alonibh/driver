@@ -23,7 +23,7 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" BackgroundColor="Transparent">
+                        <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" HasShadow="False" BackgroundColor="Transparent">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="40" />

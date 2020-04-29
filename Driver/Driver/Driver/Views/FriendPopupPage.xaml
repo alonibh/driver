@@ -31,11 +31,12 @@
                 CornerRadius="20"
                 BackgroundGradientAngle="90"
                 BackgroundGradientStartColor="FloralWhite"
-                BackgroundGradientEndColor="{Binding Driver.Username, Converter={StaticResource driveToColorConverter}, ConverterParameter={x:Reference friendLabel}}"
+                BackgroundGradientEndColor="{Binding Driver.Username, Converter={StaticResource driveToColorConverter},
+                                             ConverterParameter={x:Reference friendLabel}}"
                 VerticalOptions="CenterAndExpand">
 
 
-                    <Grid Padding="10">
+                    <Grid Padding="20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />

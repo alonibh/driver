@@ -12,7 +12,8 @@
         <StackLayout Orientation="Horizontal" Margin="{StaticResource PageMargin}">
             <CollectionView x:Name="drivesCollectionView" 
                                 ItemsSource="{Binding Drives}"
-                                SelectionMode="Single">
+                                SelectionMode="Single"
+                                EmptyView="No Drive History">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" Span="2" />
                     </CollectionView.ItemsLayout>

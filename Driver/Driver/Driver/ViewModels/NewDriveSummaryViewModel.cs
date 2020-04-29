@@ -31,7 +31,21 @@ namespace Driver.ViewModels
             _dialogService = DependencyService.Get<IDialogService>();
             _dbHelper = DependencyService.Get<IDbHelper>();
 
-            Participants = new ObservableCollection<DriveParticipant>(_drive.Participants);
+            Participants = new ObservableCollection<DriveParticipant>();
+
+            foreach (var participant in _drive.Participants)
+            {
+                if (participant.Username == _drive.Driver.Username)
+                    break;
+
+                Participants.Add(new DriveParticipant
+                {
+                    Username = participant.Username,
+                    FirstName = participant.FirstName,
+                    LastName = participant.LastName,
+                    Address = participant.Address
+                });
+            }
         }
 
         public void OnDateSelected(object sender, DateChangedEventArgs e)

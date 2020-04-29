@@ -14,7 +14,8 @@
                          Command="{Binding RefreshCommand}">
                 <CollectionView x:Name="WaitingForApprovalFriendsCollectionView"
                                 ItemsSource="{Binding WaitingForApprovalFriends}"
-                                SelectionMode="None">
+                                SelectionMode="None"
+                                EmptyView="No Pending Friend Requests">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" Span="1" />
                     </CollectionView.ItemsLayout>

@@ -29,10 +29,9 @@
                 <yummy:PancakeView
                 Margin="16"
                 CornerRadius="20"
-                BackgroundGradientAngle="90"
-                BackgroundGradientStartColor="FloralWhite"
-                BackgroundGradientEndColor="{Binding Driver.Username, Converter={StaticResource driveToColorConverter},
-                                             ConverterParameter={x:Reference friendLabel}}"
+                BackgroundGradientAngle="180"
+                BackgroundGradientStartColor="#AE9ADE"
+                BackgroundGradientEndColor="#7351C7"
                 VerticalOptions="CenterAndExpand">
 
 
@@ -40,9 +39,22 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <StackLayout Grid.Row="0" Orientation="Horizontal">
+                            <Image Source="chauffeur.png"
+                                   Aspect="AspectFit"
+                                   HeightRequest="20"
+                                   WidthRequest="20" />
+
+                            <Label XAlign="Center"
+                                   VerticalOptions="Center"
+                                   Text="{Binding Driver.FirstName}"
+                                   LineBreakMode="TailTruncation"/>
+                        </StackLayout>
+
+                        <StackLayout Grid.Row="1" Orientation="Horizontal">
                             <Image Source="location.png"
                                    Aspect="AspectFit"
                                    HeightRequest="20"
@@ -54,7 +66,7 @@
                                    LineBreakMode="TailTruncation"/>
                         </StackLayout>
 
-                        <StackLayout Grid.Row="1" Orientation="Horizontal">
+                        <StackLayout Grid.Row="2" Orientation="Horizontal">
                             <Image Source="calendar.png"
                                            Aspect="AspectFit"
                                            HeightRequest="20"
@@ -73,8 +85,8 @@
 
     <StackLayout BackgroundColor="White"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Padding="20,20,20,20">
 
-        <Label x:Name="friendLabel" Text="{Binding Friend.FullName}" TextColor="Gray" FontSize="20" HorizontalOptions="Center"></Label>
-        <StackLayout Orientation="Horizontal">
+        <Label x:Name="friendLabel" Text="{Binding Friend.FullName}" TextColor="Black" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"></Label>
+        <StackLayout Orientation="Horizontal" Margin="0,15,0,0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="120" />

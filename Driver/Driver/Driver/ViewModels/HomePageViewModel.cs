@@ -28,42 +28,42 @@ namespace Driver.ViewModels
             }
         }
 
-        private DriveCounter _currentDriveCounter;
-        public DriveCounter CurrentDriveCounter
-        {
-            get { return _currentDriveCounter; }
-            set
-            {
-                _currentDriveCounter = value;
-                OnPropertyChanged();
-            }
-        }
-
         public ICommand OnAddNewDriveButtonClicked => new Command(async () => await ShowNewDrivePage());
-        public int GlobalDrivesCounter => GetGlobalDrivesCounter();
+        public string GlobalDrivesCounterStr { get; set; }
+        public int GlobalDrivesCounter { get; set; }
+        public int GlobalUserDroveCounter { get; set; }
+        public int GlobalUserGotDrivenCounter { get; set; }
         public Person Person { get; set; }
 
         public HomePageViewModel(Person person, INavigation navigation)
         {
             _navigation = navigation;
             _dbHelper = DependencyService.Get<IDbHelper>();
-            Person = person;
 
+            Person = person;
             DriveCounters = new ObservableCollection<DriveCounter>(Person.DrivesCounter);
-            if (DriveCounters.Count > 0)
-            {
-                CurrentDriveCounter = DriveCounters[0];
-            }
+
+            SetGlobalDrivesCounter();
         }
 
-        private int GetGlobalDrivesCounter()
+        private void SetGlobalDrivesCounter()
         {
             int counter = 0;
             foreach (var driveCounter in DriveCounters)
             {
+                if (driveCounter.Counter > 0)
+                {
+                    GlobalUserDroveCounter += driveCounter.Counter;
+                }
+                else
+                {
+                    GlobalUserGotDrivenCounter += driveCounter.Counter;
+                }
+
                 counter += driveCounter.Counter;
             }
-            return counter;
+            GlobalDrivesCounterStr = counter > 0 ? $"You get {counter} drives back" : $"You owe {counter * -1} drives";
+            GlobalDrivesCounter = counter;
         }
 
         private async Task ShowNewDrivePage()

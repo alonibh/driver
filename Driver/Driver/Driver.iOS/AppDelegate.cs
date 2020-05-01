@@ -1,6 +1,7 @@
 ﻿
 using Foundation;
 using UIKit;
+using Xamarin.Forms;
 
 namespace Driver.iOS
 {
@@ -21,6 +22,7 @@ namespace Driver.iOS
         {
             Rg.Plugins.Popup.Popup.Init();
 
+            Forms.SetFlags("IndicatorView_Experimental");
             Xamarin.Forms.Forms.Init();
             global::Xamarin.Forms.FormsMaterial.Init();
             LoadApplication(new App());

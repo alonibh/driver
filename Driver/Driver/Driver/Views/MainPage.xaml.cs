@@ -28,7 +28,7 @@ namespace Driver.Views
             Master = _masterPage;
             Detail = new NavigationPage(new HomePage(_person))
             {
-                BarBackgroundColor = Color.FloralWhite,
+                BarBackgroundColor = Color.FromRgb(115, 81, 199),
                 BarTextColor = Color.Black
             };
 

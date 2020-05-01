@@ -17,7 +17,7 @@
 
     <StackLayout>
         <Image Source="logo.png" HeightRequest="60" WidthRequest="60"></Image>
-        <ListView x:Name="listView" x:FieldModifier="public" Margin="0,20,0,0" SeparatorVisibility="None">
+        <ListView x:Name="listView" x:FieldModifier="public" Margin="0,20,0,0" SeparatorVisibility="None" RowHeight="55">
             <ListView.ItemsSource>
                 <x:Array Type="{x:Type local:MasterPageItem}">
                     <local:MasterPageItem Title="Home" IconSource="homepage.png" TargetType="{x:Type local:HomePage}" />
@@ -30,13 +30,13 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid Padding="5,10">
+                        <Grid Padding="15,0,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="30"/>
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Image Source="{Binding IconSource}" />
-                            <Label Grid.Column="1" Text="{Binding Title}" />
+                            <Label Grid.Column="1" Text="{Binding Title}" FontSize="16" Margin="10,0" TextColor="Black" VerticalOptions="CenterAndExpand" />
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

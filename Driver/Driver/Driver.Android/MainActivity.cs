@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Xamarin.Forms;
 
 namespace Driver.Droid
 {
@@ -17,6 +18,7 @@ namespace Driver.Droid
 
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
 
+            Forms.SetFlags("IndicatorView_Experimental");
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
             global::Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);

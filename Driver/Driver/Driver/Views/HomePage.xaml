@@ -4,30 +4,27 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
-             xmlns:conv="clr-namespace:Driver.Utils" 
              mc:Ignorable="d"
              Visual="Material"
              x:Class="Driver.Views.HomePage">
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <conv:DriveCounterToColorConverter x:Key="driveCounterToColorConverter" />
-
             <DataTemplate x:Key="DriveCounterItemTemplate">
                 <yummy:PancakeView Margin="16"
-                                   BackgroundGradientAngle="90"
-                                   BackgroundGradientStartColor="FloralWhite"
-                                   BackgroundGradientEndColor="LightBlue"
+                                   BackgroundGradientAngle="180"
+                                   BackgroundGradientStartColor="#AE9ADE"
+                                   BackgroundGradientEndColor="#7351C7"
                                    BackgroundColor="Transparent"
                                    CornerRadius="20"
                                    VerticalOptions="CenterAndExpand">
-                    <Grid>
+                    <Grid Margin="10">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Image Grid.Column="0" Aspect="AspectFit" Source="person.png" WidthRequest="50" HeightRequest="100" HorizontalOptions="Center"/>
+                        <Image Grid.Column="0" Aspect="AspectFit" Source="person.png" WidthRequest="50" HeightRequest="100"/>
 
                         <Grid Grid.Column="1" HorizontalOptions="Start">
                             <StackLayout VerticalOptions="Center">
@@ -35,13 +32,14 @@
                                 <Label XAlign="Center"
                                        Text="{Binding FullName}"
                                        MaxLines="1"
+                                       TextColor="Black"
                                        LineBreakMode="TailTruncation"
                                        FontAttributes="Bold"/>
 
                                 <Label XAlign="Center"
-                                       Text="{Binding Counter}"
-                                       TextColor="{Binding Counter, Converter={StaticResource driveCounterToColorConverter}}"
-                                       FontAttributes="Bold"/>
+                                       TextColor="Black"
+                                       Text="{Binding CounterStr}"
+                                       FontSize="11"/>
                             </StackLayout>
                         </Grid>
                     </Grid>
@@ -50,93 +48,94 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <yummy:PancakeView 
-         BackgroundGradientAngle="180"
-         BackgroundGradientEndColor="FloralWhite"
-         BackgroundGradientStartColor="LightBlue"
-         IsClippedToBounds="True" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
-        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+    <Grid VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
 
-            <Image Source="logo.png" HeightRequest="60" WidthRequest="60" Margin="0,30,0,0"></Image>
+        </Grid.RowDefinitions>
 
-            <!--#region User View -->
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="120" />
-                </Grid.RowDefinitions>
+        <Image Source="overlay.png" Aspect="Fill" HeightRequest="200" VerticalOptions="StartAndExpand"/>
+        <StackLayout Orientation="Vertical" Margin="0,20" HorizontalOptions="Center" VerticalOptions="Center">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Label Text="{Binding Person.FirstName, StringFormat='Hello {0:N}'}" TextColor="White" FontSize="40" FontAttributes="Bold" VerticalOptions="Center"/>
+            </StackLayout>
+            <Label Text="{Binding GlobalDrivesCounterStr}" TextColor="White" FontSize="14" HorizontalOptions="Center"/>
+        </StackLayout>
 
-                <yummy:PancakeView
-                Margin="16"
-                BackgroundGradientAngle="90"
-                BackgroundGradientStartColor="FloralWhite"
-                BackgroundGradientEndColor="LightBlue"
-                HasShadow="True"
-                CornerRadius="20"
-                VerticalOptions="CenterAndExpand">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
 
-                        <Image Grid.Column="0" Aspect="AspectFit" Source="person.png" WidthRequest="50" HeightRequest="100"/>
-
-                        <Grid Grid.Column="1">
-                            <StackLayout VerticalOptions="Center">
-
-                                <Label Text="{Binding Person.FullName}" LineBreakMode="TailTruncation" FontAttributes="Bold"/>
-                                <Label Text="{Binding GlobalDrivesCounter}"
-                                       TextColor="{Binding GlobalDrivesCounter, Converter={StaticResource driveCounterToColorConverter}}"
-                                       FontAttributes="Bold"/>
-
-                            </StackLayout>
-                        </Grid>
-                    </Grid>
-                </yummy:PancakeView>
-
+        <Frame Grid.Row="1" HasShadow="True" CornerRadius="10" Margin="20,-40,20,0" Padding="0" HeightRequest="120" VerticalOptions="Start" BorderColor="#6441A5">
+            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackLayout Orientation="Vertical" Spacing="10" HorizontalOptions="CenterAndExpand">
+                    <Image Source="chauffeur.png" HeightRequest="25" HorizontalOptions="Center"/>
+                    <StackLayout Spacing="7" HorizontalOptions="CenterAndExpand">
+                        <Label Text="{Binding GlobalUserDroveCounter}" TextColor="Black" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        <Label Text="You Drove" TextColor="#7D7D7D" FontSize="11" HorizontalOptions="Center"/>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout Grid.Column="1" Orientation="Vertical" Spacing="10" HorizontalOptions="CenterAndExpand">
+                    <Image Source="drive.png" HeightRequest="25" HorizontalOptions="Center"/>
+                    <StackLayout Spacing="7" HorizontalOptions="CenterAndExpand">
+                        <Label Text="{Binding GlobalDrivesCounter}" TextColor="Black" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        <Label Text="Total Drives" TextColor="#7D7D7D" FontSize="11" HorizontalOptions="Center"/>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout Grid.Column="2" Orientation="Vertical" Spacing="10" HorizontalOptions="CenterAndExpand">
+                    <Image Source="beer.png" HeightRequest="25" HorizontalOptions="Center"/>
+                    <StackLayout Spacing="7" HorizontalOptions="CenterAndExpand">
+                        <Label Text="{Binding GlobalUserGotDrivenCounter}" TextColor="Black" FontSize="14" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        <Label Text="Drove You" TextColor="#7D7D7D" FontSize="11" HorizontalOptions="Center"/>
+                    </StackLayout>
+                </StackLayout>
             </Grid>
-            <!--#endregion-->
-
-            <Label Text="Friends" FontSize="Medium" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Start"  Margin="{StaticResource PageMargin}"/>
+        </Frame>
 
 
-            <!--#region Drive-Counter CarouselView -->
-            <Grid Padding="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="120" />
-                </Grid.RowDefinitions>
+        <Grid Grid.Row="2" VerticalOptions="CenterAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
 
-                <CarouselView 
-                    Grid.Row="0"
-                    CurrentItem="{Binding CurrentDriveCounter, Mode=TwoWay}"
-                    ItemsSource="{Binding DriveCounters}"
-                    ItemTemplate="{StaticResource DriveCounterItemTemplate}">
+            <CarouselView Grid.Row="0"
+                          ItemsSource="{Binding DriveCounters}"
+                          IndicatorView="friendsIndicator"
+                          ItemTemplate="{StaticResource DriveCounterItemTemplate}">
 
-                    <CarouselView.PeekAreaInsets>
-                        <OnPlatform x:TypeArguments="Thickness">
-                            <On Platform="iOS" Value="0,0,150,0" />
-                            <On Platform="Android" Value="0,0,150,0" />
-                        </OnPlatform>
-                    </CarouselView.PeekAreaInsets>
+                <CarouselView.PeekAreaInsets>
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="iOS" Value="0,0,150,0" />
+                        <On Platform="Android" Value="0,0,150,0" />
+                    </OnPlatform>
+                </CarouselView.PeekAreaInsets>
 
-                    <CarouselView.ItemsLayout>
-                        <LinearItemsLayout
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout
                             Orientation="Horizontal"
                             SnapPointsType="Mandatory"
                             SnapPointsAlignment="Center"
                             ItemSpacing="20"/>
-                    </CarouselView.ItemsLayout>
-                </CarouselView>
-            </Grid>
-            <!--#endregion-->
+                </CarouselView.ItemsLayout>
+            </CarouselView>
 
-            <Button HorizontalOptions="End" VerticalOptions="EndAndExpand" Text="+" FontSize="28" WidthRequest="60" HeightRequest="60"
+            <IndicatorView x:Name="friendsIndicator"  IndicatorColor="LightGray"
+                   SelectedIndicatorColor="MediumPurple"
+                   HorizontalOptions="Center"
+                           Grid.Row="1" />
+        </Grid>
+
+        <Button Grid.Row="3" HorizontalOptions="End" VerticalOptions="EndAndExpand" Text="+" FontSize="28" WidthRequest="60" HeightRequest="60"
                     BorderRadius="30" Margin="0,0,20,15" Command="{Binding OnAddNewDriveButtonClicked}"/>
+    </Grid>
 
-
-        </StackLayout>
-    </yummy:PancakeView>
 
 
 </ContentPage>

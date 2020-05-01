@@ -8,7 +8,7 @@
              NavigationPage.HasNavigationBar="False"
              x:Class="Driver.Views.DriveInfoPage"
              Title="Drive">
-    
+
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
 

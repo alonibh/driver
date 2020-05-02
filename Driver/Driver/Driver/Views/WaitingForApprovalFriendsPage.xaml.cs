@@ -1,6 +1,4 @@
-﻿using Driver.Models;
-using Driver.ViewModels;
-using System.Collections.Generic;
+﻿using Driver.ViewModels;
 using Xamarin.Forms;
 
 namespace Driver.Views
@@ -9,10 +7,10 @@ namespace Driver.Views
     {
         private readonly WaitingForApprovalFriendsViewModel _viewModel;
 
-        public WaitingForApprovalFriendsPage(IEnumerable<Friend> friends, string username)
+        public WaitingForApprovalFriendsPage()
         {
             InitializeComponent();
-            _viewModel = new WaitingForApprovalFriendsViewModel(friends, username);
+            _viewModel = new WaitingForApprovalFriendsViewModel();
             BindingContext = _viewModel;
         }
 

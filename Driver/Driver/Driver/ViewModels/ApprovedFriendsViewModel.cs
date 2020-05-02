@@ -21,12 +21,12 @@ namespace Driver.ViewModels
         public ICommand RefreshCommand => new Command(async () => await RefreshItemsAsync());
         public ObservableCollection<FriendDrivesCounter> ApprovedFriends { get; set; }
 
-        public ApprovedFriendsViewModel(IEnumerable<Friend> friends, IEnumerable<Drive> drives, string username)
+        public ApprovedFriendsViewModel()
         {
-            _username = username;
+            _username = MainPage.Person.Username;
             _dbHelper = DependencyService.Get<IDbHelper>();
             ApprovedFriends = new ObservableCollection<FriendDrivesCounter>();
-            AddFriends(friends, drives);
+            AddFriends(MainPage.Person.Friends, MainPage.Person.Drives);
         }
 
         public void SubscribePoppingEvent()
@@ -51,13 +51,7 @@ namespace Driver.ViewModels
             CollectionView cv = (CollectionView)sender;
             cv.SelectedItem = null;
 
-            var personDrives = (await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
-            {
-                Username = _username
-            })).Drives.Select(o => (Drive)o);
-
-            List<Drive> drives = new List<Drive>();
-            drives.AddRange(personDrives.Where(d => d.Participants.Exists(p => p.Username == friend.Username)));
+            var drives = new List<Drive>(MainPage.Person.Drives.Where(d => d.Participants.Exists(p => p.Username == friend.Username)));
 
             await PopupNavigation.Instance.PushAsync(new FriendPopupPage(friend, drives)
             {

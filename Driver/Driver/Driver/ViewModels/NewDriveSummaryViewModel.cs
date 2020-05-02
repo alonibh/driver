@@ -4,7 +4,6 @@ using Driver.Models;
 using Driver.Views;
 using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -76,30 +75,13 @@ namespace Driver.ViewModels
                 return;
             }
 
-            GetPersonResponse getPersonResponse = await _dbHelper.GetPerson(new GetPersonRequest
+            var drives = (await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
             {
                 Username = _drive.Driver.Username
-            });
+            })).Drives.Select(o => (Drive)o);
 
-            GetPersonDrivesResponse getPersonDrivesResponse = await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
-            {
-                Username = _drive.Driver.Username
-            });
+            MainPage.Person.Drives = drives.ToList();
 
-            var person = new Person
-            {
-                Username = getPersonResponse.Person.Username,
-                Address = getPersonResponse.Person.Address,
-                FirstName = getPersonResponse.Person.FirstName,
-                LastName = getPersonResponse.Person.LastName,
-                Email = getPersonResponse.Person.Email,
-                Drives = getPersonDrivesResponse.Drives.Select(o => (Drive)o).ToList(),
-                Friends = new List<Friend>()
-            };
-            HomePage homePage = new HomePage(person);
-
-            var rootPage = _navigation.NavigationStack[0];
-            _navigation.InsertPageBefore(homePage, rootPage);
             await _navigation.PopToRootAsync();
         }
     }

@@ -1,9 +1,6 @@
-﻿using Driver.API;
-using Driver.Helpers;
+﻿using Driver.Helpers;
 using Driver.Models;
 using GalaSoft.MvvmLight.Views;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -11,8 +8,9 @@ namespace Driver.Views
 {
     public partial class MainPage : MasterDetailPage
     {
+        public static Person Person { get; set; }
+
         readonly MasterPage _masterPage;
-        readonly Person _person;
         readonly IDbHelper _dbHelper;
         readonly IDialogService _dialogService;
 
@@ -20,13 +18,13 @@ namespace Driver.Views
         {
             InitializeComponent();
 
-            _person = person;
+            Person = person;
             _masterPage = new MasterPage();
             _dbHelper = DependencyService.Get<IDbHelper>();
             _dialogService = DependencyService.Get<IDialogService>();
 
             Master = _masterPage;
-            Detail = new NavigationPage(new HomePage(_person))
+            Detail = new NavigationPage(new HomePage())
             {
                 BarBackgroundColor = Color.FromRgb(115, 81, 199),
                 BarTextColor = Color.Black
@@ -57,17 +55,17 @@ namespace Driver.Views
                             }
                         case nameof(FriendsTabbedPage):
                             {
-                                await ShowFriends();
+                                await ((NavigationPage)Detail).PushAsync(new FriendsTabbedPage());
                                 break;
                             }
                         case nameof(NewDriveParticipantsPage):
                             {
-                                await AddDrive();
+                                await ((NavigationPage)Detail).PushAsync(new NewDriveParticipantsPage());
                                 break;
                             }
                         case nameof(DrivesHistoryPage):
                             {
-                                await ShowDrivesHistory();
+                                await ((NavigationPage)Detail).PushAsync(new DrivesHistoryPage());
                                 break;
                             }
                     }
@@ -88,53 +86,6 @@ namespace Driver.Views
 
                 Application.Current.MainPage = new NavigationPage(new LoginPage());
             }
-        }
-
-        async Task ShowFriends()
-        {
-            var friends = (await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
-            {
-                Username = _person.Username
-            })).Friends.Select(o => (Friend)o);
-
-            var drives = (await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
-            {
-                Username = _person.Username
-            })).Drives.Select(o => (Drive)o);
-
-            await ((NavigationPage)Detail).PushAsync(new FriendsTabbedPage(friends, drives, _person.Username));
-        }
-
-        async Task ShowDrivesHistory()
-        {
-            var drives = (await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
-            {
-                Username = _person.Username
-            })).Drives.Select(o => (Drive)o);
-
-            await ((NavigationPage)Detail).PushAsync(new DrivesHistoryPage(drives));
-        }
-
-        async Task AddDrive()
-        {
-            var drive = new Drive
-            {
-                Date = new DateTime(2010, 1, 1),
-                Driver = new DriveParticipant
-                {
-                    Username = _person.Username,
-                    FirstName = _person.FirstName,
-                    LastName = _person.LastName,
-                    Address = _person.Address
-                }
-            };
-
-            var friends = (await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
-            {
-                Username = _person.Username
-            })).Friends.Select(o => (Friend)o).Where(f => f.Status == FriendRequestStatus.Accepted);
-
-            await ((NavigationPage)Detail).PushAsync(new NewDriveParticipantsPage(drive, friends));
         }
     }
 }

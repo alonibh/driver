@@ -61,6 +61,8 @@ namespace Driver
 
                 PersonDbo personDbo;
                 List<DriveDbo> drives;
+                List<FriendDbo> friends;
+
                 try
                 {
                     personDbo = (await Database.GetPerson(new GetPersonRequest
@@ -72,6 +74,11 @@ namespace Driver
                     {
                         Username = username
                     })).Drives;
+
+                    friends = (await Database.GetPersonFriends(new GetPersonFriendsRequest
+                    {
+                        Username = username
+                    })).Friends;
                 }
                 catch (Exception)
                 {
@@ -87,9 +94,8 @@ namespace Driver
                     LastName = personDbo.LastName,
                     Email = personDbo.Email,
                     Drives = drives.Select(o => (Drive)o).ToList(),
-                    Friends = new List<Friend>()
+                    Friends = friends.Select(o => (Friend)o).ToList()
                 };
-
 
                 MainPage = new MainPage(person);
             }

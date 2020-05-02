@@ -63,7 +63,7 @@
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                 <Label Text="{Binding Person.FirstName, StringFormat='Hello {0:N}'}" TextColor="White" FontSize="40" FontAttributes="Bold" VerticalOptions="Center"/>
             </StackLayout>
-            <Label Text="{Binding GlobalDrivesCounterStr}" TextColor="White" FontSize="14" HorizontalOptions="Center"/>
+            <Label Text="{Binding Balance}" TextColor="White" FontSize="14" HorizontalOptions="Center"/>
         </StackLayout>
 
 

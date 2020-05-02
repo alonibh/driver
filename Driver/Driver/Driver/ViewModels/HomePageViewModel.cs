@@ -1,9 +1,7 @@
-﻿using Driver.API;
-using Driver.Helpers;
+﻿using Driver.Helpers;
 using Driver.Models;
 using Driver.Views;
 using MvvmHelpers;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,63 +27,47 @@ namespace Driver.ViewModels
         }
 
         public ICommand OnAddNewDriveButtonClicked => new Command(async () => await ShowNewDrivePage());
-        public string GlobalDrivesCounterStr { get; set; }
-        public int GlobalDrivesCounter { get; set; }
+        public string Balance =>
+                    (GlobalUserDroveCounter - GlobalUserGotDrivenCounter) > 0 ? $"You get {(GlobalUserDroveCounter - GlobalUserGotDrivenCounter)} drives back" : $"You owe {(GlobalUserDroveCounter - GlobalUserGotDrivenCounter) * -1} drives";
+        public int GlobalDrivesCounter => Person.Drives.Count;
         public int GlobalUserDroveCounter { get; set; }
         public int GlobalUserGotDrivenCounter { get; set; }
         public Person Person { get; set; }
 
-        public HomePageViewModel(Person person, INavigation navigation)
+        public HomePageViewModel(INavigation navigation)
         {
             _navigation = navigation;
             _dbHelper = DependencyService.Get<IDbHelper>();
 
-            Person = person;
+            Person = MainPage.Person;
             DriveCounters = new ObservableCollection<DriveCounter>(Person.DrivesCounter);
 
-            SetGlobalDrivesCounter();
+            UpdateCounters();
+
         }
 
-        private void SetGlobalDrivesCounter()
+        private void UpdateCounters()
         {
-            int counter = 0;
-            foreach (var driveCounter in DriveCounters)
+            GlobalUserDroveCounter = 0;
+            GlobalUserGotDrivenCounter = 0;
+
+            foreach (var drive in Person.Drives)
             {
-                if (driveCounter.Counter > 0)
+                if (drive.Driver.Username == MainPage.Person.Username)
                 {
-                    GlobalUserDroveCounter += driveCounter.Counter;
+                    int participants = drive.Participants.Where(o => o.Username != MainPage.Person.Username).Count();
+                    GlobalUserDroveCounter += participants;
                 }
                 else
                 {
-                    GlobalUserGotDrivenCounter += driveCounter.Counter;
+                    GlobalUserGotDrivenCounter++;
                 }
-
-                counter += driveCounter.Counter;
             }
-            GlobalDrivesCounterStr = counter > 0 ? $"You get {counter} drives back" : $"You owe {counter * -1} drives";
-            GlobalDrivesCounter = counter;
         }
 
         private async Task ShowNewDrivePage()
         {
-            var drive = new Drive
-            {
-                Date = DateTime.Now,
-                Driver = new DriveParticipant
-                {
-                    Username = Person.Username,
-                    FirstName = Person.FirstName,
-                    LastName = Person.LastName,
-                    Address = Person.Address
-                }
-            };
-
-            var friends = (await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
-            {
-                Username = Person.Username
-            })).Friends.Select(o => (Friend)o).Where(f => f.Status == FriendRequestStatus.Accepted);
-
-            await _navigation.PushAsync(new NewDriveParticipantsPage(drive, friends));
+            await _navigation.PushAsync(new NewDriveParticipantsPage());
         }
     }
 }

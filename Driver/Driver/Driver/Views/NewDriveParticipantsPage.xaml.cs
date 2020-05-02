@@ -1,6 +1,4 @@
-﻿using Driver.Models;
-using Driver.ViewModels;
-using System.Collections.Generic;
+﻿using Driver.ViewModels;
 using Xamarin.Forms;
 
 namespace Driver.Views
@@ -9,10 +7,10 @@ namespace Driver.Views
     {
         private readonly NewDriveParticipantsViewModel _viewModel;
 
-        public NewDriveParticipantsPage(Drive drive, IEnumerable<Friend> friends)
+        public NewDriveParticipantsPage()
         {
             InitializeComponent();
-            _viewModel = new NewDriveParticipantsViewModel(drive, friends, Navigation);
+            _viewModel = new NewDriveParticipantsViewModel(Navigation);
             BindingContext = _viewModel;
             searchBar.TextChanged += _viewModel.OnTextChanged;
             friendsCollectionView.SelectionChanged += _viewModel.OnFriendTapped;

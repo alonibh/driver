@@ -1,6 +1,7 @@
 ﻿using Driver.API;
 using Driver.Helpers;
 using Driver.Models;
+using Driver.Views;
 using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
 using System.Collections.ObjectModel;
@@ -55,6 +56,13 @@ namespace Driver.ViewModels
                 {
                     Username = friend.Username
                 });
+
+                var friends = (await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
+                {
+                    Username = MainPage.Person.Username
+                })).Friends.Select(o => (Friend)o);
+
+                MainPage.Person.Friends = friends.ToList();
             }
         }
 

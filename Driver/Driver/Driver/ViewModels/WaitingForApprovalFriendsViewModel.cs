@@ -1,6 +1,7 @@
 ﻿using Driver.API;
 using Driver.Helpers;
 using Driver.Models;
+using Driver.Views;
 using MvvmHelpers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,12 +23,12 @@ namespace Driver.ViewModels
 
         public ObservableCollection<Friend> WaitingForApprovalFriends { get; set; }
 
-        public WaitingForApprovalFriendsViewModel(IEnumerable<Friend> friends, string username)
+        public WaitingForApprovalFriendsViewModel()
         {
-            _username = username;
+            _username = MainPage.Person.Username;
             _dbHelper = DependencyService.Get<IDbHelper>();
             WaitingForApprovalFriends = new ObservableCollection<Friend>();
-            AddFriends(friends);
+            AddFriends(MainPage.Person.Friends);
         }
 
         public async Task AcceptFriend(Friend friend)
@@ -36,7 +37,6 @@ namespace Driver.ViewModels
             {
                 Username = friend.Username
             });
-
             await ReloadFriends();
         }
 
@@ -56,6 +56,8 @@ namespace Driver.ViewModels
             {
                 Username = _username
             })).Friends.Select(o => (Friend)o);
+
+            MainPage.Person.Friends = friends.ToList();
 
             AddFriends(friends);
         }

@@ -30,6 +30,7 @@
                                     <RowDefinition Height="45" />
                                     <RowDefinition Height="40" />
                                     <RowDefinition Height="40" />
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
                                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="0">
@@ -114,6 +115,12 @@
                                        VerticalOptions="Center"
                                        Text="{Binding Date, StringFormat='{0:dd/MM/yyyy}'}"/>
                                 </StackLayout>
+                                <Button Text="Delete This Drive"
+                                        Grid.Row="4"
+                                        IsVisible="{Binding IsUserDriver}"
+                                        Command="{Binding Path=BindingContext.OnDeleteDriveButtonClicked, Source={x:Reference drivesCollectionView}}"
+                                        CommandParameter="{Binding Id}"
+                                        />
                             </Grid>
                         </Frame>
                     </DataTemplate>

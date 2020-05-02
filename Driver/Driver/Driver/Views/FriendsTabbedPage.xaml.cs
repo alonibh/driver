@@ -1,13 +1,11 @@
-﻿using Driver.Models;
-using Driver.ViewModels;
-using System.Collections.Generic;
+﻿using Driver.ViewModels;
 using Xamarin.Forms;
 
 namespace Driver.Views
 {
     public partial class FriendsTabbedPage : TabbedPage
     {
-        public FriendsTabbedPage(IEnumerable<Friend> friends, IEnumerable<Drive> drives, string username)
+        public FriendsTabbedPage()
         {
             InitializeComponent();
 
@@ -23,11 +21,11 @@ namespace Driver.Views
             };
             ToolbarItems.Add(item);
 
-            ApprovedFriendsPage approvedFriendsPage = new ApprovedFriendsPage(friends, drives, username)
+            ApprovedFriendsPage approvedFriendsPage = new ApprovedFriendsPage()
             {
                 Title = "Friends"
             };
-            WaitingForApprovalFriendsPage waitingForApprovalFriendRequestsPage = new WaitingForApprovalFriendsPage(friends, username)
+            WaitingForApprovalFriendsPage waitingForApprovalFriendRequestsPage = new WaitingForApprovalFriendsPage()
             {
                 Title = "Requests"
             };

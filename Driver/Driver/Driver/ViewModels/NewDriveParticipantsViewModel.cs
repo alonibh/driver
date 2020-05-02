@@ -37,13 +37,24 @@ namespace Driver.ViewModels
         public ICommand OnNextButtonClicked => new Command(async () => await MoveToNextPage());
         public ICommand PerformSearch => new Command<string>((string query) => SearchFriend(query));
 
-        public NewDriveParticipantsViewModel(Drive drive, IEnumerable<Friend> friends, INavigation navigation)
+        public NewDriveParticipantsViewModel(INavigation navigation)
         {
             _navigation = navigation;
-            _drive = drive;
+            var person = MainPage.Person;
+            _drive = new Drive
+            {
+                Date = DateTime.Today,
+                Driver = new DriveParticipant
+                {
+                    Username = person.Username,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    Address = person.Address
+                }
+            };
 
             var friendsWithCheckBox = new List<FriendWithCheckBox>();
-            foreach (var friend in friends)
+            foreach (var friend in person.Friends.Where(f => f.Status == FriendRequestStatus.Accepted))
             {
                 friendsWithCheckBox.Add(new FriendWithCheckBox { Friend = friend, IsChecked = false });
             }
@@ -120,6 +131,8 @@ namespace Driver.ViewModels
         private async Task MoveToNextPage()
         {
             _drive.Participants = new List<DriveParticipant>();
+            _drive.Date = DateTime.Today;
+
             foreach (var friend in SelectedFriends)
             {
                 _drive.Participants.Add(new DriveParticipant

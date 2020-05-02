@@ -1,6 +1,7 @@
 ﻿using Driver.API;
 using Driver.Helpers;
 using Driver.Models;
+using Driver.Views;
 using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
 using Rg.Plugins.Popup.Services;
@@ -62,6 +63,14 @@ namespace Driver.ViewModels
                 {
                     Username = Friend.Username
                 });
+
+                var friends = (await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
+                {
+                    Username = MainPage.Person.Username
+                })).Friends.Select(o => (Friend)o).ToList();
+
+                MainPage.Person.Friends = friends;
+
                 await PopupNavigation.Instance.PopAsync();
             }
         }

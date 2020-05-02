@@ -4,7 +4,6 @@ using Driver.Models;
 using Driver.Views;
 using GalaSoft.MvvmLight.Views;
 using MvvmHelpers;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -59,25 +58,30 @@ namespace Driver.ViewModels
                 Application.Current.Properties["token"] = loginResponse.Token;
                 _dbHelper.SetToken(loginResponse.Token);
 
-                GetPersonResponse getPersonResponse = await _dbHelper.GetPerson(new GetPersonRequest
+                var personDbo = (await _dbHelper.GetPerson(new GetPersonRequest
                 {
                     Username = LoginRequest.Username
-                });
+                })).Person;
 
-                GetPersonDrivesResponse getPersonDrivesResponse = await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
+                var drives = (await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
                 {
                     Username = LoginRequest.Username
-                });
+                })).Drives;
+
+                var friends = (await _dbHelper.GetPersonFriends(new GetPersonFriendsRequest
+                {
+                    Username = LoginRequest.Username
+                })).Friends;
 
                 Person person = new Person
                 {
-                    Username = getPersonResponse.Person.Username,
-                    Address = getPersonResponse.Person.Address,
-                    FirstName = getPersonResponse.Person.FirstName,
-                    LastName = getPersonResponse.Person.LastName,
-                    Email = getPersonResponse.Person.Email,
-                    Drives = getPersonDrivesResponse.Drives.Select(o => (Drive)o).ToList(),
-                    Friends = new List<Friend>()
+                    Username = personDbo.Username,
+                    Address = personDbo.Address,
+                    FirstName = personDbo.FirstName,
+                    LastName = personDbo.LastName,
+                    Email = personDbo.Email,
+                    Drives = drives.Select(o => (Drive)o).ToList(),
+                    Friends = friends.Select(o => (Friend)o).ToList()
                 };
                 MainPage mainPage = new MainPage(person);
 

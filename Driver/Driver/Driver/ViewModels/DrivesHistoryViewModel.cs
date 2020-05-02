@@ -20,7 +20,6 @@ namespace Driver.ViewModels
         private readonly IDbHelper _dbHelper;
 
         public ICommand OnDeleteDriveButtonClicked => new Command(async (driveId) => await DeleteDrive(driveId as string));
-
         public ObservableCollection<ObservableDrive> Drives { get; set; }
 
         public DrivesHistoryViewModel()
@@ -58,6 +57,9 @@ namespace Driver.ViewModels
                     await _dialogService.ShowMessage("Failed to delete drive", "Error", "OK", null);
                     return;
                 }
+
+                var drive = Drives.First(o => o.Id == driveId);
+                Drives.Remove(drive);
 
                 var drives = (await _dbHelper.GetPersonDrives(new GetPersonDrivesRequest
                 {

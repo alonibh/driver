@@ -53,7 +53,7 @@ namespace Driver.ViewModels
                 if (drive.Driver.Username == MainPage.Person.Username)
                 {
                     int participants = drive.Participants.Where(o => o.Username != MainPage.Person.Username).Count();
-                    balance+= participants;
+                    balance += participants;
                 }
                 else
                 {

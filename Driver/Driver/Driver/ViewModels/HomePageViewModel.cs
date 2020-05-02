@@ -27,11 +27,10 @@ namespace Driver.ViewModels
         }
 
         public ICommand OnAddNewDriveButtonClicked => new Command(async () => await ShowNewDrivePage());
-        public string Balance =>
-                    (GlobalUserDroveCounter - GlobalUserGotDrivenCounter) > 0 ? $"You get {(GlobalUserDroveCounter - GlobalUserGotDrivenCounter)} drives back" : $"You owe {(GlobalUserDroveCounter - GlobalUserGotDrivenCounter) * -1} drives";
+        public string Balance { get; set; }
         public int GlobalDrivesCounter => Person.Drives.Count;
-        public int GlobalUserDroveCounter { get; set; }
-        public int GlobalUserGotDrivenCounter { get; set; }
+        public int GlobalUserDroveCounter => Person.Drives.Where(o => o.Driver.Username == MainPage.Person.Username).Count();
+        public int GlobalUserGotDrivenCounter => Person.Drives.Where(o => o.Driver.Username != MainPage.Person.Username).Count();
         public Person Person { get; set; }
 
         public HomePageViewModel(INavigation navigation)
@@ -48,20 +47,19 @@ namespace Driver.ViewModels
 
         private void UpdateCounters()
         {
-            GlobalUserDroveCounter = 0;
-            GlobalUserGotDrivenCounter = 0;
-
+            int balance = 0;
             foreach (var drive in Person.Drives)
             {
                 if (drive.Driver.Username == MainPage.Person.Username)
                 {
                     int participants = drive.Participants.Where(o => o.Username != MainPage.Person.Username).Count();
-                    GlobalUserDroveCounter += participants;
+                    balance+= participants;
                 }
                 else
                 {
-                    GlobalUserGotDrivenCounter++;
+                    balance--;
                 }
+                Balance = balance > 0 ? $"You get {balance} drives back" : $"You owe {balance * -1} drives";
             }
         }
 

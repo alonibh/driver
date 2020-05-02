@@ -59,7 +59,14 @@ namespace Driver.ViewModels
                 {
                     balance--;
                 }
-                Balance = balance > 0 ? $"You get {balance} drives back" : $"You owe {balance * -1} drives";
+                if (balance == 0)
+                {
+                    Balance = "You're even";
+                }
+                else
+                {
+                    Balance = balance > 0 ? $"You get {balance} drives back" : $"You owe {balance * -1} drives";
+                }
             }
         }
 

@@ -27,7 +27,7 @@ namespace Driver.Views
             Detail = new NavigationPage(new HomePage())
             {
                 BarBackgroundColor = Color.FromRgb(115, 81, 199),
-                BarTextColor = Color.Black
+                BarTextColor = Color.White
             };
 
             _masterPage.listView.ItemSelected += OnItemSelected;
@@ -35,7 +35,7 @@ namespace Driver.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as MasterPageItem;
+            MasterPageItem item = e.SelectedItem as MasterPageItem;
             if (item != null)
             {
                 var navigationStack = Detail.Navigation.NavigationStack;

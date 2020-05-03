@@ -5,7 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              Visual="Material"
-             BarBackgroundColor="Black"
+             BarBackgroundColor="#7251c7"
              NavigationPage.HasBackButton="False"
+             BarTextColor="White"
+             Title="Friends"
              x:Class="Driver.Views.FriendsTabbedPage">
 </TabbedPage>

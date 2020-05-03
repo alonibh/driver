@@ -20,6 +20,7 @@
     <None Remove="Images\drive.png" />
     <None Remove="Images\driveshistory.png" />
     <None Remove="Images\find.png" />
+    <None Remove="Images\friendrequest.png" />
     <None Remove="Images\friendslist.png" />
     <None Remove="Images\homepage.png" />
     <None Remove="Images\location.png" />
@@ -56,6 +57,7 @@
     <SharedImage Include="Images\drive.png" BaseSize="512,512" />
     <SharedImage Include="Images\driveshistory.png" BaseSize="512,512" />
     <SharedImage Include="Images\find.png" BaseSize="36,36" />
+    <SharedImage Include="Images\friendrequest.png" BaseSize="512,512" />
     <SharedImage Include="Images\friendslist.png" BaseSize="512,512" />
     <SharedImage Include="Images\homepage.png" BaseSize="512,512" />
     <SharedImage Include="Images\location.png" BaseSize="512,512" />

@@ -48,9 +48,6 @@ namespace Driver.ViewModels
 
             Friend friend = (args.CurrentSelection[0] as FriendDrivesCounter).Friend;
 
-            CollectionView cv = (CollectionView)sender;
-            cv.SelectedItem = null;
-
             var drives = new List<Drive>(MainPage.Person.Drives.Where(d => d.Participants.Exists(p => p.Username == friend.Username)));
 
             await PopupNavigation.Instance.PushAsync(new FriendPopupPage(friend, drives)
@@ -58,6 +55,9 @@ namespace Driver.ViewModels
                 HasSystemPadding = true,
                 Padding = 10
             });
+
+            CollectionView cv = (CollectionView)sender;
+            cv.SelectedItem = null;
         }
 
         public async Task ReloadFriends()

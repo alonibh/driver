@@ -23,11 +23,13 @@ namespace Driver.Views
 
             ApprovedFriendsPage approvedFriendsPage = new ApprovedFriendsPage()
             {
-                Title = "Friends"
+                Title = "Friends",
+                IconImageSource = ImageSource.FromFile("friendslist.png")
             };
             WaitingForApprovalFriendsPage waitingForApprovalFriendRequestsPage = new WaitingForApprovalFriendsPage()
             {
-                Title = "Requests"
+                Title = "Requests",
+                IconImageSource = ImageSource.FromFile("friendrequest.png")
             };
 
             Children.Add(approvedFriendsPage);

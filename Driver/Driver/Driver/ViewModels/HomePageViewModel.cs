@@ -1,5 +1,4 @@
-﻿using Driver.Helpers;
-using Driver.Models;
+﻿using Driver.Models;
 using Driver.Views;
 using MvvmHelpers;
 using System.Collections.ObjectModel;
@@ -13,7 +12,6 @@ namespace Driver.ViewModels
     public class HomePageViewModel : BaseViewModel
     {
         private readonly INavigation _navigation;
-        private readonly IDbHelper _dbHelper;
 
         private ObservableCollection<DriveCounter> _driveCounters;
         public ObservableCollection<DriveCounter> DriveCounters
@@ -36,7 +34,6 @@ namespace Driver.ViewModels
         public HomePageViewModel(INavigation navigation)
         {
             _navigation = navigation;
-            _dbHelper = DependencyService.Get<IDbHelper>();
 
             Person = MainPage.Person;
             DriveCounters = new ObservableCollection<DriveCounter>(Person.DrivesCounter);
@@ -59,14 +56,14 @@ namespace Driver.ViewModels
                 {
                     balance--;
                 }
-                if (balance == 0)
-                {
-                    Balance = "You're even";
-                }
-                else
-                {
-                    Balance = balance > 0 ? $"You get {balance} drives back" : $"You owe {balance * -1} drives";
-                }
+            }
+            if (balance == 0)
+            {
+                Balance = "You're even";
+            }
+            else
+            {
+                Balance = balance > 0 ? $"You get {balance} drives back" : $"You owe {balance * -1} drives";
             }
         }
 

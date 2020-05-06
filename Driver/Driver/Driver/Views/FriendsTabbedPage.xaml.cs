@@ -9,7 +9,7 @@ namespace Driver.Views
         {
             InitializeComponent();
 
-            var bindingContext = new FriendsTabbedViewModel(Navigation);
+            var bindingContext = new FriendsTabbedViewModel();
             BindingContext = bindingContext;
 
             ToolbarItem item = new ToolbarItem
@@ -17,7 +17,14 @@ namespace Driver.Views
                 IconImageSource = ImageSource.FromFile("find.png"),
                 Order = ToolbarItemOrder.Primary,
                 Priority = 0,
-                Command = bindingContext.OnSearchPersonToolbarItemClicked
+                Command = new Command(async () =>
+                {
+                    await Navigation.PushModalAsync(new NavigationPage(new SearchPersonPage())
+                    {
+                        BarBackgroundColor = Color.FromRgb(115, 81, 199),
+                        BarTextColor = Color.White
+                    });
+                })
             };
             ToolbarItems.Add(item);
 

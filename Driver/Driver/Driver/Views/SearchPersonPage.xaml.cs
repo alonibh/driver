@@ -8,10 +8,17 @@ namespace Driver.Views
         public SearchPersonPage()
         {
             InitializeComponent();
+
+            ToolbarItems.Add(new ToolbarItem
+            {
+                IconImageSource = ImageSource.FromFile("close.png"),
+                Order = ToolbarItemOrder.Primary,
+                Priority = 0,
+                Command = new Command(async () => { await Navigation.PopModalAsync(); })
+            });
             SearchPersonViewModel viewModel = new SearchPersonViewModel();
             BindingContext = viewModel;
             searchBar.TextChanged += viewModel.OnTextChanged;
-            friendsListView.ItemTapped += viewModel.OnFriendTapped;
         }
     }
 }

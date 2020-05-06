@@ -26,7 +26,7 @@
 
                         <Image Grid.Column="0" Aspect="AspectFit" Source="person.png" WidthRequest="50" HeightRequest="100"/>
 
-                        <Grid Grid.Column="1" HorizontalOptions="Start">
+                        <Grid Grid.Column="1" HorizontalOptions="Center">
                             <StackLayout VerticalOptions="Center">
 
                                 <Label XAlign="Center"
@@ -100,6 +100,13 @@
 
 
         <Grid Grid.Row="2" VerticalOptions="CenterAndExpand">
+
+            <Grid.Padding>
+                <OnPlatform x:TypeArguments="Thickness">
+                    <On Platform="iOS" Value="20,0,0,0" />
+                </OnPlatform>
+            </Grid.Padding>
+            
             <Grid.RowDefinitions>
                 <RowDefinition Height="120" />
                 <RowDefinition Height="20" />
@@ -112,7 +119,7 @@
 
                 <CarouselView.PeekAreaInsets>
                     <OnPlatform x:TypeArguments="Thickness">
-                        <On Platform="iOS" Value="0,0,150,0" />
+                        <On Platform="iOS" Value="0,0,190,0" />
                         <On Platform="Android" Value="0,0,150,0" />
                     </OnPlatform>
                 </CarouselView.PeekAreaInsets>

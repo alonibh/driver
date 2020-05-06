@@ -44,7 +44,7 @@
                    
                 RelativeLayout.XConstraint="{ConstraintExpression
                     Type=RelativeToParent, Property=Width, Factor=0.15, Constant=0}"/>
-            <Button x:Name="signinButton" Text="Sign in"
+            <Button x:Name="signinButton" Text="Sign in" BackgroundColor="#3397db"
                     Command="{Binding OnSigninButtonClicked}" 
                     
                 RelativeLayout.WidthConstraint="{ConstraintExpression
@@ -64,7 +64,7 @@
                 RelativeLayout.XConstraint="{ConstraintExpression
                     Type=RelativeToParent, Property=Width, Factor=0.22, Constant=0}"/>
 
-            <Button x:Name="signunButton" Text="Sign up" BackgroundColor="White" TextColor="LightSkyBlue"
+            <Button x:Name="signunButton" Text="Sign up" BackgroundColor="White" TextColor="#3397db"
                     Command="{Binding OnSignupButtonClicked}"
                     
                 RelativeLayout.WidthConstraint="{ConstraintExpression

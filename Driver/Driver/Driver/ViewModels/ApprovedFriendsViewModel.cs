@@ -121,8 +121,7 @@ namespace Driver.ViewModels
             {
                 if (friend.Status == FriendRequestStatus.Accepted)
                 {
-                    int counter;
-                    drivesCounter.TryGetValue(friend.Username, out counter);
+                    drivesCounter.TryGetValue(friend.Username, out int counter);
                     ApprovedFriends.Add(new FriendDrivesCounter
                     {
                         Friend = friend,

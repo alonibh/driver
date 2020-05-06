@@ -11,11 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\addfriend.png" />
     <None Remove="Images\addnewdrive.png" />
     <None Remove="Images\arrow.png" />
     <None Remove="Images\beer.png" />
     <None Remove="Images\calendar.png" />
     <None Remove="Images\chauffeur.png" />
+    <None Remove="Images\close.png" />
     <None Remove="Images\done.png" />
     <None Remove="Images\drive.png" />
     <None Remove="Images\driveshistory.png" />
@@ -29,6 +31,7 @@
     <None Remove="Images\menu.png" />
     <None Remove="Images\overlay.png" />
     <None Remove="Images\person.png" />
+    <None Remove="Images\unfriend.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,17 +51,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <SharedImage Include="Images\addfriend.png" BaseSize="36,36" />
     <SharedImage Include="Images\addnewdrive.png" BaseSize="512,512" />
     <SharedImage Include="Images\arrow.png" BaseSize="512,512" />
     <SharedImage Include="Images\beer.png" BaseSize="512,512" />
     <SharedImage Include="Images\calendar.png" BaseSize="512,512" />
     <SharedImage Include="Images\chauffeur.png" BaseSize="512,512" />
+    <SharedImage Include="Images\close.png" BaseSize="36,36" />
     <SharedImage Include="Images\done.png" BaseSize="512,512" />
     <SharedImage Include="Images\drive.png" BaseSize="512,512" />
     <SharedImage Include="Images\driveshistory.png" BaseSize="512,512" />
     <SharedImage Include="Images\find.png" BaseSize="36,36" />
-    <SharedImage Include="Images\friendrequest.png" BaseSize="512,512" />
-    <SharedImage Include="Images\friendslist.png" BaseSize="512,512" />
+    <SharedImage Include="Images\friendrequest.png" BaseSize="32,32" />
+    <SharedImage Include="Images\friendslist.png" BaseSize="32,32" />
     <SharedImage Include="Images\homepage.png" BaseSize="512,512" />
     <SharedImage Include="Images\location.png" BaseSize="512,512" />
     <SharedImage Include="Images\logo.png" BaseSize="314,162" />
@@ -66,6 +71,7 @@
     <SharedImage Include="Images\menu.png" BaseSize="18,18" />
     <SharedImage Include="Images\overlay.png" BaseSize="375,303" />
     <SharedImage Include="Images\person.png" BaseSize="256,256" />
+    <SharedImage Include="Images\unfriend.png" BaseSize="36,36" />
   </ItemGroup>
 
   <ItemGroup>

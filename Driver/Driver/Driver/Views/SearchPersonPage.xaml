@@ -3,10 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Driver.Utils"
+             xmlns:enum="clr-namespace:Driver.Models"
              mc:Ignorable="d"
              Visual="Material"
-             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="True"
+             Title="Friends"
              x:Class="Driver.Views.SearchPersonPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:FriendTypeConverter x:Key="friendTypeConverter"></local:FriendTypeConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
@@ -14,17 +23,84 @@
                        Placeholder="Find Friends"
                        SearchCommand="{Binding PerformSearch}"
                        SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"/>
-            <ListView x:Name="friendsListView" ItemsSource="{Binding SearchResults, Mode=TwoWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid>
-                                <Label Text="{Binding FullName}"/>
+
+            <StackLayout>
+                <CollectionView x:Name="friendsCollectionView"
+                                ItemsSource="{Binding Friends}" IsGrouped="True" EmptyView="Minimum 3 characters...">
+
+                    <CollectionView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding Name}"
+                                   TextColor="Black"
+                                   BackgroundColor="Transparent"
+                                   FontSize="Medium"
+                                   FontAttributes="Bold"
+                                   Padding="0,10,0,0"/>
+                        </DataTemplate>
+                    </CollectionView.GroupHeaderTemplate>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HeightRequest="50">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0"
+                                       Source="person.png"
+                                       Aspect="AspectFit"
+                                       HeightRequest="40"
+                                       WidthRequest="40" />
+
+                                <Label Grid.Column="1" Text="{Binding FullName}" VerticalTextAlignment="Center" LineBreakMode="TailTruncation"/>
+
+                                <Button Grid.Column="2" Grid.ColumnSpan="2" Text="Unfriend" FontSize="12" FontAttributes="Bold" TextColor="Black"           Margin="0,5,10,0" 
+                                        BackgroundColor="#ff615d"
+                                        IsVisible="{Binding Status, Converter={StaticResource friendTypeConverter},
+                                        ConverterParameter={x:Static enum:FriendRequestStatus.Accepted}}"
+                                        Command="{Binding Path=BindingContext.OnUnfriendButtonClicked, Source={x:Reference friendsCollectionView}}"
+                                        CommandParameter="{Binding}"/>
+
+                                <Button Grid.Column="2" Grid.ColumnSpan="2" Text="Cancel" FontSize="12" FontAttributes="Bold"                               TextColor="Black" Margin="0,5,10,5" 
+                                        BackgroundColor="#ff615d"
+                                        IsVisible="{Binding Status, Converter={StaticResource friendTypeConverter},
+                                        ConverterParameter={x:Static enum:FriendRequestStatus.Pending}}"
+                                        Command="{Binding Path=BindingContext.OnIgnoreFriendRequestButtonClicked,
+                                                          Source={x:Reference friendsCollectionView}}"
+                                        CommandParameter="{Binding Username}"/>
+
+                                <Button Grid.Column="2" ImageSource="addfriend.png" Margin="0,5,10,2" 
+                                        BackgroundColor="#2d88ff"
+                                        IsVisible="{Binding Status, Converter={StaticResource friendTypeConverter},
+                                        ConverterParameter={x:Static enum:FriendRequestStatus.WaitingForApproval}}"
+                                        Command="{Binding Path=BindingContext.OnAddFriendButtonClicked, Source={x:Reference friendsCollectionView}}"
+                                        CommandParameter="{Binding Username}"/>
+
+                                <Button Grid.Column="3" ImageSource="unfriend.png" Margin="2,5,10,5" 
+                                        BackgroundColor="#ff615d"
+                                        IsVisible="{Binding Status, Converter={StaticResource friendTypeConverter},
+                                        ConverterParameter={x:Static enum:FriendRequestStatus.WaitingForApproval}}"
+                                        Command="{Binding Path=BindingContext.OnIgnoreFriendRequestButtonClicked,
+                                                          Source={x:Reference friendsCollectionView}}"
+                                        CommandParameter="{Binding Username}"/>
+
+                                <Button Grid.Column="2" Grid.ColumnSpan="2" Text="Add Friend" FontSize="12" FontAttributes="Bold" TextColor="Black"                Margin="0,5,10,0"
+                                        BackgroundColor="#7251c7"
+                                        IsVisible="{Binding Status, Converter={StaticResource friendTypeConverter},
+                                        ConverterParameter={x:Static enum:FriendRequestStatus.NotFriedns}}" 
+                                        Command="{Binding Path=BindingContext.OnAddFriendButtonClicked, Source={x:Reference friendsCollectionView}}"
+                                        CommandParameter="{Binding Username}"/>
+
                             </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

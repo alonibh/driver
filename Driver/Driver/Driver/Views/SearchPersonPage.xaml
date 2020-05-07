@@ -26,7 +26,7 @@
 
             <StackLayout>
                 <CollectionView x:Name="friendsCollectionView"
-                                ItemsSource="{Binding Friends}" IsGrouped="True" EmptyView="Minimum 3 characters...">
+                                ItemsSource="{Binding Friends}" IsGrouped="True" EmptyView="Minimum 3 Characters...">
 
                     <CollectionView.GroupHeaderTemplate>
                         <DataTemplate>

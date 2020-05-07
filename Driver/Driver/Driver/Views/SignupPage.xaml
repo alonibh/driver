@@ -60,9 +60,10 @@
             <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
 
                 <Button Text="Sign up"
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="CenterAndExpand"
-                    Command="{Binding OnSignupButtonClicked}"/>
+                        BackgroundColor="#3397db"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="CenterAndExpand"
+                        Command="{Binding OnSignupButtonClicked}"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

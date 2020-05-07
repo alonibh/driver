@@ -28,6 +28,7 @@ namespace Driver.ViewModels
         public ICommand OnUnfriendButtonClicked => new Command<Friend>(async (Friend friend) => await Unfriend(friend));
         public ICommand OnAddFriendButtonClicked => new Command<string>(async (string username) => await AddFriend(username));
         public ICommand OnIgnoreFriendRequestButtonClicked => new Command<string>(async (string username) => await DeleteFriend(username));
+        public string EmeptyViewText { get; set; } = "Minimum 3 Characters...";
 
         public SearchPersonViewModel()
         {
@@ -41,7 +42,6 @@ namespace Driver.ViewModels
                 { "All", 3}
             };
 
-            // { ("Existing Friends",1), "Pending Requests", "Waiting For Approval", "All" };
             Friends = new ObservableCollection<FriendGroup>();
         }
 
@@ -107,6 +107,16 @@ namespace Driver.ViewModels
         {
             await semaphoreSlim.WaitAsync();
             _lastQuery = query;
+
+            if (query.Length > 2)
+            {
+                EmeptyViewText = "No match found";
+            }
+            else
+            {
+                EmeptyViewText = "Minimum 3 Characters...";
+            }
+
             try
             {
                 if (!string.IsNullOrEmpty(query) && query.Length > 2)
@@ -118,11 +128,17 @@ namespace Driver.ViewModels
 
                     var queryFriends = SearchPersonResponse.Results.Select(o => (Friend)o);
                     UpdateFriendsResults(queryFriends);
+                    if (!Friends.Any())
+                    {
+                        Friends.Clear();
+                    }
                 }
                 else
                 {
                     Friends.Clear();
                 }
+
+                OnPropertyChanged(nameof(EmeptyViewText));
             }
             finally
             {

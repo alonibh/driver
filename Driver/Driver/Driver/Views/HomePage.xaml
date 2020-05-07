@@ -4,12 +4,14 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:local="clr-namespace:Driver.Utils"
              mc:Ignorable="d"
              Visual="Material"
              x:Class="Driver.Views.HomePage">
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <local:IsStringEmeptyConverter x:Key="isStringEmeptyConverter"></local:IsStringEmeptyConverter>
             <DataTemplate x:Key="DriveCounterItemTemplate">
                 <yummy:PancakeView Margin="16"
                                    BackgroundGradientAngle="180"
@@ -64,6 +66,8 @@
                 <Label Text="{Binding Person.FirstName, StringFormat='Hello {0:N}'}" TextColor="White" FontSize="40" FontAttributes="Bold" VerticalOptions="Center"/>
             </StackLayout>
             <Label Text="{Binding Balance}" TextColor="White" FontSize="14" HorizontalOptions="Center"/>
+            <Label Text="{Binding FriendRequestsText}" TextColor="White" FontSize="12" HorizontalOptions="Center"
+                   IsVisible="{Binding FriendRequestsText, Converter={StaticResource isStringEmeptyConverter}}"/>
         </StackLayout>
 
 

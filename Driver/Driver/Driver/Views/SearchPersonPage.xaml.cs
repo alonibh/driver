@@ -9,16 +9,19 @@ namespace Driver.Views
         {
             InitializeComponent();
 
-            ToolbarItems.Add(new ToolbarItem
-            {
-                IconImageSource = ImageSource.FromFile("close.png"),
-                Order = ToolbarItemOrder.Primary,
-                Priority = 0,
-                Command = new Command(async () => { await Navigation.PopModalAsync(); })
-            });
             SearchPersonViewModel viewModel = new SearchPersonViewModel();
             BindingContext = viewModel;
             searchBar.TextChanged += viewModel.OnTextChanged;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await System.Threading.Tasks.Task.Delay(250);
+                searchBar.Focus();
+            });
         }
     }
 }

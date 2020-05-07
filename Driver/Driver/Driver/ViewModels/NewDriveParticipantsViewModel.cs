@@ -123,7 +123,7 @@ namespace Driver.ViewModels
             }
             else
             {
-                var queryFriends = Friends.Where(o => o.Friend.FullName.StartsWith(query, StringComparison.OrdinalIgnoreCase));
+                var queryFriends = _defaultFriends.Where(o => o.Friend.FullName.StartsWith(query, StringComparison.OrdinalIgnoreCase));
                 Friends = new ObservableCollection<FriendWithCheckBox>(queryFriends);
             }
         }

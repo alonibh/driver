@@ -21,17 +21,26 @@ namespace Driver.ViewModels
         private readonly IDialogService _dialogService;
         private readonly IDbHelper _dbHelper;
         private string _lastQuery;
+        private readonly Dictionary<string, int> _groupOrder;
 
         public ObservableCollection<FriendGroup> Friends { get; set; }
         public ICommand PerformSearch => new Command<string>(async (string query) => await SearchPerson(query));
         public ICommand OnUnfriendButtonClicked => new Command<Friend>(async (Friend friend) => await Unfriend(friend));
         public ICommand OnAddFriendButtonClicked => new Command<string>(async (string username) => await AddFriend(username));
         public ICommand OnIgnoreFriendRequestButtonClicked => new Command<string>(async (string username) => await DeleteFriend(username));
+        public string EmeptyViewText { get; set; } = "Minimum 3 Characters...";
 
         public SearchPersonViewModel()
         {
             _dbHelper = DependencyService.Get<IDbHelper>();
             _dialogService = DependencyService.Get<IDialogService>();
+            _groupOrder = new Dictionary<string, int>
+            {
+                { "Existing Friends", 0 },
+                { "Pending Requests", 1},
+                { "Waiting For Approval", 2},
+                { "All", 3}
+            };
 
             Friends = new ObservableCollection<FriendGroup>();
         }
@@ -98,6 +107,16 @@ namespace Driver.ViewModels
         {
             await semaphoreSlim.WaitAsync();
             _lastQuery = query;
+
+            if (query.Length > 2)
+            {
+                EmeptyViewText = "No match found";
+            }
+            else
+            {
+                EmeptyViewText = "Minimum 3 Characters...";
+            }
+
             try
             {
                 if (!string.IsNullOrEmpty(query) && query.Length > 2)
@@ -109,11 +128,17 @@ namespace Driver.ViewModels
 
                     var queryFriends = SearchPersonResponse.Results.Select(o => (Friend)o);
                     UpdateFriendsResults(queryFriends);
+                    if (!Friends.Any())
+                    {
+                        Friends.Clear();
+                    }
                 }
                 else
                 {
                     Friends.Clear();
                 }
+
+                OnPropertyChanged(nameof(EmeptyViewText));
             }
             finally
             {
@@ -147,20 +172,20 @@ namespace Driver.ViewModels
                 }
             }
 
-            UpdateGroup(existingFriends, "Existing Friends", 0);
-            UpdateGroup(pendingFriends, "Pending Requests", 1);
-            UpdateGroup(waitingForApprovalFriends, "Waiting For Approval", 2);
-            UpdateGroup(nonFriends, "All", 3);
+            UpdateGroup(existingFriends, "Existing Friends");
+            UpdateGroup(pendingFriends, "Pending Requests");
+            UpdateGroup(waitingForApprovalFriends, "Waiting For Approval");
+            UpdateGroup(nonFriends, "All");
         }
 
-        private void UpdateGroup(List<Friend> friendsList, string groupName, int index)
+        private void UpdateGroup(List<Friend> friendsList, string groupName)
         {
             var group = Friends.SingleOrDefault(o => o.Name == groupName);
             if (friendsList.Any())
             {
                 if (group == null)
                 {
-                    SafeInsert(Friends, index, new FriendGroup(groupName, friendsList));
+                    SafeInsert(new FriendGroup(groupName, friendsList));
                 }
                 else
                 {
@@ -199,16 +224,21 @@ namespace Driver.ViewModels
             }
         }
 
-        private void SafeInsert(ObservableCollection<FriendGroup> friends, int index, FriendGroup friendGroup)
+        private void SafeInsert(FriendGroup friendGroup)
         {
-            if (index < friends.Count)
+            int counter = 0;
+            foreach (var group in Friends)
             {
-                friends.Insert(index, friendGroup);
+                int currentIndex = _groupOrder[group.Name];
+                int desiredIndex = _groupOrder[friendGroup.Name];
+                if (desiredIndex < currentIndex)
+                {
+                    Friends.Insert(counter, friendGroup);
+                    return;
+                }
+                counter++;
             }
-            else
-            {
-                friends.Add(friendGroup);
-            }
+            Friends.Add(friendGroup);
         }
     }
 

@@ -15,5 +15,15 @@ namespace Driver.Views
             searchBar.TextChanged += _viewModel.OnTextChanged;
             friendsCollectionView.SelectionChanged += _viewModel.OnFriendTapped;
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await System.Threading.Tasks.Task.Delay(250);
+                searchBar.Focus();
+            });
+        }
     }
 }

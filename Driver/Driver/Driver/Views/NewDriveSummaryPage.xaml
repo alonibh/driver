@@ -25,7 +25,8 @@
                            Placeholder="Drive Destination"
                            Keyboard="Text"
                            VerticalOptions="Center"
-                           WidthRequest="150"/>
+                           WidthRequest="150"
+                               BackgroundColor="Transparent"/>
 
                         <Label Text="Drive Date:" Margin="0,20,0,0" />
 
@@ -37,7 +38,7 @@
                     </StackLayout>
                 </Grid>
 
-                <Grid Grid.Row="1" BackgroundColor="LightGray">
+                <Grid Grid.Row="1" BackgroundColor="Transparent">
 
                     <StackLayout Margin="10">
 
@@ -97,7 +98,7 @@
                                HorizontalOptions="End" 
                                VerticalOptions="EndAndExpand"
                                IsClippedToBounds="True"
-                               WidthRequest="50" HeightRequest="120" CornerRadius="40">
+                               WidthRequest="50" HeightRequest="150" CornerRadius="40">
                 <ImageButton Source="done.png" BackgroundColor="Transparent" Aspect="AspectFit"
                         Command="{Binding OnDoneButtonClicked}"/>
             </yummy:PancakeView>

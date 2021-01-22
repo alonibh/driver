@@ -18,6 +18,7 @@
     <None Remove="Images\calendar.png" />
     <None Remove="Images\chauffeur.png" />
     <None Remove="Images\close.png" />
+    <None Remove="Images\delete.png" />
     <None Remove="Images\done.png" />
     <None Remove="Images\drive.png" />
     <None Remove="Images\driveshistory.png" />
@@ -58,12 +59,13 @@
     <SharedImage Include="Images\calendar.png" BaseSize="512,512" />
     <SharedImage Include="Images\chauffeur.png" BaseSize="512,512" />
     <SharedImage Include="Images\close.png" BaseSize="36,36" />
+    <SharedImage Include="Images\delete.png" BaseSize="512,512" />
     <SharedImage Include="Images\done.png" BaseSize="512,512" />
     <SharedImage Include="Images\drive.png" BaseSize="512,512" />
     <SharedImage Include="Images\driveshistory.png" BaseSize="512,512" />
     <SharedImage Include="Images\find.png" BaseSize="36,36" />
-    <SharedImage Include="Images\friendrequest.png" BaseSize="32,32" />
-    <SharedImage Include="Images\friendslist.png" BaseSize="32,32" />
+    <SharedImage Include="Images\friendrequest.png" BaseSize="36,36" />
+    <SharedImage Include="Images\friendslist.png" BaseSize="36,36" />
     <SharedImage Include="Images\homepage.png" BaseSize="512,512" />
     <SharedImage Include="Images\location.png" BaseSize="512,512" />
     <SharedImage Include="Images\logo.png" BaseSize="314,162" />

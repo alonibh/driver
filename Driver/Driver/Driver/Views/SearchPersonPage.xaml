@@ -7,7 +7,6 @@
              xmlns:enum="clr-namespace:Driver.Models"
              mc:Ignorable="d"
              Visual="Material"
-             NavigationPage.HasBackButton="True"
              Title="Friends"
              x:Class="Driver.Views.SearchPersonPage">
 
@@ -26,7 +25,7 @@
 
             <StackLayout>
                 <CollectionView x:Name="friendsCollectionView"
-                                ItemsSource="{Binding Friends}" IsGrouped="True" EmptyView="Minimum 3 characters...">
+                                ItemsSource="{Binding Friends}" IsGrouped="True" EmptyView="{Binding EmeptyViewText, Mode=TwoWay}">
 
                     <CollectionView.GroupHeaderTemplate>
                         <DataTemplate>

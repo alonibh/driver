@@ -20,5 +20,15 @@ namespace Driver.Views
 
             destEntry.TextChanged += viewModel.OnDestChanged;
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await System.Threading.Tasks.Task.Delay(250);
+                destEntry.Focus();
+            });
+        }
     }
 }

@@ -19,11 +19,7 @@ namespace Driver.Views
                 Priority = 0,
                 Command = new Command(async () =>
                 {
-                    await Navigation.PushModalAsync(new NavigationPage(new SearchPersonPage())
-                    {
-                        BarBackgroundColor = Color.FromRgb(115, 81, 199),
-                        BarTextColor = Color.White
-                    });
+                    await Navigation.PushAsync(new SearchPersonPage());
                 })
             };
             ToolbarItems.Add(item);

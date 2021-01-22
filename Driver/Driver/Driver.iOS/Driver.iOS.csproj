@@ -213,4 +213,9 @@
   <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties XamarinHotReloadUnhandledDeviceExceptionDriveriOSHideInfoBar="True" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

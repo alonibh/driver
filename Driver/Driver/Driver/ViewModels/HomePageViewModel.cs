@@ -29,6 +29,7 @@ namespace Driver.ViewModels
         public int GlobalDrivesCounter => Person.Drives.Count;
         public int GlobalUserDroveCounter => Person.Drives.Where(o => o.Driver.Username == MainPage.Person.Username).Count();
         public int GlobalUserGotDrivenCounter => Person.Drives.Where(o => o.Driver.Username != MainPage.Person.Username).Count();
+        public string FriendRequestsText { get; set; }
         public Person Person { get; set; }
 
         public HomePageViewModel(INavigation navigation)
@@ -40,6 +41,19 @@ namespace Driver.ViewModels
 
             UpdateCounters();
 
+            if (MainPage.Person.Friends.Any(o => o.Status == Models.FriendRequestStatus.WaitingForApproval))
+            {
+                int count = MainPage.Person.Friends.Count(o => o.Status == Models.FriendRequestStatus.WaitingForApproval);
+                FriendRequestsText = $"You have {count} pending friend request";
+                if (count > 1)
+                {
+                    FriendRequestsText += 's';
+                }
+            }
+            else
+            {
+                FriendRequestsText = string.Empty;
+            }
         }
 
         private void UpdateCounters()
